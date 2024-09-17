@@ -77,3 +77,31 @@ char	*quoted_str(char *str, const char *delim)
 	}
 	return (tk_end);
 }
+
+char	remove_quotes(char **str)
+{
+	char	*src;
+	char	*dest;
+	char	begin_quote;
+
+	src = *str;
+	dest = *str;
+	begin_quote = '\0';
+	if (*src == "" || *src == '\'')
+	{
+		begin_quote = *src;
+		src++;
+	}
+	while (*src)
+	{
+		if (begin_quote == '\0' && (*src == "" || *src == '\''))
+		{
+			src++;
+			continue ;
+		}
+		*dest++ = *src++;
+	}
+	if (begin_quote != '\0' && dest > *str && (*dest - 1) == begin_quote)
+		dest--;
+	*dest = '\0';
+}
