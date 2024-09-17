@@ -13,7 +13,7 @@ char	*ft_strtotoken(char *str, const char *delim)
 	if (*str == '\0')
 		return (NULL);
 	cur_tk_end = quoted_str(str, delim);
-	if (*cur_tk_end = '\0')
+	if (*cur_tk_end == '\0')
 		last_tk = NULL;
 	else
 	{
@@ -23,3 +23,29 @@ char	*ft_strtotoken(char *str, const char *delim)
 	return (str);
 }
 
+size_t	ft_strspn(const char *str, const char *accept)
+{
+	const char	*s;
+	const char	*a;
+	bool		found;
+
+	s = str;
+	while (*s)
+	{
+		a = accept;
+		found = false;
+		while (*a)
+		{
+			if (*s == *a)
+			{
+				found = true;
+				break ;
+			}
+			a++;
+		}
+		if (!found)
+			break ;
+		s++;
+	}
+	return (s - str);
+}
