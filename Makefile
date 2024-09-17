@@ -2,7 +2,8 @@
 NAME = minishell
 # Directories and source files
 SRC = main.c \
-executor.c
+executor.c \
+executor_utils.c
 
 OBJ = $(SRC:.c=.o)
 
