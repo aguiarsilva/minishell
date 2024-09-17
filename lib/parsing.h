@@ -41,4 +41,10 @@ typedef struct s_token
 	int				count_word;
 }	t_token;
 
+/*token.c*/
+char	*ft_strtok(char *str, const char *delim);
+size_t	ft_strspn(const char *str, const char *accept);
+char	*quoted_str(char *str, const char *delim);
+
+
 #endif

@@ -1,6 +1,6 @@
 #include "../lib/minishell.h"
 
-char	*ft_strtotoken(char *str, const char *delim)
+char	*ft_strtok(char *str, const char *delim)
 {
 	static char	*last_tk;
 	char		*cur_tk_end;
@@ -48,4 +48,32 @@ size_t	ft_strspn(const char *str, const char *accept)
 		s++;
 	}
 	return (s - str);
+}
+
+char	*quoted_str(char *str, const char *delim)
+{
+	char	*tk_end;
+	bool	in_quote;
+	char	ch_quote;
+
+	tk_end = str;
+	in_quote = false;
+	ch_quote = '\0';
+	while (*tk_end)
+	{
+		if (is_quote(*tk_end))
+		{
+			if (in_quote && *tk_end == ch_quote)
+				in_quote = false;
+			else if (!in_quote)
+			{
+				in_quote = true;
+				ch_quote = *tk_end;
+			}
+		}
+		else if (!in_quote && ft_strchr(delim, *tk_end))
+			break ;
+		tk_end++;
+	}
+	return (tk_end);
 }
