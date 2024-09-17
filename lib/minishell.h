@@ -13,5 +13,13 @@
 # include <errno.h>
 # include <stdbool.h>
 
+# define ERR_CMD "minishell: "
+# define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
+
+int		print_error_msg(char *error);
+void	print_error_cmd_not_found_and_exit(char *split_cmd);
+void	print_error_msg_and_exit(char *error);
+void	print_error_open_file_and_exit(char *filename, char *error);
+void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
 #endif //MINISHELL_H
 

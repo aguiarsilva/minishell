@@ -14,6 +14,8 @@ add_executable(minishell
         main.c
         executor.c
         executor_utils.c
+        error.c
+        child_status.c
         #test
 )
 
