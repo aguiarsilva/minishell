@@ -14,6 +14,7 @@
 # include <stdbool.h>
 
 # define ERR_CMD "minishell: "
+# define ERR_FORK "Fork failed."
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
 
 int		print_error_msg(char *error);

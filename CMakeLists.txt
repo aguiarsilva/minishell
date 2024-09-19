@@ -16,6 +16,7 @@ add_executable(minishell
         executor_utils.c
         error.c
         child_status.c
+        exebuildin.c
         #test
 )
 

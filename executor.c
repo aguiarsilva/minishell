@@ -16,6 +16,7 @@ void executor(char *cmd, char **env)
 	// {
 	// 	fprintf(stderr, "split_cmd[%d]: %s\n", i, split_cmd[i]);
 	// }
+	// free(cmd);
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
 		fprintf(stderr, "Error executing %s: %s\n", exec_path, strerror(errno)); // maybe its possible to return with my error function
