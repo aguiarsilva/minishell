@@ -28,7 +28,7 @@ int	main(int argc, char *argv[], char *env[])
 	{
 		if (buildin == true)
 		{
-			run_buildin(cmd, env);
+			run_buildin(cmd, env); // have to allocatestruct before that
 		}
 		else
 		{

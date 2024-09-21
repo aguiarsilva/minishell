@@ -2,12 +2,18 @@
 #ifndef EXECUTOR_H
 #define EXECUTOR_H
 
+typedef struct s_cmd
+{
+	char	*cmd;
+	char	**args;
+}	t_cmd;
 
 //executor.c
 void	executor(char *cmd, char **env);
 
-//ecebuildin.c
-int		run_buildin(char *cmd, char **env);
+//exebuildin.c
+int		run_buildin(t_cmd *cmd, char **env);
+
 //executorutils.c
 char	*get_env_value_by_name(char *envVarName, char **env);
 char	**parse_command_with_quotes(char *cmd);

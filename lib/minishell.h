@@ -6,6 +6,7 @@
 # include "../lib/ft_printf/get_next_line/get_next_line.h"
 # include "executor.h"
 # include "parsing.h"
+# include "buildins.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
