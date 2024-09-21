@@ -17,6 +17,7 @@ add_executable(minishell
         error.c
         child_status.c
         exebuildin.c
+        echo.c
         #test
 )
 
