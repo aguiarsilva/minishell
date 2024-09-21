@@ -41,10 +41,30 @@ typedef struct s_token
 	int				count_word;
 }	t_token;
 
+/*check.c*/
+bool	is_quote(char c);
+bool	is_redirection_symbol(char c);
+char	*verify_syntax(char *str);
+
+/*cleanup.c*/
+void	free_prompt(t_prompt *prompt);
+
+/*prompt_init.c*/
+void	init_prompt(t_prompt *prompt);
+
 /*token.c*/
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
+char	remove_quotes(char **str);
+char	*ft_strtok_remove_quotes(char *str, const char *delim);
+
+/*utils_list.c*/
+t_token *build_list(t_prompt *prompt, char *msg);
+void	append_node(t_token **head, t_token **curr, t_token *new);
+
+/*utils.c*/
+char    *ft_strncpy(char *dest, const char *src, int n);
 
 
 #endif
