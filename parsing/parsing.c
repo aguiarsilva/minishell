@@ -51,3 +51,15 @@ t_token	*multi_cmd_init(t_token *new, t_prompt *prompt)
 	free(cp_val);
 	return (new);
 }
+
+bool	multi_cmd_arr_init(t_token *new, char *cp_val)
+{
+	new->count_wd = ft_count_words(new->val);
+	new->multi_cmd = malloc(sizeof(char *) * (new->count_wd + 1));
+	if (!new->multi_cmd)
+	{
+		free(cp_val);
+		return (false);
+	}
+	return (true);
+}

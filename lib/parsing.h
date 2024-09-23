@@ -51,11 +51,13 @@ bool    is_redir_operator(const char *wd);
 
 /*cleanup.c*/
 void	free_prompt(t_prompt *prompt);
+void    free_mutil_cmd_arr(char **array);
 void    free_tk(t_token *tk_list);
 
 /*parsing.c*/
 t_token	*make_token(char *wd);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
+bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
