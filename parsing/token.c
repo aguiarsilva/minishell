@@ -106,7 +106,7 @@ char	remove_quotes(char **str)
 	*dest = '\0';
 }
 
-char	*ft_strtok_remove_quotes(char *str, const char *delim)
+char	*ft_strtok_rm_quotes(char *str, const char *delim)
 {
 	static char		*last_tk;
 	char			*cur_tk_end;

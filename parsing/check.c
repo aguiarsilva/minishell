@@ -10,6 +10,12 @@ bool    is_redirection_symbol(char c)
 	return (c == '<' || c == '>');
 }
 
+bool    is_redir_operator(const char *wd)
+{
+	return (ft_strcmp(wd, ">") == 0 || ft_strcmp(wd, "<") == 0
+				|| ft_strcmp(wd, "<<") == 0 || ft_strcmp(wd, ">>") == 0);
+}
+
 char    *verify_syntax(char *str)
 {
 	char    *new;

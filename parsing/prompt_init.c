@@ -6,4 +6,3 @@ void    init_prompt(t_prompt *prompt)
 	prompt->symbols = "<>";
 	prompt->whitespace = "\t\r\v";
 }
-
