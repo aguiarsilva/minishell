@@ -2,23 +2,31 @@
 #ifndef EXECUTOR_H
 #define EXECUTOR_H
 
+// basis struct for testing
 typedef struct s_cmd
 {
 	char	*cmd;
 	char	**args;
+	int		builtin;
 }	t_cmd;
 
 //executor.c
-void	executor(char *cmd, char **env);
+void	executor(t_cmd *cmd_data, char **env);
 
 //exebuildin.c
-int		run_buildin(t_cmd *cmd, char **env);
+int		run_builtin(t_cmd *cmd_data, char **env);
 
-//executorutils.c
+//executor_utils.c
 char	*get_env_value_by_name(char *envVarName, char **env);
 char	**parse_command_with_quotes(char *cmd);
 void	ft_free_array(char **array);
 char	*get_exec_path(char *cmd, char **env);
-//child_status
+void	free_cmd_data(t_cmd *cmd_data);
+
+//child_status.c
 void	check_child_status(pid_t child_pid);
+
+//test.c
+t_cmd	*fill_cmd(char **input);
+char	*combine_command_and_args(const char *cmd, char **args); // temporary
 #endif //EXECUTOR_H

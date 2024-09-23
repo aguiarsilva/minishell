@@ -1,4 +1,5 @@
-#include "lib/minishell.h"
+
+#include "../lib/minishell.h"
 
 void	ft_free_array(char **array)
 {
@@ -44,7 +45,7 @@ char	*get_exec_path(char *cmd, char **env)
 	char	*exec_path;
 	char	**path_list;
 	char	*current_path;
-	char	**s_cmd;
+	char	**s_cmd; //not needed anymore
 
 	i = -1;
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
@@ -54,8 +55,8 @@ char	*get_exec_path(char *cmd, char **env)
 		current_path = ft_strjoin(path_list[i], "/");
 		exec_path = ft_strjoin(current_path, s_cmd[0]); // maybe change 0 to a new variable
 //because the input could start with something else ?
-		//fprintf(stderr, "current_path: %s\n", current_path);
-		//fprintf(stderr, "exec_path: %s\n", exec_path);
+//		fprintf(stderr, "current_path: %s\n", current_path);
+//		fprintf(stderr, "exec_path: %s\n", exec_path);
 		free(current_path);
 		if (access(exec_path, X_OK) == 0)
 		{
@@ -92,4 +93,25 @@ char	**parse_command_with_quotes(char *cmd)
 	}
 	split_cmd = ft_split(cmd, '\x1A');
 	return (split_cmd);
+}
+
+void	free_cmd_data(t_cmd *cmd_data)
+{
+	int	i;
+
+	i = 0;
+	if (cmd_data)
+	{
+		free(cmd_data->cmd);
+		if (cmd_data->args)
+		{
+			while (cmd_data->args[i])
+			{
+				free(cmd_data->args[i]);
+				i++;
+			}
+			free(cmd_data->args);
+		}
+		free(cmd_data);
+	}
 }

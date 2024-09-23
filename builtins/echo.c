@@ -1,5 +1,5 @@
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 
 static bool	has_n_flag(t_cmd *cmd_data)
 {
@@ -23,16 +23,18 @@ int	echo(t_cmd *cmd_data)
 
 	i = 0;
 	n_flag = has_n_flag(cmd_data);
+
 	while (cmd_data->args[i])
 	{
-		if (n_flag && i == 0 || i > 0)
+		if (n_flag && i == 1 || i > 0) // n flag not working properly
 		{
 			ft_putstr_fd(cmd_data->args[i], STDOUT_FILENO);
 			if (cmd_data->args[i + 1] && cmd_data->args[i][0] != '\0')
 				ft_putchar_fd(' ', 1);
 		}
+		i++;
 	}
-	if (n_flag)
+	if (!n_flag)
 		ft_putchar_fd('\n', 1);
 	return (0);
 }

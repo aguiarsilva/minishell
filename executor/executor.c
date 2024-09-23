@@ -1,15 +1,18 @@
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 
-void executor(char *cmd, char **env)
+void executor(t_cmd *cmd_data, char **env)
 {
+	char	*full_cmd;
 	char	**split_cmd;
 	char	*exec_path;
-
-	exec_path = get_exec_path(cmd, env);
-	split_cmd = parse_command_with_quotes(cmd);
-	// printf("Executable Path via printf: %s\n", exec_path);
-	// fprintf(stderr, "Executable Path: %s\n", exec_path);
+//	fprintf(stderr, "cmd_data->cmd: %s\n", cmd_data->cmd);
+	full_cmd = combine_command_and_args(cmd_data->cmd, cmd_data->args); // temporary
+//	fprintf(stderr, "full_cmd after combine call: %s\n", full_cmd);
+	exec_path = get_exec_path(full_cmd, env);
+	split_cmd = parse_command_with_quotes(full_cmd);
+//	 printf("Executable Path via printf: %s\n", exec_path);
+//	 fprintf(stderr, "Executable Path: %s\n", exec_path);
 
 	// fprintf(stderr, "Command arguments:\n");
 	// for (int i = 0; split_cmd[i]; i++)

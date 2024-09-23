@@ -1,14 +1,14 @@
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 // add if for each build ins
 
-int	run_buildin(t_cmd *cmd_data, char **env)
+int	run_builtin(t_cmd *cmd_data, char **env)
 {
 	int	exit_code;
 
 	exit_code = 0;
 	if (ft_strncmp(cmd_data->cmd, "echo", ft_strlen(cmd_data->cmd)) == 0 && \
 			ft_strlen(cmd_data->cmd) == 4)
-		exit_code = echo(cmd_data->cmd);
+		exit_code = echo(cmd_data);
 	return (exit_code);
 }
