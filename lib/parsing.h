@@ -45,6 +45,7 @@ typedef struct s_token
 bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
 char	*verify_syntax(char *str);
+int		str_spaces(const char *str);
 
 /*cleanup.c*/
 void	free_prompt(t_prompt *prompt);
@@ -62,9 +63,11 @@ char	*ft_strtok_remove_quotes(char *str, const char *delim);
 /*utils_list.c*/
 t_token *build_list(t_prompt *prompt, char *msg);
 void	append_node(t_token **head, t_token **curr, t_token *new);
+void	nodes_init(t_token **head, t_token **cur, t_token **new);
 
 /*utils.c*/
 char    *ft_strncpy(char *dest, const char *src, int n);
+char    *ft_strcpy(char *dest, const char *src);
 
 
 #endif

@@ -10,3 +10,14 @@ char    *ft_strncpy(char *dest, const char *src, int n)
     dest[i] = '\0';
     return (dest);
 }
+
+char    *ft_strcpy(char *dest, const char *src)
+{
+    char    *nptr;
+
+    nptr = dest;
+    while (*src != '\0')
+        *nptr++ = *src++;
+    *nptr = '\0';
+    return (dest);
+}

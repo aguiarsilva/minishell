@@ -41,3 +41,10 @@ void	append_node(t_token **head, t_token **curr, t_token *new)
 		*curr = new;
 	}
 }
+
+void	nodes_init(t_token **head, t_token **cur, t_token **new)
+{
+	*head = NULL;
+	*cur = NULL;
+	*new = NULL;
+}
