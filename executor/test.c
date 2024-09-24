@@ -1,37 +1,76 @@
 
 #include "../lib/minishell.h"
 
-t_cmd *fill_cmd(char **input) // need to rework to work with multiple cmds
+// t_cmd *fill_cmd(char **input) // need to rework to work with multiple cmds
+// {
+// 	t_cmd	*cmd_data;
+// 	size_t	arg_count; // will get it from struct later
+// 	size_t	i;
+
+// 	cmd_data = safe_malloc(sizeof(t_cmd));
+// 	if (!cmd_data)
+// 		return (NULL);
+// 	cmd_data->cmd = ft_strdup(input[0]);
+
+// 	arg_count = 0;
+// 	while (input[arg_count])
+// 		arg_count++;
+// //	fprintf(stderr,"arg_count =%d\n", arg_count);
+// 	cmd_data->args = safe_malloc(sizeof(char *) * arg_count);
+// 	i = 0;
+// 	while (i < arg_count)
+// 	{
+// //		fprintf(stderr,"in while \n");
+// //		fprintf(stderr,"%s\n", input[i]);
+// 		cmd_data->args[i] = ft_strdup(input[i]);
+// //		fprintf(stderr,"%s\n", cmd_data->args[i]);
+// 		i++;
+// 	}
+// //	fprintf(stderr,"test %s\n", cmd_data->args[2]);
+// 	cmd_data->args[arg_count] = NULL;
+// 	cmd_data->builtin = check_for_builtin(cmd_data->cmd);
+// 	return (cmd_data);
+// }
+
+t_cmd *fill_cmd (t_token *list)
 {
 	t_cmd	*cmd_data;
-	size_t	arg_count; // will get it from struct later
-	size_t	i;
+	t_token	*cur;
 
+	size_t	i;
+	size_t arg_count = 0;
+	printf("begin");
+	i = 0;
+	cur = list;
 	cmd_data = safe_malloc(sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
-	cmd_data->cmd = ft_strdup(input[0]);
+	
+	cmd_data->cmd = ft_strdup(list->val); // echo test
+	cur = cur->next;
+	t_token *tmp = cur;
+    while (tmp != NULL) {
+        arg_count++;
+        tmp = tmp->next;
+    }
 
-	arg_count = 0;
-	while (input[arg_count])
-		arg_count++;
-//	fprintf(stderr,"arg_count =%d\n", arg_count);
-	cmd_data->args = safe_malloc(sizeof(char *) * arg_count);
-	i = 0;
-	while (i < arg_count)
+    // Allocate memory for args, including space for NULL terminator
+    cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char *));
+    if (!cmd_data->args)
+        return (NULL);
+
+	while (cur->next != NULL)
 	{
-//		fprintf(stderr,"in while \n");
-//		fprintf(stderr,"%s\n", input[i]);
-		cmd_data->args[i] = ft_strdup(input[i]);
-//		fprintf(stderr,"%s\n", cmd_data->args[i]);
+		cmd_data->args[i] = ft_strdup(cur->val);
+		cur = cur->next;
 		i++;
 	}
-//	fprintf(stderr,"test %s\n", cmd_data->args[2]);
-	cmd_data->args[arg_count] = NULL;
+	cmd_data->args[i] = NULL;
+	printf("here");
 	cmd_data->builtin = check_for_builtin(cmd_data->cmd);
 	return (cmd_data);
+	
 }
-
 char *combine_command_and_args(const char *cmd, char **args) // temporary
 {
 	size_t cmd_length = strlen(cmd);

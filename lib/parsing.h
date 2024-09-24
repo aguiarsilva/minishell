@@ -2,6 +2,7 @@
 # define PARSING_H
 
 # include "minishell.h"
+# include <stdbool.h>
 
 # define RED "\x1b[31m"
 # define RESET "\x1b[0m"
@@ -24,6 +25,7 @@ typedef struct s_prompt
 	char	*whitespace;
 }	t_prompt;
 
+
 typedef struct s_redir
 {
 	char			*file_name;
@@ -34,14 +36,22 @@ typedef struct s_redir
 typedef struct s_token
 {
 	char			*val;
+	// int				idx;
 	//char			**multi_cmd;
 	struct s_token	*next;
 	//int				count_cmd;
 	// int				count_wd;
 	t_type			type;
-	t_redir			*redir;
-	t_cmd			cmd;
 }	t_token;
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			**args;
+	int				builtin;
+	// t_redir		*redir;
+	//struct s_cmd	*next;
+}	t_cmd;
 
 /*check.c*/
 bool	is_quote(char c);
@@ -78,7 +88,8 @@ char	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
 /*utils_list.c*/
-t_token *build_list(t_prompt *prompt, char *msg);
+// t_token *build_list(t_prompt *prompt, char *msg);
+t_token *build_list(char *input);
 void	append_node(t_token **head, t_token **curr, t_token *new);
 void	nodes_init(t_token **head, t_token **cur, t_token **new);
 

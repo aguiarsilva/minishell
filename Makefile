@@ -8,6 +8,9 @@ executor/test.c \
 executor/exebuiltins.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
+parsing/parsing.c \
+parsing/parsing_utils.c \
+parsing/utils_list.c \
 error.c \
 utils.c \
 child_status.c \

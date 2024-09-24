@@ -25,7 +25,7 @@ void	free_tk(t_token *tk_list)
 	while (tk_list)
 	{
 		free(tk_list->val);
-		free_multi_cmd_arr(tk_list->multi_cmd);
+		//free_multi_cmd_arr(tk_list->multi_cmd);
 		tk_list_placeholder = tk_list;
 		tk_list = tk_list->next;
 		free(tk_list_placeholder);
