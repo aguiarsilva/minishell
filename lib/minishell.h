@@ -13,6 +13,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <stdbool.h>
+# include <signal.h>
 
 # define ERR_CMD "minishell: "
 # define ERR_FORK "Fork failed."

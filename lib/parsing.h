@@ -6,6 +6,8 @@
 # define RED "\x1b[31m"
 # define RESET "\x1b[0m"
 
+extern	int		g_signal;
+
 typedef enum s_type
 {
 	START,
@@ -61,6 +63,13 @@ bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
+
+/*signal_handling.c*/
+void	interrupt_signal(int signal);
+void	interruption_signal_process(int signal);
+void	quit_signal(int signal);
+void	signal_setter(void (*past_signal[2])(int));
+void	signal_restore(void	(*past_signal[2])(int));
 
 /*token.c*/
 char	*ft_strtok(char *str, const char *delim);
