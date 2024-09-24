@@ -34,8 +34,8 @@ void	signal_setter(void (*past_signal[2])(int))
 	past_signal[1] = signal(SIGQUIT, quit_signal);
 }
 
-void	signal_restore(void	(*past_signal[2])(int))
+void	signal_restore(void(*past_signal[2])(int))
 {
-	signal(SIGNIT, past_signal[0]);
+	signal(SIGINT, past_signal[0]);
 	signal(SIGQUIT, past_signal[1]);
 }

@@ -10,15 +10,12 @@ extern	int		g_signal;
 
 typedef enum s_type
 {
-	START,
-	REDIR_IN,
-	REDIR_OUT,
-	APPEND,
-	HEREDOC,
-	SIMPLE_CMD,
-	BUILTIN_CMD,
-	ARGS,
-	FILE_EOF
+	REDIR_IN = '<',
+	REDIR_OUT = '>',
+	APPEND = 'A',
+	HEREDOC = 'H',
+	WORD = 'W',
+	PIPE = '|',
 }	t_type;
 
 typedef struct s_prompt
@@ -37,11 +34,13 @@ typedef struct s_redir
 typedef struct s_token
 {
 	char			*val;
-	char			**multi_cmd;
+	//char			**multi_cmd;
 	struct s_token	*next;
-	int				count_cmd;
-	int				count_wd;
+	//int				count_cmd;
+	// int				count_wd;
+	t_type			type;
 	t_redir			*redir;
+	t_cmd			cmd;
 }	t_token;
 
 /*check.c*/

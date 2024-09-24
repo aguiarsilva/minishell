@@ -5,8 +5,8 @@
 // basis struct for testing
 typedef struct s_cmd
 {
-	char	*cmd;
-	char	**args;
+	char	*cmd; // echo 
+	char	**args; // // -n
 	int		builtin;
 }	t_cmd;
 

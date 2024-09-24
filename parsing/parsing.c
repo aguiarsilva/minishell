@@ -21,7 +21,7 @@ t_token	*make_token(char *wd)
 	new_tk->count_wd = 0;
 	new_tk->multi_cmd = NULL;
 	new_tk->redir = NULL;
-	return  (new_tk);
+	return (new_tk);
 }
 
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt)
@@ -54,7 +54,7 @@ t_token	*multi_cmd_init(t_token *new, t_prompt *prompt)
 
 bool	multi_cmd_arr_init(t_token *new, char *cp_val)
 {
-	new->count_wd = ft_count_words(new->val);
+	new->count_wd = ft_count_words(new->val); //different count words.
 	new->multi_cmd = malloc(sizeof(char *) * (new->count_wd + 1));
 	if (!new->multi_cmd)
 	{

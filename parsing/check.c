@@ -1,25 +1,25 @@
 #include "../lib/minishell.h"
 
-bool    is_quote(char c)
+bool	is_quote(char c)
 {
 	return (c == '"' || c == '\'');
 }
 
-bool    is_redirection_symbol(char c)
+bool	is_redirection_symbol(char c)
 {
 	return (c == '<' || c == '>');
 }
 
-bool    is_redir_operator(const char *wd)
+bool	is_redir_operator(const char *wd)
 {
 	return (ft_strcmp(wd, ">") == 0 || ft_strcmp(wd, "<") == 0
-				|| ft_strcmp(wd, "<<") == 0 || ft_strcmp(wd, ">>") == 0);
+		|| ft_strcmp(wd, "<<") == 0 || ft_strcmp(wd, ">>") == 0);
 }
 
-char    *verify_syntax(char *str)
+char	*verify_syntax(char *str)
 {
-	char    *new;
-	size_t  len;
+	char	*new;
+	size_t	len;
 
 	len = ft_strlen(str);
 	if (!str || (len < 2))
@@ -32,7 +32,7 @@ char    *verify_syntax(char *str)
 	return (ft_strdup(new));
 }
 
-int		str_spaces(const char *str)
+int	str_spaces(const char *str)
 {
 	while (*str)
 	{

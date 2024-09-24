@@ -1,6 +1,6 @@
 #include "../lib/minishell.h"
 
-t_token *build_list(t_prompt *prompt, char *msg)
+t_token	*build_list(t_prompt *prompt, char *msg)
 {
 	t_token *head;
 	t_token	*new;
