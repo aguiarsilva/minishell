@@ -12,16 +12,23 @@ set_target_properties(ft_printf PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}
 
 add_executable(minishell
         main.c
-        executor/executor.c
-        executor/executor_utils.c
         error.c
         child_status.c
-        executor/exebuiltins.c
-        builtins/echo.c
-        executor/test.c
-        builtins/builtins_utils.c
         utils.c
-        #test
+        executor/executor.c
+        executor/executor_utils.c
+        executor/exebuiltins.c
+        executor/test.c
+        builtins/echo.c
+        builtins/builtins_utils.c
+        parsing/cleanup.c
+        parsing/parsing.c
+        parsing/parsing_utils.c
+        parsing/prompt_init.c
+        parsing/token.c
+        parsing/utils_list.c
+        parsing/check.c
+
 )
 
 target_link_libraries(minishell PRIVATE libft ft_printf)

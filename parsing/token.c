@@ -78,7 +78,7 @@ char	*quoted_str(char *str, const char *delim)
 	return (tk_end);
 }
 
-char	remove_quotes(char **str)
+void	remove_quotes(char **str)
 {
 	char	*src;
 	char	*dest;
@@ -87,14 +87,14 @@ char	remove_quotes(char **str)
 	src = *str;
 	dest = *str;
 	begin_quote = '\0';
-	if (*src == "" || *src == '\'')
+	if (*src == '"' || *src == '\'')
 	{
 		begin_quote = *src;
 		src++;
 	}
 	while (*src)
 	{
-		if (begin_quote == '\0' && (*src == "" || *src == '\''))
+		if (begin_quote == '\0' && (*src == '"' || *src == '\''))
 		{
 			src++;
 			continue ;

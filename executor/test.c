@@ -32,31 +32,30 @@
 // 	return (cmd_data);
 // }
 
-t_cmd *fill_cmd (t_token *list)
+t_cmd	*fill_cmd (t_token *list) // currently only handles a single command
 {
 	t_cmd	*cmd_data;
 	t_token	*cur;
-
 	size_t	i;
-	size_t arg_count = 0;
-	printf("begin");
+	size_t	arg_count;
+	t_token	*tmp;
+
 	i = 0;
-	
+	arg_count = 0;
 	cmd_data = safe_malloc(sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
-	cmd_data->cmd = ft_strdup(list->val); // echo test
+	cmd_data->cmd = ft_strdup(list->val);
 	cur = list->next;
-		
-	t_token *tmp = cur;
-    while (tmp != NULL) {
-        arg_count++;
-        tmp = tmp->next;
-    }
-	    // Allocate memory for args, including space for NULL terminator
-    cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char *));
-    if (!cmd_data->args)
-        return (NULL);
+	tmp = cur;
+	while (tmp != NULL)
+	{
+		arg_count++;
+		tmp = tmp->next;
+	}
+	cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char *));
+	if (!cmd_data->args)
+		return (NULL);
 	while (cur != NULL)
 	{
 		cmd_data->args[i] = ft_strdup(cur->val);
@@ -64,12 +63,10 @@ t_cmd *fill_cmd (t_token *list)
 		i++;
 	}
 	cmd_data->args[i] = NULL;
-	
-	printf("here");
 	cmd_data->builtin = check_for_builtin(cmd_data->cmd);
 	return (cmd_data);
-	
 }
+
 char *combine_command_and_args(const char *cmd, char **args) // temporary
 {
 	size_t cmd_length = strlen(cmd);

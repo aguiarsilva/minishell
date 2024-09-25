@@ -77,19 +77,10 @@ void print_cmd(t_cmd *command) {
 int	main(int argc, char *argv[], char *env[])
 {
 	pid_t	process_id;
-//	char	*space;
-//	char	*temp;
-//	char	*cmd;
 	t_cmd	*cmd_data;
-	char	**input;
-	int		i;
-//	bool	buildin; // something like that to determine if a normal cmd or build in is called
+//	char	**input;
+//	int		i;
 
-//	space = " ";
-//	temp = ft_strjoin(argv[1], space);
-//	cmd = ft_strjoin(temp, argv[2]);
-//	buildin = true;
-//	free(temp);
 // // was working with this part
 // 	input = safe_malloc(argc * sizeof(char *));
 // 	if (!input)
