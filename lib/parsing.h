@@ -69,6 +69,7 @@ void    free_tk(t_token *tk_list);
 t_token	*make_token(char *wd, t_type type);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
+const char *get_type_name(t_type type);
 
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);

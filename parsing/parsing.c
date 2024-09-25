@@ -89,3 +89,16 @@ void	assign_token_type(t_token *token_list)
         current = current->next;  // Move to the next token in the list
     }
 }
+
+/*const char *get_type_name(t_type type) 
+{
+    switch (type) {
+        case REDIR_IN: return "REDIR_IN";
+        case REDIR_OUT: return "REDIR_OUT";
+        case APPEND: return "APPEND";
+        case HEREDOC: return "HEREDOC";
+        case WORD: return "WORD";
+        case PIPE: return "PIPE";
+        default: return "UNKNOWN";
+    }
+}*/
