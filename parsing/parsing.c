@@ -1,6 +1,6 @@
 #include "../lib/minishell.h"
 
-t_token	*make_token(char *wd)
+t_token	*make_token(char *wd, t_type type)
 {
 	t_token	*new_tk;
 	int		len;
@@ -17,6 +17,7 @@ t_token	*make_token(char *wd)
 	}
 	ft_strcpy(new_tk->val, wd);
 	new_tk->next = NULL;
+	new_tk->type = type;
 	//new_tk->count_cmd = 0;
 	//new_tk->count_wd = 0;
 	//new_tk->multi_cmd = NULL;
@@ -63,3 +64,28 @@ t_token	*make_token(char *wd)
 	}
 	return (true);
 }*/
+t_type	get_token_type(char *token)
+{
+    if (ft_strcmp(token, "<") == 0)
+        return REDIR_IN;
+    else if (ft_strcmp(token, ">") == 0)
+        return REDIR_OUT;
+    else if (ft_strcmp(token, ">>") == 0)
+        return APPEND;
+    else if (ft_strcmp(token, "<<") == 0)
+        return HEREDOC;
+    else if (ft_strcmp(token, "|") == 0)
+        return PIPE;
+    else
+        return WORD;  // Default type is WORD for commands/arguments
+}
+
+void	assign_token_type(t_token *token_list)
+{
+    t_token *current = token_list;
+    while (current != NULL)
+    {
+        current->type = get_token_type(current->val);  // Assign type based on the value
+        current = current->next;  // Move to the next token in the list
+    }
+}

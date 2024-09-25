@@ -1,0 +1,19 @@
+
+Token 0: 
+  Value: echo
+  Type: 87
+Token 1: 
+  Value: test
+  Type: 87
+beginhereCommand: echo
+Arguments:
+Built-in: 1
+in builtinToken 0: 
+  Value: echo
+  Type: 87
+Token 1: 
+  Value: test
+  Type: 87
+beginhereCommand: echo
+Arguments:
+Built-in: 1

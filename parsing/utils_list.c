@@ -39,7 +39,8 @@ t_token *build_list(char *input) {
     token = strtok(input, delimiter);
     while (token != NULL) {
         // Step 2: Create a new token structure
-        t_token *new_token = make_token(token); // Change TYPE_1 as needed
+        t_type  token_type = get_token_type(token);
+        t_token *new_token = make_token(token, token_type); // Change TYPE_1 as needed
         if (new_token == NULL) {
             // Handle memory allocation failure
             // Free the already allocated tokens

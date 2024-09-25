@@ -113,8 +113,9 @@ int	main(int argc, char *argv[], char *env[])
 //		i++;
 //	}
  	char *result = concat_argv(argc, argv);
-	 t_token *token_list = build_list(result);
-		print_token(token_list);
+	t_token *token_list = build_list(result);
+    assign_token_type(token_list);
+	print_token(token_list);
 	cmd_data = fill_cmd(token_list);
 	print_cmd(cmd_data);
 	process_id = fork();

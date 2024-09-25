@@ -66,7 +66,7 @@ void    free_mutil_cmd_arr(char **array);
 void    free_tk(t_token *tk_list);
 
 /*parsing.c*/
-t_token	*make_token(char *wd);
+t_token	*make_token(char *wd, t_type type);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 
@@ -86,6 +86,8 @@ size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
 char	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
+t_type	get_token_type(char *token);
+void	assign_token_type(t_token *token_list);
 
 /*utils_list.c*/
 // t_token *build_list(t_prompt *prompt, char *msg);

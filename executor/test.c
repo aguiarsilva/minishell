@@ -41,31 +41,30 @@ t_cmd *fill_cmd (t_token *list)
 	size_t arg_count = 0;
 	printf("begin");
 	i = 0;
-	cur = list;
+	
 	cmd_data = safe_malloc(sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
-	
 	cmd_data->cmd = ft_strdup(list->val); // echo test
-	cur = cur->next;
+	cur = list->next;
+		
 	t_token *tmp = cur;
     while (tmp != NULL) {
         arg_count++;
         tmp = tmp->next;
     }
-
-    // Allocate memory for args, including space for NULL terminator
+	    // Allocate memory for args, including space for NULL terminator
     cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char *));
     if (!cmd_data->args)
         return (NULL);
-
-	while (cur->next != NULL)
+	while (cur != NULL)
 	{
 		cmd_data->args[i] = ft_strdup(cur->val);
 		cur = cur->next;
 		i++;
 	}
 	cmd_data->args[i] = NULL;
+	
 	printf("here");
 	cmd_data->builtin = check_for_builtin(cmd_data->cmd);
 	return (cmd_data);
