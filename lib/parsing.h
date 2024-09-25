@@ -85,7 +85,7 @@ void	signal_restore(void	(*past_signal[2])(int));
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
-char	remove_quotes(char **str);
+void	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 t_type	get_token_type(char *token);
 void	assign_token_type(t_token *token_list);

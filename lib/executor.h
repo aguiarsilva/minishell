@@ -33,5 +33,5 @@ void	check_child_status(pid_t child_pid);
 //test.c
 // t_cmd	*fill_cmd(char **input);
 t_cmd *fill_cmd (t_token *words);
-char	*combine_command_and_args(const char *cmd, char **args); // temporary
+char	*combine_command_and_args(char *cmd, char **args); // temporary
 #endif //EXECUTOR_H

@@ -67,10 +67,10 @@ t_cmd	*fill_cmd (t_token *list) // currently only handles a single command
 	return (cmd_data);
 }
 
-char *combine_command_and_args(const char *cmd, char **args) // temporary
+char *combine_command_and_args(char *cmd, char **args) // temporary
 {
-	size_t cmd_length = strlen(cmd);
-	size_t args_length = 0;
+	size_t	cmd_length = strlen(cmd);
+	size_t	args_length = 0;
 	int i = 0;
 
 	// Calculate total length for args
@@ -82,19 +82,18 @@ char *combine_command_and_args(const char *cmd, char **args) // temporary
 
 	// Allocate memory for combined command
 	char *full_cmd = malloc(cmd_length + args_length + 1); // +1 for null terminator
-	if (!full_cmd) {
+	if (!full_cmd)
+	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-
+	strcpy(full_cmd, cmd);
 	i = 0;
-	while (args && args[i]) {
+	while (args && args[i])
+	{
+		strcat(full_cmd, " ");
 		strcat(full_cmd, args[i]);
-		if (args[i + 1] != NULL) {
-			strcat(full_cmd, " "); // Add space between arguments
-		}
 		i++;
 	}
-
-	return full_cmd;
+	return (full_cmd);
 }

@@ -45,28 +45,24 @@ char	*get_exec_path(char *cmd, char **env)
 	char	*exec_path;
 	char	**path_list;
 	char	*current_path;
-	char	**s_cmd; //not needed anymore
 
 	i = -1;
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
-	s_cmd = ft_split(cmd, ' ');
 	while (path_list[++i])
 	{
 		current_path = ft_strjoin(path_list[i], "/");
-		exec_path = ft_strjoin(current_path, s_cmd[0]); // maybe change 0 to a new variable
-//because the input could start with something else ?
+		exec_path = ft_strjoin(current_path, cmd);
 //		fprintf(stderr, "current_path: %s\n", current_path);
 //		fprintf(stderr, "exec_path: %s\n", exec_path);
 		free(current_path);
 		if (access(exec_path, X_OK) == 0)
 		{
-			ft_free_array(s_cmd);
+//			fprintf(stderr, "exec_path: %s\n", exec_path);
 			return (exec_path);
 		}
 		free(exec_path);
 	}
 	ft_free_array(path_list);
-	ft_free_array(s_cmd);
 	print_error_cmd_not_found_and_exit(cmd);
 	return (NULL);
 }
