@@ -16,7 +16,7 @@ typedef struct s_token t_token;
 
 //executor.c
 void	run_process(t_cmd *cmd_data, char *env[]);
-void	executor(t_cmd *cmd_data, char *env[]);
+void	run_cmd(t_cmd *cmd_data, char *env[]);
 
 //exebuildin.c
 int		run_builtin(t_cmd *cmd_data, char **env);
@@ -32,7 +32,10 @@ void	free_cmd_data(t_cmd *cmd_data);
 void	check_child_status(pid_t child_pid);
 
 //child_process_handler.c
-void	handle_child_process(t_cmd *cmd_data, char *env[]);
+void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_or_out);
+
+//file_handler.c
+int		open_input_or_output_file(char *filename, int in_or_out);
 
 //parent_process_handler.c
 void	handle_parent_process(pid_t process_id, t_cmd *cmd_data);

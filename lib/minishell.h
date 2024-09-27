@@ -17,8 +17,10 @@
 
 # define INPUT 1
 # define OUTPUT 2
+# define NOFILE 3
 # define ERR_CMD "minishell: "
 # define ERR_FORK "Fork failed."
+# define ERR_PIPE "Pipe Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
 
