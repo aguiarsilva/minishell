@@ -1,7 +1,31 @@
 
 #include "../lib/minishell.h"
 
-void executor(t_cmd *cmd_data, char **env)
+void run_process(t_cmd *cmd_data, char *env[])
+{
+	int		pipe_fd[2];
+	pid_t	process_id;
+
+	process_id = fork();
+	if (process_id < 0)
+	{
+		free_cmd_data(cmd_data);
+		print_error_msg_and_exit(ERR_FORK);
+	}
+
+	// In the child process
+	if (process_id == 0)
+	{
+		handle_child_process(cmd_data, env);
+	}
+	else
+	{
+		// In the parent process
+		handle_parent_process(process_id, cmd_data);
+	}
+}
+
+void executor(t_cmd *cmd_data, char *env[])
 {
 	char	*full_cmd;
 	char	**split_cmd;

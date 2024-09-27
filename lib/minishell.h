@@ -15,14 +15,17 @@
 # include <stdbool.h>
 # include <signal.h>
 
+# define INPUT 1
+# define OUTPUT 2
 # define ERR_CMD "minishell: "
 # define ERR_FORK "Fork failed."
+# define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
 
 int		print_error_msg(char *error);
 void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
-void	print_error_open_file_and_exit(char *filename, char *error);
+void	print_error_open_file_and_exit(char *filename, int err_code);
 void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
 // utils.c
 void	*safe_malloc(size_t size);

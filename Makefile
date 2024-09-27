@@ -6,6 +6,8 @@ executor/executor.c \
 executor/executor_utils.c \
 executor/test.c \
 executor/exebuiltins.c \
+executor/child_process_handler.c \
+executor/parent_process_handler.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
 parsing/parsing.c \

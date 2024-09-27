@@ -16,13 +16,10 @@ void	print_error_cmd_not_found_and_exit(char *split_cmd)
 	exit(127);
 }
 
-void	print_error_open_file_and_exit(char *filename, char *error)
+void	print_error_open_file_and_exit(char *filename, int err_code)
 {
-	ft_putstr_fd(error, STDERR_FILENO);
-	ft_putstr_fd(filename, STDERR_FILENO);
-	ft_putstr_fd(": No such file or directory", STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	exit (EXIT_FAILURE);
+	perror(filename);
+	exit (err_code);
 }
 
 void	print_error_msg_and_exit(char *error)

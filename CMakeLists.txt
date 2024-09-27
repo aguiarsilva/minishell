@@ -28,6 +28,9 @@ add_executable(minishell
         parsing/token.c
         parsing/utils_list.c
         parsing/check.c
+        executor/file_handler.c
+        executor/child_process_handler.c
+        executor/parent_process_handler.c
 
 )
 
