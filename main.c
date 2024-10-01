@@ -80,6 +80,9 @@ void print_cmd(t_cmd* command)
 int	main(const int argc, char *argv[], char *env[])
 {
 	t_cmd	*cmd_data;
+	t_token	*token_list;
+	t_redir	*redir_lst;
+
 //	char	**input;
 //	int		i;
 
@@ -106,10 +109,11 @@ int	main(const int argc, char *argv[], char *env[])
 //		i++;
 //	}
  	char	*result = concat_argv(argc, argv);
-	t_token	*token_list = build_list(result);
+	token_list = build_list(result);
 	assign_token_type(token_list);
 	print_token(token_list);
-	cmd_data = fill_cmd(token_list);
+	redir_lst = extract_redirection_list_from_tokens(token_list);
+	cmd_data = fill_cmd(token_list, redir_lst);
 	print_cmd(cmd_data);
 	run_process(cmd_data, env);
 }

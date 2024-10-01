@@ -6,9 +6,22 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_o
 {
 	int	input_fd;
 	int	output_fd;
-	char *testinputfilename = "input.txt";
-	char *testoutputfilename = "output.txt";
+	char *testinputfilename;
+	char *testoutputfilename;
+	// testinputfilename = "input.txt";
+	// testoutputfilename = "output.txt";
+	fprintf(stderr, "run_builtin_or_execute \n");
+	if (cmd_data == NULL) {
+		fprintf(stderr, "cmd_data is NULL\n");
+		return; // Early exit or handle error
+	}
+	if (cmd_data->redir == NULL) {
+		fprintf(stderr, "cmd_data->redir is NULL\n");
+		return; // Early exit or handle error
+	}
 
+	testinputfilename = cmd_data->redir->file_name;
+	fprintf(stderr, "testinputfilename:%s\n", testinputfilename);
 	if (cmd_data->builtin)
 		run_builtin(cmd_data, env);
 	else
@@ -19,7 +32,7 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_o
 			close(pipe_fd[0]);
 			input_fd = open_input_or_output_file(testinputfilename, INPUT);
 			dup2(input_fd, STDIN_FILENO);
-			dup2(pipe_fd[1], STDOUT_FILENO); // prevents fprintf to stdout
+			// dup2(pipe_fd[1], STDOUT_FILENO); // prevents fprintf to stdout
 			close(pipe_fd[1]);
 			run_cmd(cmd_data, env);
 			print_error_msg_and_exit(ERR_UNKNOWN);

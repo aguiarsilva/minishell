@@ -12,6 +12,7 @@
 }	t_cmd;*/
 typedef struct s_cmd t_cmd;
 typedef struct s_token t_token;
+typedef struct s_redir t_redir;
 
 
 //executor.c
@@ -41,6 +42,6 @@ int		open_input_or_output_file(char *filename, int in_or_out);
 void	handle_parent_process(pid_t process_id, t_cmd *cmd_data);
 //test.c
 // t_cmd	*fill_cmd(char **input);
-t_cmd *fill_cmd (t_token *words);
+t_cmd *fill_cmd (t_token *words, t_redir *redir_list);
 char	*combine_command_and_args(char *cmd, char **args); // temporary
 #endif //EXECUTOR_H

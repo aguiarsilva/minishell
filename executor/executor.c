@@ -3,9 +3,11 @@
 
 void run_process(t_cmd *cmd_data, char *env[])
 {
+	int	in_and_out_file;
 	int		pipe_fd[2];
 	pid_t	process_id;
-	int		in_and_out_test = NOFILE; // only for debug purposes
+
+	in_and_out_file = INPUT; // only for debug purposes
 
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
@@ -19,7 +21,7 @@ void run_process(t_cmd *cmd_data, char *env[])
 	// In the child process
 	if (process_id == 0)
 	{
-		run_builtin_or_execute(cmd_data, env, pipe_fd, in_and_out_test);
+		run_builtin_or_execute(cmd_data, env, pipe_fd, in_and_out_file);
 	}
 	else
 	{

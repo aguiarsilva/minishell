@@ -29,8 +29,8 @@ typedef struct s_prompt
 typedef struct s_redir
 {
 	char			*file_name;
-	t_type			type;
-	char			*delim;
+	// t_type			type;
+	// char			*delim;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -56,7 +56,7 @@ bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
 char	*verify_syntax(char *str);
 int		str_spaces(const char *str);
-bool    is_redir_operator(const char *wd);
+bool	is_redir_operator(const char *wd);
 
 /*cleanup.c*/
 void	free_prompt(t_prompt *prompt);
@@ -68,6 +68,9 @@ t_token	*make_token(char *wd, t_type type);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 const char *get_type_name(t_type type);
+t_redir	*create_redir_struct(t_redir **redir_head, char *filename);
+t_redir	*extract_redirection_list_from_tokens(t_token *token_list);
+bool	is_filename(const char *str);
 
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);

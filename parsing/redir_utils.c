@@ -27,7 +27,7 @@ t_redir	*create_file(char *delimiter, t_type type, char *file_name)
 	if (delimiter)
 	{
 		node->delim = ft_strdup(delimiter);
-		if (!node->delimiter)
+		if (!node->delim)
 			return (NULL);
 	}
 	node->type = type;
