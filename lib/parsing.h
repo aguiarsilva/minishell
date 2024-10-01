@@ -30,18 +30,16 @@ typedef struct s_redir
 {
 	char			*file_name;
 	t_type			type;
+	char			*delim;
 	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_token
 {
-	char			*val;
-	// int				idx;
-	//char			**multi_cmd;
-	struct s_token	*next;
-	//int				count_cmd;
-	// int				count_wd;
-	t_type			type;
+	char				*val;
+	t_type				type;
+	//int					idx;
+	struct s_token		*next;
 }	t_token;
 
 typedef struct s_cmd
@@ -49,7 +47,7 @@ typedef struct s_cmd
 	char			*cmd;
 	char			**args;
 	int				builtin;
-	// t_redir		*redir;
+	t_redir			*redir;
 	//struct s_cmd	*next;
 }	t_cmd;
 
@@ -73,6 +71,16 @@ const char *get_type_name(t_type type);
 
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
+
+/*redir_token.c*/
+int	flag_heredoc(t_token **tk_lst, t_cmd *new_cmd);
+int	flag_redir(t_token **tk_lst, t_cmd *new_cmd);
+char	*redir_handling(char *input);
+
+/*redir_utils*/
+void	add_file_to_list(t_redir **lst, t_redir *file_name);
+t_redir	*create_file(char *delimiter, t_type type, char *file_name);
+char	*put_begin_space(char *str, int i);
 
 /*signal_handling.c*/
 void	interrupt_signal(int signal);
@@ -100,6 +108,15 @@ void	nodes_init(t_token **head, t_token **cur, t_token **new);
 char    *ft_strncpy(char *dest, const char *src, int n);
 char    *ft_strcpy(char *dest, const char *src);
 int ft_strcmp(char *s1, char *s2);
-
+int	ft_isspace(int c);
+void add_token_to_list(t_token **head, t_token **tail, t_token *new_token);
+t_token *create_append_token(char *input, size_t *i);
+t_token *create_redir_out_token(char *input, size_t *i);
+t_token *create_heredoc_token(char *input, size_t *i);
+t_token *create_redir_in_token(char *input, size_t *i);
+t_token *create_pipe_token(char *input, size_t *i);
+bool handle_operator(char *input, size_t *i, t_token **head, t_token **tail);
+t_token *get_next_token(char *input, size_t *i, bool expect_command);
+size_t get_next_token_len(char *input, size_t start);
 
 #endif
