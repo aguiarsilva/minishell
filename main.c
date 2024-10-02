@@ -111,10 +111,12 @@ int	main(const int argc, char *argv[], char *env[])
  	char	*result = concat_argv(argc, argv);
 	token_list = build_list(result);
 	assign_token_type(token_list);
-	print_token(token_list);
+//	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
 	cmd_data = fill_cmd(token_list, redir_lst);
+//	fprintf(stderr, "after fill cmd\n");
 	print_cmd(cmd_data);
+//	fprintf(stderr, "after print cmd\n");
 	run_process(cmd_data, env);
 }
 

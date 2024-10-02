@@ -171,7 +171,7 @@ t_redir *create_redir_struct(t_redir **redir_head, char *filename) // with debug
 	if (*redir_head == NULL)
 	{
 		*redir_head = new_redir_node;
-		fprintf(stderr,"Set new node as head of the list.\n");
+//		fprintf(stderr,"Set new node as head of the list.\n");
 	} else
 	{
 		// Traverse to the end of the list and append
@@ -204,7 +204,7 @@ bool is_filename(const char *str)
 				return (false);
 			file_extension++;
 		}
-		fprintf(stderr, "print recogniced file names %s\n", str);
+//		fprintf(stderr, "print recogniced file names %s\n", str);
 		return (true);
 	}
 	return (false);

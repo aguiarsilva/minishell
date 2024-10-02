@@ -3,11 +3,11 @@
 
 void run_process(t_cmd *cmd_data, char *env[])
 {
-	int	in_and_out_file;
-	int		pipe_fd[2];
+	int		in_and_out_file;
+	int		pipe_fd[2]; // change to count of all cmds instead of 2
 	pid_t	process_id;
 
-	in_and_out_file = INPUT; // only for debug purposes
+	in_and_out_file = OUTPUT; // only for debug purposes
 
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
