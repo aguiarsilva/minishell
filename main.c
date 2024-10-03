@@ -50,7 +50,7 @@ void print_cmd(t_cmd* command)
 	// Print command (cmd)
 	if (command->cmd != NULL)
 	{
-		printf("Command: %s\n", command->cmd);
+		printf("\nCommand: %s\n", command->cmd);
 	}
 	else
 	{
@@ -111,7 +111,7 @@ int	main(const int argc, char *argv[], char *env[])
  	char	*result = concat_argv(argc, argv);
 	token_list = build_list(result);
 	assign_token_type(token_list);
-//	print_token(token_list);
+	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
 	cmd_data = fill_cmd(token_list, redir_lst);
 //	fprintf(stderr, "after fill cmd\n");

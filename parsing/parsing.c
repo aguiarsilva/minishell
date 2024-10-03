@@ -142,55 +142,115 @@ void print_redir_list(t_redir *redir_head)
 // 	return (*redir_head);
 // }
 
-t_redir *create_redir_struct(t_redir **redir_head, char *filename) // with debug prints
+// t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node) // with debug prints
+// {
+// 	t_redir *new_redir_node;
+// 	t_redir *current_redir;
+//
+// 	new_redir_node = safe_malloc(sizeof(t_redir));
+// 	// new_redir_node = (t_redir *) malloc(sizeof(t_redir));
+// 	if (!new_redir_node)
+// 	{
+// 		fprintf(stderr, "Memory allocation failed for new redirection node\n");
+// 		return NULL; // Return NULL if allocation fails
+// 	}
+//
+// 	// Initialize the new node
+// 	new_redir_node->file_name = ft_strdup(token_node->val);
+// 	if (!new_redir_node->file_name)
+// 	{
+// 		free(new_redir_node);
+// 		fprintf(stderr, "Memory allocation failed for file_name\n");
+// 		return NULL; // Return NULL if allocation fails
+// 	}
+// 	new_redir_node->type = token_node->type;
+// 	new_redir_node->next = NULL; // Set the next pointer to NULL
+//
+// 	fprintf(stderr, "Creating redir struct for filename: %s\n", token_node->val); // Debugging print
+//
+// 	// If the list is empty, set the new node as head
+// 	if (*redir_head == NULL)
+// 	{
+// 		*redir_head = new_redir_node;
+// //		fprintf(stderr,"Set new node as head of the list.\n");
+// 	} else
+// 	{
+// 		// Traverse to the end of the list and append
+// 		current_redir = *redir_head;
+// 		while (current_redir->next != NULL) {
+// 			current_redir = current_redir->next;
+// 		}
+// 		current_redir->next = new_redir_node; // Append to the end
+// 		fprintf(stderr,"Appended new node to the end of the list.\n");
+// 	}
+//
+// 	return *redir_head; // Return the head of the list
+// }
+
+// Helper function to find the last redirection node in the list
+t_redir	*get_last_redirection_node(t_redir *redir_head)
 {
-	t_redir *new_redir_node;
-	t_redir *current_redir;
+	t_redir	*current_redir;
 
-	new_redir_node = safe_malloc(sizeof(t_redir));
-	// new_redir_node = (t_redir *) malloc(sizeof(t_redir));
-	if (!new_redir_node)
-	{
-		fprintf(stderr, "Memory allocation failed for new redirection node\n");
-		return NULL; // Return NULL if allocation fails
-	}
-
-	// Initialize the new node
-	new_redir_node->file_name = ft_strdup(filename);
-	if (!new_redir_node->file_name)
-	{
-		free(new_redir_node);
-		fprintf(stderr, "Memory allocation failed for file_name\n");
-		return NULL; // Return NULL if allocation fails
-	}
-	new_redir_node->next = NULL; // Set the next pointer to NULL
-
-	fprintf(stderr, "Creating redir struct for filename: %s\n", filename); // Debugging print
-
-	// If the list is empty, set the new node as head
-	if (*redir_head == NULL)
-	{
-		*redir_head = new_redir_node;
-//		fprintf(stderr,"Set new node as head of the list.\n");
-	} else
-	{
-		// Traverse to the end of the list and append
-		current_redir = *redir_head;
-		while (current_redir->next != NULL) {
-			current_redir = current_redir->next;
-		}
-		current_redir->next = new_redir_node; // Append to the end
-		fprintf(stderr,"Appended new node to the end of the list.\n");
-	}
-
-	return *redir_head; // Return the head of the list
+	current_redir = redir_head;
+	while (current_redir && current_redir->next != NULL)
+		current_redir = current_redir->next;
+	return (current_redir);
 }
 
+// Helper function to create and initialize a new redirection node
+t_redir	*initialize_redirection_node(t_token *token_node)
+{
+	t_redir	*new_redir;
+	char	*filename;
+
+	new_redir= safe_malloc(sizeof(t_redir));
+	if (new_redir == NULL)
+	{
+		fprintf(stderr, "Memory allocation failed for redirection node\n");
+		return (NULL);
+	}
+	filename = token_node->val;
+	new_redir->file_name = ft_strdup(filename);
+	if (new_redir->file_name == NULL)
+	{
+		free(new_redir);
+		fprintf(stderr, "Memory allocation failed for file_name\n");
+		return (NULL);
+	}
+	new_redir->type = token_node->type; // wrong node to define type
+	fprintf(stderr, "type after init %d\n", new_redir->type);
+	new_redir->next = NULL;
+	fprintf(stderr, "Initialized redir struct for filename: %s\n", token_node->val);
+	return (new_redir);
+}
+
+// Main function to create the redirection struct and add it to the list
+t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node)
+{
+	t_redir	*new_redir;
+
+	new_redir = initialize_redirection_node(token_node);
+	if (new_redir == NULL)
+		return (NULL);
+	if (*redir_head == NULL)
+	{
+		*redir_head = new_redir;
+		fprintf(stderr, "Set new redir node as the head of the list.\n");
+	}
+	else
+	{
+		t_redir *last_redir = get_last_redirection_node(*redir_head);
+		last_redir->next = new_redir;
+		fprintf(stderr, "Appended new redir node to the end of the list.\n");
+	}
+	return (*redir_head); // Return the head of the list
+}
 
 bool is_filename(const char *str)
 {
-	const char *dot;
-	const char *file_extension;
+	const char	*dot;
+	const char	*file_extension;
 
 	dot = ft_strrchr(str, '.');  // Find the last dot in the string
 
@@ -222,7 +282,8 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 	{
 		if (is_filename(current_token->val))
 		{
-			redir_list = create_redir_struct(&redir_list, current_token->val);
+			// redir_list = create_redir_struct(&redir_list, current_token->val);
+			redir_list = create_redir_struct(&redir_list, current_token);
 			if (redir_list == NULL)
 			{
 				fprintf(stderr, "Failed to create redirection struct for: %s\n", current_token->val);
@@ -235,10 +296,10 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 	{
 		fprintf(stderr, "redir_list is NULL after creation\n");
 	}
-	else
-	{
-		fprintf(stderr, "redir_list has been created\n");
-	}
+	// else
+	// {
+	// 	fprintf(stderr, "redir_list has been created\n");
+	// }
 	// print_redir_list(redir_list);
 	// fprintf(stderr, "printed redir_list_done\n");
 	return (redir_list);

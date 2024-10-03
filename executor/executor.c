@@ -7,8 +7,9 @@ void run_process(t_cmd *cmd_data, char *env[])
 	int		pipe_fd[2]; // change to count of all cmds instead of 2
 	pid_t	process_id;
 
-	in_and_out_file = OUTPUT; // only for debug purposes
-
+	// in_and_out_file = INPUT; // only for debug purposes
+	in_and_out_file = cmd_data->redir->type; // currenty this would be 87 everytime
+	fprintf(stderr, "in_and_out_file %d\n", in_and_out_file);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
 	process_id = fork();
@@ -37,7 +38,7 @@ void run_cmd(t_cmd *cmd_data, char *env[])
 	char	*exec_path;
 //	fprintf(stderr, "cmd_data->cmd: %s\n", cmd_data->cmd);
 	full_cmd = combine_command_and_args(cmd_data->cmd, cmd_data->args); // temporary
-//	fprintf(stderr, "full_cmd after combine call: %s\n", full_cmd);
+	// fprintf(stderr, "full_cmd after combine call: %s\n", full_cmd);
 	exec_path = get_exec_path(cmd_data->cmd, env);
 	split_cmd = parse_command_with_quotes(full_cmd);
 //	 fprintf(stderr, "Executable Path: %s\n", exec_path);

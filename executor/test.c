@@ -69,17 +69,17 @@
 
 t_cmd *fill_cmd(t_token *list, t_redir *redir_list) // Accepting an existing redir_list
 {
-	t_cmd *cmd_data;
-	size_t i;
-	size_t arg_count;
-	t_token *cur;
+	t_cmd	*cmd_data;
+	size_t	i;
+	size_t	arg_count;
+	t_token	*cur;
 
 	cmd_data = safe_malloc(sizeof(t_cmd));
 	if (!cmd_data)
 		return (NULL);
 	i = 0;
 	arg_count = 0;
-	cmd_data->cmd = ft_strdup(list->val);
+	cmd_data->cmd = ft_strdup(list->val); // always take first argument as cmd, maybe loop through until first real word
 	if (!cmd_data->cmd)
 	{
 		free(cmd_data);

@@ -11,8 +11,8 @@ extern	int		g_signal;
 
 typedef enum s_type
 {
-	REDIR_IN = '<',
-	REDIR_OUT = '>',
+	REDIR_IN = '<', // 60
+	REDIR_OUT = '>', // 62
 	APPEND = 'A',
 	HEREDOC = 'H',
 	WORD = 'W',
@@ -29,7 +29,7 @@ typedef struct s_prompt
 typedef struct s_redir
 {
 	char			*file_name;
-	// t_type			type;
+	t_type			type;
 	// char			*delim;
 	struct s_redir	*next;
 }	t_redir;
@@ -68,7 +68,7 @@ t_token	*make_token(char *wd, t_type type);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 const char *get_type_name(t_type type);
-t_redir	*create_redir_struct(t_redir **redir_head, char *filename);
+t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node);
 t_redir	*extract_redirection_list_from_tokens(t_token *token_list);
 bool	is_filename(const char *str);
 
