@@ -67,11 +67,12 @@
 // 	return (cmd_data);
 // }
 
-t_cmd *fill_cmd(t_token *list, t_redir *redir_list) // Accepting an existing redir_list
+t_cmd *fill_cmd(t_token *token_list, t_redir *redir_list) // Accepting an existing redir_list
 {
 	t_cmd	*cmd_data;
 	size_t	i;
 	size_t	arg_count;
+	char	*token_val;
 	t_token	*cur;
 
 	cmd_data = safe_malloc(sizeof(t_cmd));
@@ -79,7 +80,14 @@ t_cmd *fill_cmd(t_token *list, t_redir *redir_list) // Accepting an existing red
 		return (NULL);
 	i = 0;
 	arg_count = 0;
-	cmd_data->cmd = ft_strdup(list->val); // always take first argument as cmd, maybe loop through until first real word
+	if (token_list->type != WORD)
+	{
+		fprintf(stderr, "Error: First token is not a command (WORD)\n");
+		free(cmd_data); // Free the allocated cmd_data before returning
+		return (NULL);
+	}
+	token_val = ft_strdup(token_list->val); // testing with only writing words in there
+	cmd_data->cmd = token_val; // always take first argument as cmd, maybe loop through until first real word
 	if (!cmd_data->cmd)
 	{
 		free(cmd_data);
@@ -88,7 +96,7 @@ t_cmd *fill_cmd(t_token *list, t_redir *redir_list) // Accepting an existing red
 	// Initialize the redir field in cmd_data
 	cmd_data->redir = redir_list; // later i have to add an interator if i can handle multiple commands
 	// Set the current token pointer to the next token after the command
-	cur = list->next;
+	cur = token_list->next;
 
 	// First pass: Count arguments using a while loop
 	while (cur != NULL)
@@ -110,7 +118,7 @@ t_cmd *fill_cmd(t_token *list, t_redir *redir_list) // Accepting an existing red
 	}
 
 	// Second pass: Fill args array using a while loop
-	cur = list->next; // Reset cur to start from the first argument
+	cur = token_list->next; // Reset cur to start from the first argument
 	i = 0; // Reset index for args
 	while (cur != NULL)
 	{

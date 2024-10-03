@@ -7,9 +7,9 @@ void run_process(t_cmd *cmd_data, char *env[])
 	int		pipe_fd[2]; // change to count of all cmds instead of 2
 	pid_t	process_id;
 
-	// in_and_out_file = INPUT; // only for debug purposes
-	in_and_out_file = cmd_data->redir->type; // currenty this would be 87 everytime
-	fprintf(stderr, "in_and_out_file %d\n", in_and_out_file);
+	in_and_out_file = INPUT; // only for debug purposes
+	// in_and_out_file = cmd_data->redir->type; // currenty this would be 87 everytime
+	// fprintf(stderr, "in_and_out_file %d\n", in_and_out_file);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
 	process_id = fork();
