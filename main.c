@@ -43,37 +43,43 @@ void print_token(t_token* token)
 	}
 }
 
-void print_cmd(t_cmd* command)
-{
-	int i = 0;
+void print_cmd(t_cmd* command) {
+    int i;
 
-	// Print command (cmd)
-	if (command->cmd != NULL)
-	{
-		printf("\nCommand: %s\n", command->cmd);
-	}
-	else
-	{
-		printf("Command: (null)\n");
-	}
+    // Check if the command list is empty
+    if (command == NULL) {
+        printf("Command list is empty.\n");
+        return;
+    }
 
-	// Print arguments (args)
-	if (command->args != NULL)
-	{
-		printf("Arguments:\n");
-		while (command->args[i] != NULL)
-		{
-			printf("  Arg[%d]: %s\n", i, command->args[i]);
-			i++;
-		}
-	}
-	else
-	{
-		printf("Arguments: (null)\n");
-	}
+    // Iterate through the list of commands
+    while (command != NULL) {
+        i = 0;
 
-	// Print built-in status
-	printf("Built-in: %d\n", command->builtin);
+        // Print command (cmd)
+        if (command->cmd != NULL) {
+            printf("\nCommand: %s\n", command->cmd);
+        } else {
+            printf("Command: (null)\n");
+        }
+
+        // Print arguments (args)
+        if (command->args != NULL) {
+            printf("Arguments:\n");
+            while (command->args[i] != NULL) {
+                printf("  Arg[%d]: %s\n", i, command->args[i]);
+                i++;
+            }
+        } else {
+            printf("Arguments: (null)\n");
+        }
+
+        // Print built-in status
+        printf("Built-in: %d\n", command->builtin);
+
+        // Move to the next command in the list
+        command = command->next;
+    }
 }
 
 // will be moved out of main

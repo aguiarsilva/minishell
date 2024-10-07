@@ -48,7 +48,7 @@ typedef struct s_cmd
 	char			**args;
 	int				builtin;
 	t_redir			*redir;
-	//struct s_cmd	*next;
+	struct s_cmd	*next;
 }	t_cmd;
 
 /*check.c*/
@@ -121,5 +121,8 @@ t_token *create_pipe_token(char *input, size_t *i);
 bool handle_operator(char *input, size_t *i, t_token **head, t_token **tail);
 t_token *get_next_token(char *input, size_t *i, bool expect_command);
 size_t get_next_token_len(char *input, size_t start);
+t_cmd *build_command_list(char *input);
+void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
+void add_token_to_command(t_cmd *cmd, t_token *token);
 
 #endif

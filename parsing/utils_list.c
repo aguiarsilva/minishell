@@ -81,31 +81,39 @@ t_token *build_list(char *input) {
     t_token *tail = NULL;
     size_t i = 0;
     size_t len = ft_strlen(input);
-    bool expect_command = true;
+    bool expect_command = true; // Initially expect a command
 
     while (i < len) {
+        // Skip whitespace
         while (i < len && ft_isspace(input[i])) {
             i++;
         }
-        if (i >= len)
-            break;
+        if (i >= len) break; // Break if we reach the end
 
-        if (handle_operator(input, &i, &head, &tail)) {
-            expect_command = true;  // After a pipe, expect a new command
-            continue;
+        // Check if we have a pipe (|) indicating the end of a command
+        if (input[i] == '|') {
+            // Create and add a pipe token
+            t_token *pipe_token = make_token("|", PIPE);
+            add_token_to_list(&head, &tail, pipe_token);
+            i++; // Move past the pipe
+            expect_command = true; // After a pipe, we expect a new command
+            continue; // Go to the next iteration
         }
 
+        // Get the next token, expecting it to be a command
         t_token *new_token = get_next_token(input, &i, expect_command);
-        if (new_token)
-        {
-                add_token_to_list(&head, &tail, new_token);
-                expect_command = false; // Reset to false after first word in the command
+        if (new_token) {
+            add_token_to_list(&head, &tail, new_token);
+            expect_command = false; // After getting a command, we don't expect a command next
+        } else {
+            // Handle the case where a command is expected but not found
+            fprintf(stderr, "Error: Expected a command after pipe.\n");
+            break; // Exit loop on error
         }
     }
 
     return head;
 }
-
 void add_token_to_list(t_token **head, t_token **tail, t_token *new_token) 
 {
     if (*head == NULL) {
@@ -195,20 +203,22 @@ t_token *get_next_token(char *input, size_t *i, bool expect_command) {
     while (input[*i] && ft_isspace(input[*i])) {
         (*i)++;
     }
+
     size_t token_len = get_next_token_len(input, *i);
     if (token_len == 0)
-        return NULL;
-    char *token_str = ft_substr(input, *i, token_len);
-    t_type token_type; // Declare token_type
+        return NULL; // No valid token found
 
-    // Use if statement instead of a ternary operator
+    char *token_str = ft_substr(input, *i, token_len);
+    t_type token_type; 
+
+    // Set token_type based on whether a command is expected
     if (expect_command) {
-        token_type = WORD; // Assign WORD if expect_command is true
+        token_type = WORD; // Treat as command if expected
     } else {
-        token_type = get_token_type(token_str); // Otherwise, get the token type
+        token_type = get_token_type(token_str); // Otherwise, determine token type
     }
 
-    *i += token_len;
+    *i += token_len; // Move past the token in the input
     return make_token(token_str, token_type);
 }
 
@@ -245,4 +255,76 @@ size_t get_next_token_len(char *input, size_t start) {
     }
 
     return i - start;
+}
+
+t_cmd *build_command_list(char *input) {
+    t_cmd *head = NULL;
+    t_cmd *tail = NULL;
+    size_t i = 0;
+    size_t len = ft_strlen(input);
+    bool expect_command = true; // Initially expect a command
+
+    t_cmd *current_cmd = NULL;
+
+    while (i < len) {
+        // Skip whitespace
+        while (i < len && ft_isspace(input[i])) {
+            i++;
+        }
+        if (i >= len) break; // Break if we reach the end
+
+        // Check for pipe
+        if (input[i] == '|') {
+            // If a command was being built, finalize it
+            if (current_cmd) {
+                // Add the command to the list
+                add_command_to_list(&head, &tail, current_cmd);
+                current_cmd = NULL; // Reset current command
+            }
+            i++; // Move past the pipe
+            expect_command = true; // Expect a new command
+            continue; // Go to the next iteration
+        }
+
+        // Get the next token
+        t_token *new_token = get_next_token(input, &i, expect_command);
+        if (new_token) {
+            if (!current_cmd) {
+                current_cmd = malloc(sizeof(t_cmd)); // Allocate new command
+                current_cmd->args = NULL; // Initialize args to NULL
+                current_cmd->next = NULL; // Initialize next to NULL
+            }
+            // Add token to the current command arguments
+            add_token_to_command(current_cmd, new_token);
+            expect_command = false; // Now we expect more arguments or a pipe
+        }
+    }
+
+    // Finalize the last command if it exists
+    if (current_cmd) {
+        add_command_to_list(&head, &tail, current_cmd);
+    }
+
+    return head; // Return the head of the command list
+}
+
+void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd) {
+    if (*head == NULL) {
+        *head = new_cmd;
+        *tail = new_cmd;
+    } else {
+        (*tail)->next = new_cmd;
+        *tail = new_cmd;
+    }
+}
+
+void add_token_to_command(t_cmd *cmd, t_token *token) {
+    // Add the token value to the command arguments
+    size_t arg_count = 0; // Count existing arguments
+    while (cmd->args && cmd->args[arg_count]) {
+        arg_count++;
+    }
+    cmd->args = realloc(cmd->args, sizeof(char *) * (arg_count + 2)); // Resize for new arg + NULL
+    cmd->args[arg_count] = token->val; // Assign token value
+    cmd->args[arg_count + 1] = NULL; // Null terminate
 }
