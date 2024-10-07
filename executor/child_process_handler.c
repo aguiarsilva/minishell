@@ -11,16 +11,16 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_o
 	// testinputfilename = "input.txt";
 	// testoutputfilename = "output.txt";
 	// fprintf(stderr, "run_builtin_or_execute \n");
-	if (cmd_data == NULL) // just for debug
+	if (cmd_data == NULL) // just for debug // probably not needed anymore
 	{
 		fprintf(stderr, "cmd_data is NULL\n");
 		return; // Early exit or handle error
 	}
-	if (cmd_data->redir == NULL) //just for debug
-	{
-		fprintf(stderr, "cmd_data->redir is NULL\n");
-		return; // Early exit or handle error
-	}
+	// if (cmd_data->redir == NULL) //just for debug // probably not needed anymore
+	// {
+	// 	fprintf(stderr, "cmd_data->redir is NULL\n");
+	// 	return; // Early exit or handle error
+	// }
 
 	if (in_or_out == INPUT)
 	{

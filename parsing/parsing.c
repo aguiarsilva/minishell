@@ -93,19 +93,20 @@ void	assign_token_type(t_token *token_list)
 void print_redir_list(t_redir *redir_head)
 {
 	t_redir *current = redir_head; // Start at the head of the list
-	fprintf(stderr, "in print_redir_list function \n");
+	printf("\nin print_redir_list function \n");
 
 	// Check if the list is empty
 	if (current == NULL)
-		{
-		fprintf(stderr, "The redirection list is empty.\n");
+	{
+		printf("The redirection list is empty.\n");
 		return;
 	}
 
-	fprintf(stderr, "Redirection List:\n");
-	while (current != NULL) {
+	printf("Redirection List:\n");
+	while (current != NULL)
+	{
 		// Print the file_name and type of the current node
-		fprintf(stderr,"File Name: %s\n", current->file_name);
+		printf("File Name: %s\n", current->file_name);
 		current = current->next; // Move to the next node
 	}
 }
@@ -190,7 +191,7 @@ void print_redir_list(t_redir *redir_head)
 // Helper function to find the last redirection node in the list
 t_redir	*get_last_redirection_node(t_redir *redir_head)
 {
-	t_redir	*current_redir;
+	t_redir	*current_redir; // maybe rename it later
 
 	current_redir = redir_head;
 	while (current_redir && current_redir->next != NULL)
@@ -207,21 +208,22 @@ t_redir	*initialize_redirection_node(t_token *token_node)
 	new_redir= safe_malloc(sizeof(t_redir));
 	if (new_redir == NULL)
 	{
-		fprintf(stderr, "Memory allocation failed for redirection node\n");
+		printf("Memory allocation failed for redirection node\n");
 		return (NULL);
 	}
 	filename = token_node->val;
+	// fprintf(stderr, "token_val: %s\n", filename);
 	new_redir->file_name = ft_strdup(filename);
 	if (new_redir->file_name == NULL)
 	{
 		free(new_redir);
-		fprintf(stderr, "Memory allocation failed for file_name\n");
+		printf("Memory allocation failed for file_name\n");
 		return (NULL);
 	}
-	new_redir->type = token_node->type; // wrong node to define type
-	fprintf(stderr, "type after init %d\n", new_redir->type);
+	new_redir->type = token_node->type; // wrong node to define type because its always word
+	// fprintf(stderr, "type after initialization %d\n", new_redir->type);
 	new_redir->next = NULL;
-	fprintf(stderr, "Initialized redir struct for filename: %s\n", token_node->val);
+	printf("Initialized redir struct for filename: %s\n", token_node->val);
 	return (new_redir);
 }
 
@@ -236,13 +238,13 @@ t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node)
 	if (*redir_head == NULL)
 	{
 		*redir_head = new_redir;
-		fprintf(stderr, "Set new redir node as the head of the list.\n");
+		// printf("Set new redir node as the head of the list.\n");
 	}
 	else
 	{
 		t_redir *last_redir = get_last_redirection_node(*redir_head);
 		last_redir->next = new_redir;
-		fprintf(stderr, "Appended new redir node to the end of the list.\n");
+		// printf("Appended new redir node to the end of the list.\n");
 	}
 	return (*redir_head); // Return the head of the list
 }
@@ -300,20 +302,17 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 	// {
 	// 	fprintf(stderr, "redir_list has been created\n");
 	// }
-	// print_redir_list(redir_list);
+	print_redir_list(redir_list);
 	// fprintf(stderr, "printed redir_list_done\n");
 	return (redir_list);
 }
 
-/*const char *get_type_name(t_type type) 
-{
-    switch (type) {
-        case REDIR_IN: return "REDIR_IN";
-        case REDIR_OUT: return "REDIR_OUT";
-        case APPEND: return "APPEND";
-        case HEREDOC: return "HEREDOC";
-        case WORD: return "WORD";
-        case PIPE: return "PIPE";
-        default: return "UNKNOWN";
-    }
-}*/
+// const char *get_type_name(t_type type)
+// {
+//     switch (type) {
+//         case REDIR_IN: return "REDIR_IN";
+//         case REDIR_OUT: return "REDIR_OUT";
+//         case APPEND: return "APPEND";
+//         case HEREDOC: return "HEREDOC";
+//         case WORD: return "WORD";
+//         case PIPE: return "PIPE;

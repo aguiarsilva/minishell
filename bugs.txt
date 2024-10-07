@@ -1,0 +1,1 @@
+./minishell sort < input.txt , does not recognize anything behind sort

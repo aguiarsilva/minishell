@@ -7,7 +7,18 @@ void run_process(t_cmd *cmd_data, char *env[])
 	int		pipe_fd[2]; // change to count of all cmds instead of 2
 	pid_t	process_id;
 
-	in_and_out_file = INPUT; // only for debug purposes
+	// in_and_out_file = INPUT; // only for debug purposes
+	// in_and_out_file = NOFILE; // only for debug purposes
+	if (cmd_data->redir != NULL)
+	{
+		fprintf(stderr, "should be input or output file\n");
+		in_and_out_file = INPUT; // for debug just everything is input
+	}
+	else
+	{
+		fprintf(stderr, "should be no file\n");
+		in_and_out_file = NOFILE;
+	}
 	// in_and_out_file = cmd_data->redir->type; // currenty this would be 87 everytime
 	// fprintf(stderr, "in_and_out_file %d\n", in_and_out_file);
 	if (pipe(pipe_fd) == -1)

@@ -1,4 +1,3 @@
-
 #include "../lib/minishell.h"
 
 // t_cmd *fill_cmd(char **input) // need to rework to work with multiple cmds
@@ -147,122 +146,140 @@
 	return (cmd_data);
 } */
 
-t_cmd *fill_cmd(t_token *token_list, t_redir *redir_list) {
-    t_cmd *head = NULL; // Head of the command list
-    t_cmd *tail = NULL; // Tail of the command list
-    t_cmd *cmd_data;    // Current command being filled
-    size_t i;
-    size_t arg_count;
-    char *token_val;
-    t_token *cur;
+t_cmd* fill_cmd(t_token* token_list, t_redir* redir_list)
+{
+	t_cmd*	head = NULL; // Head of the command list
+	t_cmd*	tail = NULL; // Tail of the command list
+	t_cmd*	cmd_data; // Current command being filled
+	size_t	i;
+	size_t	arg_count;
+	char	*token_val;
+	t_token	*cur;
 
-    // Start parsing the token list
-    while (token_list != NULL) {
-        // Allocate memory for a new command
-        cmd_data = safe_malloc(sizeof(t_cmd));
-        if (!cmd_data) {
-            // Free all previously allocated commands if allocation fails
-            while (head != NULL) {
-                t_cmd *temp = head;
-                head = head->next;
-                free(temp->cmd);
-                free(temp->args);
-                free(temp);
-            }
-            return NULL;
-        }
-        
-        i = 0;
-        arg_count = 0;
+	// Start parsing the token list
+	while (token_list != NULL)
+	{
+		// Allocate memory for a single new command node
+		cmd_data = safe_malloc(sizeof(t_cmd));
+		if (!cmd_data)
+		{
+			// Free all previously allocated commands if allocation fails
+			while (head != NULL)
+			{
+				t_cmd* temp = head;
+				head = head->next;
+				free(temp->cmd);
+				free(temp->args);
+				free(temp);
+			}
+			return (NULL);
+		}
 
-        // Check if the first token is a WORD
-        if (token_list->type != WORD) {
-            fprintf(stderr, "Error: First token is not a command (WORD)\n");
-            free(cmd_data);
-            return NULL;
-        }
+		i = 0;
+		arg_count = 0;
 
-        // Assign the command
-        token_val = ft_strdup(token_list->val);
-        cmd_data->cmd = token_val;
-        if (!cmd_data->cmd) {
-            free(cmd_data);
-            return NULL;
-        }
+		// Check if the first token is a WORD
+		if (token_list->type != WORD)
+		{
+			fprintf(stderr, "Error: First token is not a command (WORD)\n");
+			free(cmd_data);
+			return NULL;
+		}
 
-        // Initialize the redirection field in cmd_data
-        cmd_data->redir = redir_list; // This can be updated later for multiple commands
-        cmd_data->next = NULL; // Initialize the next pointer
+		// Assign the command
+		token_val = ft_strdup(token_list->val);
+		cmd_data->cmd = token_val;
+		if (!cmd_data->cmd)
+		{
+			free(cmd_data);
+			return (NULL);
+		}
 
-        // Set the current token pointer to the next token after the command
-        cur = token_list->next;
+		// Initialize the redirection field in cmd_data
+		cmd_data->redir = redir_list;
+		cmd_data->next = NULL; // Initialize the next pointer
 
-        // First pass: Count arguments using a while loop
-        while (cur != NULL && cur->type != PIPE) {
-            if (get_token_type(cur->val) == WORD) {
-                arg_count++; // Count valid arguments
-            }
-            cur = cur->next; // Move to the next token
-        }
+		// Set the current token pointer to the next token after the command
+		cur = token_list->next;
 
-        // Allocate space for arguments
-        cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char *));
-        if (!cmd_data->args) {
-            free(cmd_data->cmd);
-            free(cmd_data);
-            return NULL;
-        }
+		// First pass: Count arguments using a while loop
+		while (cur != NULL && cur->type != PIPE)
+		{
+			if (get_token_type(cur->val) == WORD)
+			{
+				arg_count++; // Count valid arguments
+			}
+			cur = cur->next; // Move to the next token
+		}
+		// Allocate space for arguments
+		cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char*));
+		if (!cmd_data->args)
+		{
+			free(cmd_data->cmd);
+			free(cmd_data);
+			return (NULL);
+		}
 
-        // Second pass: Fill args array using a while loop
-        cur = token_list->next; // Reset cur to start from the first argument
-        i = 0; // Reset index for args
-        while (cur != NULL && cur->type != PIPE) {
-            // Check if the token is a WORD
-            if (get_token_type(cur->val) == WORD) {
-                cmd_data->args[i] = ft_strdup(cur->val);
-                if (!cmd_data->args[i]) {
-                    // Handle allocation failure and free previously allocated args
-                    while (i > 0) { // Free previously allocated arguments
-                        free(cmd_data->args[--i]);
-                    }
-                    free(cmd_data->args);
-                    free(cmd_data->cmd);
-                    free(cmd_data);
-                    return NULL;
-                }
-                i++;
-            }
-            cur = cur->next; // Move to the next token
-        }
-        cmd_data->args[i] = NULL; // Null-terminate the args array
-        cmd_data->builtin = check_for_builtin(cmd_data->cmd); // Check if it's a builtin command
+		// Second pass: Fill args array using a while loop
+		cur = token_list->next; // Reset cur to start from the first argument
+		i = 0; // Reset index for args
+		while (cur != NULL && cur->type != PIPE)
+		{
+			// Check if the token is a WORD
+			if (get_token_type(cur->val) == WORD)
+			{
+				cmd_data->args[i] = ft_strdup(cur->val);
+				if (!cmd_data->args[i])
+				{
+					// Handle allocation failure and free previously allocated args
+					while (i > 0)
+					{
+						// Free previously allocated arguments
+						free(cmd_data->args[--i]);
+					}
+					free(cmd_data->args);
+					free(cmd_data->cmd);
+					free(cmd_data);
+					return (NULL);
+				}
+				i++;
+			}
+			cur = cur->next; // Move to the next token
+		}
+		cmd_data->args[i] = NULL; // Null-terminate the args array
+		cmd_data->builtin = check_for_builtin(cmd_data->cmd); // Check if it's a builtin command
 
-        // Add the command to the command list
-        if (head == NULL) {
-            head = cmd_data; // Set head if list is empty
-            tail = cmd_data; // Initialize tail
-        } else {
-            tail->next = cmd_data; // Link the new command
-            tail = cmd_data; // Update tail
-        }
+		// Add the command to the command list
+		if (head == NULL)
+		{
+			head = cmd_data; // Set head if list is empty
+			tail = cmd_data; // Initialize tail
+		}
+		else
+		{
+			tail->next = cmd_data; // Link the new command
+			tail = cmd_data; // Update tail
+		}
 
-        // Move to the next token (after the pipe if it exists)
-        if (cur != NULL && cur->type == PIPE) {
-            token_list = cur->next; // Skip the pipe and continue
-        } else {
-            break; // Exit if no more commands
-        }
-    }
+		// Move to the next token (after the pipe if it exists)
+		if (cur != NULL && cur->type == PIPE)
+		{
+			token_list = cur->next; // Skip the pipe and continue
+		}
+		else
+		{
+			break; // Exit if no more commands
+		}
+	}
 
-    return head; // Return the head of the command list
+	return (head); // Return the head of the command list
 }
 
-
-char *combine_command_and_args(char *cmd, char **args) // temporary
+char* combine_command_and_args(char* cmd, char** args) // temporary
 {
 	size_t	cmd_length = strlen(cmd);
 	size_t	args_length = 0;
-	int	i = 0;
+	int		i = 0;
 
 	// Calculate total length for args
 	while (args && args[i])
@@ -271,7 +288,7 @@ char *combine_command_and_args(char *cmd, char **args) // temporary
 		i++;
 	}
 	// Allocate memory for combined command
-	char *full_cmd = malloc(cmd_length + args_length + 1); // +1 for null terminator
+	char* full_cmd = malloc(cmd_length + args_length + 1); // +1 for null terminator
 	if (!full_cmd)
 	{
 		perror("malloc");
