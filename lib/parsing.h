@@ -13,10 +13,10 @@ typedef enum s_type
 {
 	REDIR_IN = '<', // 60
 	REDIR_OUT = '>', // 62
-	APPEND = 'A',
-	HEREDOC = 'H',
-	WORD = 'W',
-	PIPE = '|',
+	APPEND = 'A', // 65
+	HEREDOC = 'H', // 72
+	WORD = 'W', // 87
+	PIPE = '|', //124
 }	t_type;
 
 typedef struct s_prompt
@@ -68,7 +68,7 @@ t_token	*make_token(char *wd, t_type type);
 t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 const char *get_type_name(t_type type);
-t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node);
+t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype);
 t_redir	*extract_redirection_list_from_tokens(t_token *token_list);
 bool	is_filename(const char *str);
 

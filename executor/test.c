@@ -247,7 +247,8 @@ t_cmd* fill_cmd(t_token* token_list, t_redir* redir_list)
 			cur = cur->next; // Move to the next token
 		}
 		cmd_data->args[i] = NULL; // Null-terminate the args array
-		cmd_data->builtin = check_for_builtin(cmd_data->cmd); // Check if it's a builtin command
+		printf("builtincheck deactived \n");
+		// cmd_data->builtin = check_for_builtin(cmd_data->cmd); // Check if it's a builtin command
 
 		// Add the command to the command list
 		if (head == NULL)

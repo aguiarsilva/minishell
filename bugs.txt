@@ -1,1 +1,2 @@
 ./minishell sort < input.txt , does not recognize anything behind sort
+./minishell echo helloword > output.txt , output.txt contains output.txt

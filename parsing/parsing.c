@@ -105,8 +105,33 @@ void print_redir_list(t_redir *redir_head)
 	printf("Redirection List:\n");
 	while (current != NULL)
 	{
-		// Print the file_name and type of the current node
-		printf("File Name: %s\n", current->file_name);
+		// Print file name and type
+		printf("File Name: %s, Type: ", current->file_name);
+
+		// Print the type as a string
+		switch (current->type){
+		case REDIR_IN:
+			printf("REDIR_IN\n");
+			break;
+		case REDIR_OUT:
+			printf("REDIR_OUT\n");
+			break;
+		case APPEND:
+			printf("APPEND\n");
+			break;
+		case HEREDOC:
+			printf("HEREDOC\n");
+			break;
+		case PIPE:
+			printf("PIPE\n");
+			break;
+		case WORD:
+			printf("WORD\n");
+			break;
+		default:
+			printf("UNKNOWN\n");
+			break;
+		}
 		current = current->next; // Move to the next node
 	}
 }
@@ -200,7 +225,7 @@ t_redir	*get_last_redirection_node(t_redir *redir_head)
 }
 
 // Helper function to create and initialize a new redirection node
-t_redir	*initialize_redirection_node(t_token *token_node)
+t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
 {
 	t_redir	*new_redir;
 	char	*filename;
@@ -220,19 +245,25 @@ t_redir	*initialize_redirection_node(t_token *token_node)
 		printf("Memory allocation failed for file_name\n");
 		return (NULL);
 	}
-	new_redir->type = token_node->type; // wrong node to define type because its always word
-	// fprintf(stderr, "type after initialization %d\n", new_redir->type);
+	// new_redir->type = token_node->type; // wrong node to define type because its always word
+	if (filetype == INPUT)
+		new_redir->type = REDIR_IN;
+	else if (filetype == OUTPUT)
+		new_redir->type = REDIR_OUT;
+	else
+		new_redir->type = WORD;
+	printf("filename: %s and type after initialization: %d\n", new_redir->file_name, new_redir->type);
 	new_redir->next = NULL;
-	printf("Initialized redir struct for filename: %s\n", token_node->val);
+	// printf("Initialized redir struct for filename with type : %s %d \n", token_node->val, token_node->type);
 	return (new_redir);
 }
 
 // Main function to create the redirection struct and add it to the list
-t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node)
+t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype)
 {
 	t_redir	*new_redir;
 
-	new_redir = initialize_redirection_node(token_node);
+	new_redir = initialize_redirection_node(token_node, filetype);
 	if (new_redir == NULL)
 		return (NULL);
 	if (*redir_head == NULL)
@@ -276,16 +307,22 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 {
 	t_token *current_token;
 	t_redir	*redir_list;
+	int		filetype;
 
 	current_token = token_list;
 	redir_list = NULL;
-
+	filetype = NOFILE;
 	while (current_token != NULL)
 	{
+		if (get_token_type(current_token->val) == REDIR_IN)
+			filetype = INPUT;
+		else if (get_token_type(current_token->val) == REDIR_OUT)
+			filetype = OUTPUT;
 		if (is_filename(current_token->val))
 		{
 			// redir_list = create_redir_struct(&redir_list, current_token->val);
-			redir_list = create_redir_struct(&redir_list, current_token);
+			printf("filetype before create_redir_struct %d\n", filetype);
+			redir_list = create_redir_struct(&redir_list, current_token, filetype);
 			if (redir_list == NULL)
 			{
 				fprintf(stderr, "Failed to create redirection struct for: %s\n", current_token->val);

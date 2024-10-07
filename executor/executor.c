@@ -12,7 +12,10 @@ void run_process(t_cmd *cmd_data, char *env[])
 	if (cmd_data->redir != NULL)
 	{
 		fprintf(stderr, "should be input or output file\n");
-		in_and_out_file = INPUT; // for debug just everything is input
+		if (cmd_data->redir->type == REDIR_IN)
+			in_and_out_file = INPUT;
+		else if (cmd_data->redir->type == REDIR_OUT) // maybe combine my input and output ints with t_type
+			in_and_out_file = OUTPUT;
 	}
 	else
 	{
