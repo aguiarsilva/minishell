@@ -14,6 +14,8 @@
 # include <errno.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define INPUT 1
 # define OUTPUT 2

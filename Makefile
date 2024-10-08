@@ -23,7 +23,8 @@ OBJ = $(SRC:.c=.o)
 
 # Libraries and their paths
 LIBS = -Llib/libft -lft \
-       -Llib/ft_printf -lftprintf
+       -Llib/ft_printf -lftprintf \
+       -lreadline -lhistory  # Add readline and history libraries
 
 # Compiler and compilation flags
 CC = cc

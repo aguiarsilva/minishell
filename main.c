@@ -96,7 +96,7 @@ int	main(const int argc, char *argv[], char *env[])
 	t_cmd	*cmd_data;
 	t_token	*token_list;
 	t_redir	*redir_lst;
-
+	char	*result;
 //	char	**input;
 //	int		i;
 
@@ -122,7 +122,8 @@ int	main(const int argc, char *argv[], char *env[])
 //		printf("input[%d] = %s\n", i, input[i]);
 //		i++;
 //	}
- 	char	*result = concat_argv(argc, argv);
+ 	// char	*result = concat_argv(argc, argv);
+	result = readline("");
 	token_list = build_list(result);
 	assign_token_type(token_list);
 	print_token(token_list);
