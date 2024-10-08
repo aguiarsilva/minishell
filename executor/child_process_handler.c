@@ -61,6 +61,7 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_o
 		}
 		else if (in_or_out == NOFILE)
 		{
+			fprintf(stderr, "execute with no file\n");
 			run_cmd(cmd_data, env);
 			print_error_msg_and_exit(ERR_UNKNOWN);
 		}

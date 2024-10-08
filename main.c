@@ -132,6 +132,8 @@ int	main(const int argc, char *argv[], char *env[])
 //	fprintf(stderr, "after fill cmd\n");
 	print_cmd(cmd_data);
 //	fprintf(stderr, "after print cmd\n");
+	if (cmd_data == NULL)
+		return (-1);
 	run_process(cmd_data, env);
 }
 

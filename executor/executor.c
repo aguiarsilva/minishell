@@ -11,11 +11,14 @@ void run_process(t_cmd *cmd_data, char *env[])
 	// in_and_out_file = NOFILE; // only for debug purposes
 	if (cmd_data->redir != NULL)
 	{
-		fprintf(stderr, "should be input or output file\n");
+		fprintf(stderr, "redir is not NULL\n");
+		fprintf(stderr, "redir type = %d\n", cmd_data->redir->type);
 		if (cmd_data->redir->type == REDIR_IN)
 			in_and_out_file = INPUT;
 		else if (cmd_data->redir->type == REDIR_OUT) // maybe combine my input and output ints with t_type
 			in_and_out_file = OUTPUT;
+		else if (cmd_data->redir->type == WORD)
+			in_and_out_file = INPUT;
 	}
 	else
 	{
