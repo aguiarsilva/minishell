@@ -34,4 +34,4 @@ add_executable(minishell
 
 )
 
-target_link_libraries(minishell PRIVATE libft ft_printf)
+target_link_libraries(minishell PRIVATE libft ft_printf readline)

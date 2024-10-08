@@ -122,8 +122,11 @@ int	main(const int argc, char *argv[], char *env[])
 //		printf("input[%d] = %s\n", i, input[i]);
 //		i++;
 //	}
- 	// char	*result = concat_argv(argc, argv);
-	result = readline("");
+	// printf("argc = %d\n", argc);
+	if (argc <= 2)
+		result = readline("");
+	else
+ 		result = concat_argv(argc, argv); // just for faster debugging
 	token_list = build_list(result);
 	assign_token_type(token_list);
 	print_token(token_list);
