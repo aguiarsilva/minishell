@@ -103,7 +103,7 @@ void	assign_token_type(t_token *token_list);
 
 /*utils_list.c*/
 // t_token *build_list(t_prompt *prompt, char *msg);
-t_token *build_list(char *input);
+t_token *build_list(char *input, char **env);
 void	append_node(t_token **head, t_token **curr, t_token *new);
 void	nodes_init(t_token **head, t_token **cur, t_token **new);
 
@@ -124,5 +124,10 @@ size_t get_next_token_len(char *input, size_t start);
 t_cmd *build_command_list(char *input);
 void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
+char *handle_single_quotes(const char *input, int *i);
+char *handle_double_quotes(const char *input, int *i, char **env);
+char handle_escape_sequence(const char *input, int *i);
+char *handle_env_variable(const char *input, int *i, char **env);
+
 
 #endif

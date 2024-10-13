@@ -6,7 +6,7 @@ void	free_prompt(t_prompt *prompt)
 	free(prompt->whitespace);
 }
 
-void	free_mutil_cmd_arr(char **array)
+/*void	free_mutil_cmd_arr(char **array)
 {
 	int	i;
 
@@ -14,7 +14,7 @@ void	free_mutil_cmd_arr(char **array)
 	while (array[i])
 		free(array[i++]);
 	free(array);
-}
+}*/
 
 void	free_tk(t_token *tk_list)
 {

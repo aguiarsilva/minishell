@@ -76,44 +76,80 @@ int	ft_isspace(int c)
 	return (0);
 }
 
-t_token *build_list(char *input) {
+t_token *build_list(char *input, char **env) {
     t_token *head = NULL;
     t_token *tail = NULL;
-    size_t i = 0;
-    size_t len = ft_strlen(input);
-    bool expect_command = true; // Initially expect a command
+    int i = 0;
+    int len = ft_strlen(input);
+    char buffer[1024];  // Buffer to store current token
+    int buf_index = 0;
 
     while (i < len) {
         // Skip whitespace
         while (i < len && ft_isspace(input[i])) {
             i++;
         }
-        if (i >= len) break; // Break if we reach the end
-
-        // Check if we have a pipe (|) indicating the end of a command
-        if (input[i] == '|') {
-            // Create and add a pipe token
-            t_token *pipe_token = make_token("|", PIPE);
-            add_token_to_list(&head, &tail, pipe_token);
-            i++; // Move past the pipe
-            expect_command = true; // After a pipe, we expect a new command
-            continue; // Go to the next iteration
+        if (i >= len) {
+            break; // Break if we reach the end
         }
 
-        // Get the next token, expecting it to be a command
-        t_token *new_token = get_next_token(input, &i, expect_command);
-        if (new_token) {
-            add_token_to_list(&head, &tail, new_token);
-            expect_command = false; // After getting a command, we don't expect a command next
+        // Check for pipes
+        if (input[i] == '|') {
+            t_token *pipe_token = make_token("|", PIPE);
+            add_token_to_list(&head, &tail, pipe_token);
+            i++;
+            continue; // Expect new command after pipe
+        }
+
+        buf_index = 0; // Reset buffer index for new token
+
+        // Handle quotes
+        if (input[i] == '\'') {
+            char *quote_content = handle_single_quotes(input, &i);
+            if (quote_content) {
+                ft_strcpy(buffer + buf_index, quote_content);
+                buf_index += ft_strlen(quote_content);
+                free(quote_content);
+            }
+        } else if (input[i] == '"') {
+            char *quote_content = handle_double_quotes(input, &i, env);
+            if (quote_content) {
+                ft_strcpy(buffer + buf_index, quote_content);
+                buf_index += ft_strlen(quote_content);
+                free(quote_content);
+            }
+        } else if (input[i] == '\\') {
+            // Collect escape sequences
+            buffer[buf_index++] = handle_escape_sequence(input, &i);
+        } else if (input[i] == '$') {
+            char *env_var = handle_env_variable(input, &i, env);
+            if (env_var) {
+                ft_strcpy(buffer + buf_index, env_var);
+                buf_index += strlen(env_var);
+                free(env_var);
+            }
         } else {
-            // Handle the case where a command is expected but not found
-            fprintf(stderr, "Error: Expected a command after pipe.\n");
-            break; // Exit loop on error
+            // Collect normal characters for the token
+            while (i < len && !ft_isspace(input[i]) && input[i] != '|' &&
+                   input[i] != '\'' && input[i] != '"' && input[i] != '\\' && input[i] != '$') {
+                buffer[buf_index++] = input[i++];
+            }
+        }
+
+        buffer[buf_index] = '\0'; // Null-terminate the buffer
+
+        // If the buffer is not empty, create a token
+        if (buf_index > 0) {
+            t_token *new_token = make_token(buffer, WORD);
+            if (new_token) {
+                add_token_to_list(&head, &tail, new_token);
+            }
         }
     }
 
     return head;
 }
+
 void add_token_to_list(t_token **head, t_token **tail, t_token *new_token) 
 {
     if (*head == NULL) {

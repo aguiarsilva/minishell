@@ -14,6 +14,7 @@ builtins/echo.c \
 parsing/parsing.c \
 parsing/parsing_utils.c \
 parsing/utils_list.c \
+parsing/handle_quotes.c \
 error.c \
 utils.c \
 child_status.c \
