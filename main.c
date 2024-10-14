@@ -127,7 +127,7 @@ int	main(const int argc, char *argv[], char *env[])
 		result = readline("");
 	else
  		result = concat_argv(argc, argv); // just for faster debugging
-	token_list = build_list(result);
+	token_list = build_list(result, env);
 	assign_token_type(token_list);
 	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
