@@ -43,12 +43,16 @@ void print_token(t_token* token)
 	}
 }
 
-void print_cmd(t_cmd* command)
+void	print_cmd(t_cmd* command)
 {
-	int i;
+	int	i;
+	size_t	lst_size;
+//	t_cmd	*current;
 
+	lst_size = 0;
 	// Check if the command list is empty
-	if (command == NULL) {
+	if (command == NULL)
+	{
 		printf("Command list is empty.\n");
 		return;
 	}
@@ -76,7 +80,8 @@ void print_cmd(t_cmd* command)
 				printf("  Arg[%d]: %s\n", i, command->args[i]);
 				i++;
 			}
-		} else
+		}
+		else
 		{
 			printf("Arguments: (null)\n");
 		}
@@ -85,8 +90,10 @@ void print_cmd(t_cmd* command)
 		printf("Built-in: %d\n", command->builtin);
 
 		// Move to the next command in the list
+		lst_size++;
 		command = command->next;
 	}
+	printf("cmd_data contains %d cmds", lst_size);
 	printf("\n");
 }
 

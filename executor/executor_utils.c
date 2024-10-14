@@ -111,3 +111,20 @@ void	free_cmd_data(t_cmd *cmd_data)
 		free(cmd_data);
 	}
 }
+
+size_t	get_cmd_data_list_size(t_cmd *cmd_data)
+{
+	size_t	lst_size;
+	t_cmd	*current;
+
+	lst_size = 0;
+	if (cmd_data == NULL)
+		return (0);
+	current = cmd_data;
+	while (current != NULL)
+	{
+		lst_size++;
+		current = current->next;
+	}
+	return (lst_size);
+}
