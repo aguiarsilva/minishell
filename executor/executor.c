@@ -69,17 +69,24 @@ int		determine_filetype(t_cmd *cmd_list)
 //		fprintf(stderr, "redir is not NULL\n");
 //		fprintf(stderr, "redir type = %d\n", cmd_data->redir->type);
 		if (cmd_list->redir->type == REDIR_IN || cmd_list->redir->type == WORD)
+		{
+			printf("should be input file\n");
 			in_and_out_file = INPUT;
+		}
 		else if (cmd_list->redir->type == REDIR_OUT) // maybe combine my input and output ints with t_type
+		{
+			printf("should be output file\n");
 			in_and_out_file = OUTPUT;
+		}
 	}
 	else
 	{
-		fprintf(stderr, "should be no file\n");
+		printf("should be no file\n");
 		in_and_out_file = NOFILE;
 	}
 	return (in_and_out_file);
 }
+
 void	run_pipeline(t_cmd *cmd_list, char *env[])
 {
 	int		pipe_fd[2];
@@ -125,7 +132,7 @@ void	run_pipeline(t_cmd *cmd_list, char *env[])
 				run_builtin_or_execute(cmd_list, env, pipe_fd, in_and_out_file);
 			}
 			close_unused_pipes(pipe_fd, prev_pipe_fd);
-			exit(EXIT_SUCCESS); // Exit after execution // really needed?
+//			exit(EXIT_SUCCESS); // Exit after execution // really needed?
 		}
 		else // Parent process
 		{

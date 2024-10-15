@@ -93,7 +93,7 @@ void	print_cmd(t_cmd* command)
 		lst_size++;
 		command = command->next;
 	}
-	printf("cmd_data contains %d cmds", lst_size);
+	printf("cmd_data contains %ld cmds", lst_size);
 	printf("\n");
 }
 

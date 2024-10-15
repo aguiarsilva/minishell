@@ -327,7 +327,7 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 			redir_list = create_redir_struct(&redir_list, current_token, filetype);
 			if (redir_list == NULL)
 			{
-				fprintf(stderr, "Failed to create redirection struct for: %s\n", current_token->val);
+				printf("Failed to create redirection struct for: %s\n", current_token->val);
 				return (NULL);
 			}
 		}
@@ -335,7 +335,7 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 	}
 	if (redir_list == NULL)
 	{
-		fprintf(stderr, "redir_list is NULL after creation\n");
+		printf("redir_list is NULL after creation\n");
 	}
 	// else
 	// {
