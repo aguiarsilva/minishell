@@ -87,7 +87,7 @@ int		determine_filetype(t_cmd *cmd_list)
 	return (in_and_out_file);
 }
 
-void	run_pipeline(t_cmd *cmd_list, char *env[])
+void	run_pipeline(t_cmd *cmd_list, char *env[]) // for some reason working
 {
 	int		pipe_fd[2];
 	int		prev_pipe_fd[2];
@@ -98,6 +98,7 @@ void	run_pipeline(t_cmd *cmd_list, char *env[])
 	cmd_count = 0;
 	while (cmd_list != NULL)
 	{
+		// Create pipe if there is a next command
 		if (cmd_list->next != NULL)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -108,30 +109,36 @@ void	run_pipeline(t_cmd *cmd_list, char *env[])
 			print_error_msg_and_exit(ERR_FORK);
 		if (process_id == 0) // Child process
 		{
-			in_and_out_file = determine_filetype(cmd_list);
+			in_and_out_file = determine_filetype(cmd_list); // sets whole command to in or out I think
 			printf("in and outfile type: %d\n", in_and_out_file);
 			if (cmd_count == 0)
 			{
 				printf("first command\n\n");
-				// Only redirect output to pipe_fd[1] (stdout)
-				close(pipe_fd[0]); // Close read end of current pipe
-				run_builtin_or_execute(cmd_list, env, prev_pipe_fd, in_and_out_file);
+				if (cmd_list->next != NULL) // Only if it's not a single command
+				{
+					close(pipe_fd[0]); // Close read end of current pipe
+					dup2(pipe_fd[1], STDOUT_FILENO);
+				}
+				close(pipe_fd[1]);
 			}
 			else if (cmd_list->next == NULL) // Last command
 			{
 				printf("last command\n");
-				// Only redirect input from prev_pipe_fd[0] (stdin)
-				run_builtin_or_execute(cmd_list, env, prev_pipe_fd, in_and_out_file);
+				dup2(prev_pipe_fd[0], STDIN_FILENO); // Redirect stdin from previous pipe
+				close(prev_pipe_fd[0]);
+				close(prev_pipe_fd[1]);
+//				in_and_out_file = NOFILE;
 			}
 			else // Middle commands
 			{
-				// Redirect input from prev_pipe_fd[0] (stdin)
-				// and output to pipe_fd[1] (stdout)
-				fprintf(stderr, "middle command\n");
+				dup2(prev_pipe_fd[0], STDIN_FILENO); // Read from previous pipe
+				close(prev_pipe_fd[0]);
 				close(pipe_fd[0]); // Close read end of current pipe
-				run_builtin_or_execute(cmd_list, env, pipe_fd, in_and_out_file);
+				dup2(pipe_fd[1], STDOUT_FILENO);  // Write to current pipe
+				close(pipe_fd[1]);
 			}
 			close_unused_pipes(pipe_fd, prev_pipe_fd);
+			run_builtin_or_execute(cmd_list, env, pipe_fd, in_and_out_file);
 //			exit(EXIT_SUCCESS); // Exit after execution // really needed?
 		}
 		else // Parent process
@@ -147,6 +154,7 @@ void	run_pipeline(t_cmd *cmd_list, char *env[])
 	}
 }
 
+
 void	run_process(t_cmd *cmd_list, char *env[])
 {
 	size_t	cmd_count;
@@ -154,7 +162,7 @@ void	run_process(t_cmd *cmd_list, char *env[])
 	cmd_count = 0;
 	if (cmd_list == NULL)
 	{
-		fprintf(stderr, "No commands to execute\n");
+		printf("No commands to execute\n");
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
@@ -165,9 +173,9 @@ void	run_process(t_cmd *cmd_list, char *env[])
 		printf("run at least 2 cmds\n");
 		run_pipeline(cmd_list, env);
 	}
-
 }
-void run_cmd(t_cmd *cmd_data, char *env[])
+
+void	run_cmd(t_cmd *cmd_data, char *env[])
 {
 	char	*full_cmd;
 	char	**split_cmd;
