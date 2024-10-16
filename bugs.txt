@@ -1,1 +1,2 @@
 < input.txt , still creates the redir struct
+cat < input.txt | wc -l > output.txt , does nothing with output.txt
