@@ -93,8 +93,7 @@ void	print_cmd(t_cmd* command)
 		lst_size++;
 		command = command->next;
 	}
-	printf("cmd_data contains %ld cmds", lst_size);
-	printf("\n");
+	printf("cmd_list contains %ld cmds\n\n", lst_size);
 }
 
 // will be moved out of main
