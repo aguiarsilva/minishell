@@ -87,18 +87,19 @@ int		determine_filetype(t_cmd *cmd_list)
 	return (in_and_out_file);
 }
 
-void	run_pipeline(t_cmd *cmd_list, char *env[]) // for some reason working
+void	run_pipeline(t_cmd *cmd_list, char *env[])
 {
 	int		pipe_fd[2];
-	int		prev_pipe_fd[2];
+	int		prev_pipe_fd[2] = {-1, -1};
 	pid_t	process_id;
 	int		in_and_out_file;
 	size_t	cmd_count;
+	int		input_fd;
+	int		output_fd;
 
 	cmd_count = 0;
 	while (cmd_list != NULL)
 	{
-		// Create pipe if there is a next command
 		if (cmd_list->next != NULL)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -109,51 +110,64 @@ void	run_pipeline(t_cmd *cmd_list, char *env[]) // for some reason working
 			print_error_msg_and_exit(ERR_FORK);
 		if (process_id == 0) // Child process
 		{
-			in_and_out_file = determine_filetype(cmd_list); // sets whole command to in or out I think
-			printf("in and outfile type: %d\n", in_and_out_file);
-			if (cmd_count == 0)
+			in_and_out_file = determine_filetype(cmd_list);
+			// Handle file redirections first
+			if (in_and_out_file == INPUT)
 			{
-				printf("first command\n\n");
-				if (cmd_list->next != NULL) // Only if it's not a single command
-				{
-					close(pipe_fd[0]); // Close read end of current pipe
-					dup2(pipe_fd[1], STDOUT_FILENO);
-				}
-				close(pipe_fd[1]);
+				input_fd = open_input_or_output_file(cmd_list->redir->file_name, INPUT);
+				if (input_fd == -1)
+					print_error_msg_and_exit(ERR_FILE);
+				dup2(input_fd, STDIN_FILENO);
+				close(input_fd);
 			}
-			else if (cmd_list->next == NULL) // Last command
+			else if (in_and_out_file == OUTPUT)
 			{
-				printf("last command\n");
-				dup2(prev_pipe_fd[0], STDIN_FILENO); // Redirect stdin from previous pipe
+				output_fd = open_input_or_output_file(cmd_list->redir->file_name, OUTPUT);
+				if (output_fd == -1)
+					print_error_msg_and_exit(ERR_FILE);
+				dup2(output_fd, STDOUT_FILENO);
+				close(output_fd);
+			}
+			// Handle pipe redirections
+			if (cmd_count > 0 && in_and_out_file != INPUT)
+			{
+				dup2(prev_pipe_fd[0], STDIN_FILENO);
 				close(prev_pipe_fd[0]);
-				close(prev_pipe_fd[1]);
-//				in_and_out_file = NOFILE;
 			}
-			else // Middle commands
+			if (cmd_list->next != NULL && in_and_out_file != OUTPUT)
 			{
-				dup2(prev_pipe_fd[0], STDIN_FILENO); // Read from previous pipe
-				close(prev_pipe_fd[0]);
-				close(pipe_fd[0]); // Close read end of current pipe
-				dup2(pipe_fd[1], STDOUT_FILENO);  // Write to current pipe
-				close(pipe_fd[1]);
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[0]);  // Close read end in child
+				close(pipe_fd[1]);  // Close after dup2
 			}
-			close_unused_pipes(pipe_fd, prev_pipe_fd);
-			run_builtin_or_execute(cmd_list, env, pipe_fd, in_and_out_file);
-//			exit(EXIT_SUCCESS); // Exit after execution // really needed?
+
+			// Run the command
+			if (cmd_list->builtin)
+				run_builtin(cmd_list, env);
+			else
+				run_cmd(cmd_list, env);
+			exit(EXIT_SUCCESS);
 		}
 		else // Parent process
 		{
-			if (cmd_count > 0)
-				close(prev_pipe_fd[0]); // Close read end of the previous pipe in the parent
-			close(pipe_fd[1]); // Close write end of current pipe in the parent
-			prev_pipe_fd[0] = pipe_fd[0]; // Update prev_pipe_fd for the next iteration
+			// Close write end of current pipe immediately
+			if (cmd_list->next != NULL)
+				close(pipe_fd[1]);
+
+			// Close previous pipe read end
+			if (prev_pipe_fd[0] != -1)
+				close(prev_pipe_fd[0]);
+
+			// Save new read end for next command
+			if (cmd_list->next != NULL)
+				prev_pipe_fd[0] = pipe_fd[0];
+
 			handle_parent_process(process_id, cmd_list);
 		}
 		cmd_list = cmd_list->next;
 		cmd_count++;
 	}
 }
-
 
 void	run_process(t_cmd *cmd_list, char *env[])
 {
@@ -166,8 +180,8 @@ void	run_process(t_cmd *cmd_list, char *env[])
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
-//	if (cmd_count == 1)
-//		run_builtin_or_execute(cmd_data, env, pipe_fd, in_and_out_file); // without pipe_fd and inandoutfile and run cmd straigth
+	if (cmd_count == 1)
+		run_builtin_or_execute(cmd_list, env); // without pipe_fd and inandoutfile and run cmd straigth
 	if (cmd_count >= 2) // change to else if later
 	{
 		printf("run at least 2 cmds\n");

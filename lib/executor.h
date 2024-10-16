@@ -34,7 +34,7 @@ size_t	get_cmd_data_list_size(t_cmd *cmd_data);
 void	check_child_status(pid_t child_pid);
 
 //child_process_handler.c
-void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], int *pipe_fd, int in_or_out);
+void	run_builtin_or_execute(t_cmd *cmd_data, char *env[]);
 
 //file_handler.c
 int		open_input_or_output_file(char *filename, int in_or_out);
