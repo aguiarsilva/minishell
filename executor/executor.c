@@ -1,220 +1,210 @@
 
 #include "../lib/minishell.h"
 
-int		determine_filetype(t_cmd *cmd_list)
+void	handle_file_redirections(t_cmd *cmd)
 {
-	int	in_and_out_file;
+	t_redir	*current_redir;
+	int		input_fd;
+	int		output_fd;
 
-	in_and_out_file = NOFILE;
-	if (cmd_list->redir != NULL)
+	fprintf(stderr, "DEBUG: Handling file redirections for command: %s\n", cmd->cmd);
+	current_redir = cmd->redir;
+	while (current_redir != NULL)
 	{
-//		fprintf(stderr, "redir is not NULL\n");
-//		fprintf(stderr, "redir type = %d\n", cmd_data->redir->type);
-		if (cmd_list->redir->type == REDIR_IN || cmd_list->redir->type == WORD)
+		fprintf(stderr, "DEBUG: Redirection type: %d, File: %s\n", current_redir->type, current_redir->file_name);
+		if (current_redir->type == REDIR_IN || current_redir->type == WORD)
 		{
-			printf("should be input file or no file\n");
-			in_and_out_file = INPUT;
+			input_fd = open_input_or_output_file(current_redir->file_name, INPUT);
+			if (input_fd == -1)
+				print_error_msg_and_exit(ERR_FILE);
+			fprintf(stderr, "DEBUG: Setting up input redirection, fd: %d\n", input_fd);
+			if (dup2(input_fd, STDIN_FILENO) == -1)
+				print_error_msg_and_exit(ERR_DUP2);
+			close(input_fd);
 		}
-		else if (cmd_list->redir->type == REDIR_OUT) // maybe combine my input and output ints with t_type
+		else if (current_redir->type == REDIR_OUT)
 		{
-			printf("should be output file\n");
-			in_and_out_file = OUTPUT;
+			output_fd = open_input_or_output_file(current_redir->file_name, OUTPUT);
+			if (output_fd == -1)
+				print_error_msg_and_exit(ERR_FILE);
+			fprintf(stderr, "DEBUG: Setting up output redirection, fd: %d\n", output_fd);
+			if (dup2(output_fd, STDOUT_FILENO) == -1)
+				print_error_msg_and_exit(ERR_DUP2);
+			close(output_fd);
 		}
+		current_redir = current_redir->next;
 	}
-	else
-	{
-		printf("should be no file\n");
-		in_and_out_file = NOFILE;
-	}
-	return (in_and_out_file);
 }
 
-// void	run_pipeline(t_cmd *cmd_list, char *env[]) // working
-// {
-// 	int		pipe_fd[2];
-// 	int		prev_pipe_fd[2] = {-1, -1};
-// 	pid_t	process_id;
-// 	int		in_and_out_file;
-// 	size_t	cmd_count;
-// 	int		input_fd;
-// 	int		output_fd;
-//
-// 	cmd_count = 0;
-// 	while (cmd_list != NULL)
-// 	{
-// 		if (cmd_list->next != NULL)
-// 		{
-// 			if (pipe(pipe_fd) == -1)
-// 				print_error_msg_and_exit(ERR_PIPE);
-// 		}
-// 		process_id = fork();
-// 		if (process_id < 0)
-// 			print_error_msg_and_exit(ERR_FORK);
-// 		if (process_id == 0) // Child process
-// 		{
-// 			in_and_out_file = determine_filetype(cmd_list);
-// 			// Handle file redirections first
-// 			if (in_and_out_file == INPUT)
-// 			{
-// 				input_fd = open_input_or_output_file(cmd_list->redir->file_name, INPUT);
-// 				if (input_fd == -1)
-// 					print_error_msg_and_exit(ERR_FILE);
-// 				dup2(input_fd, STDIN_FILENO);
-// 				close(input_fd);
-// 			}
-// 			else if (in_and_out_file == OUTPUT)
-// 			{
-// 				output_fd = open_input_or_output_file(cmd_list->redir->file_name, OUTPUT);
-// 				if (output_fd == -1)
-// 					print_error_msg_and_exit(ERR_FILE);
-// 				dup2(output_fd, STDOUT_FILENO);
-// 				close(output_fd);
-// 			}
-// 			// Handle pipe redirections
-// 			if (cmd_count > 0 && in_and_out_file != INPUT)
-// 			{
-// 				dup2(prev_pipe_fd[0], STDIN_FILENO);
-// 				close(prev_pipe_fd[0]);
-// 			}
-// 			if (cmd_list->next != NULL && in_and_out_file != OUTPUT)
-// 			{
-// 				dup2(pipe_fd[1], STDOUT_FILENO);
-// 				close(pipe_fd[0]);  // Close read end in child
-// 				close(pipe_fd[1]);  // Close after dup2
-// 			}
-//
-// 			// Run the command
-// 			if (cmd_list->builtin)
-// 				run_builtin(cmd_list, env);
-// 			else
-// 				run_cmd(cmd_list, env);
-// 			exit(EXIT_SUCCESS);
-// 		}
-// 		else // Parent process
-// 		{
-// 			// Close write end of current pipe immediately
-// 			if (cmd_list->next != NULL)
-// 				close(pipe_fd[1]);
-//
-// 			// Close previous pipe read end
-// 			if (prev_pipe_fd[0] != -1)
-// 				close(prev_pipe_fd[0]);
-//
-// 			// Save new read end for next command
-// 			if (cmd_list->next != NULL)
-// 				prev_pipe_fd[0] = pipe_fd[0];
-//
-// 			handle_parent_process(process_id, cmd_list);
-// 		}
-// 		cmd_list = cmd_list->next;
-// 		cmd_count++;
-// 	}
-// }
-
-void prepare_parent_process(t_cmd *cmd, pid_t process_id, int prev_pipe_fd[2], int pipe_fd[2])
+void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
+								int pipe_fd[2], size_t cmd_count)
 {
-	if (cmd->next != NULL)
+	fprintf(stderr, "DEBUG: Handling pipe redirections for command %zu\n", cmd_count);
+	fprintf(stderr, "DEBUG: Command: %s\n", cmd->cmd);
+
+	if (cmd_count > 0)
+	{
+		fprintf(stderr, "DEBUG: Setting up input from previous pipe\n");
+		dup2(prev_pipe_fd[0], STDIN_FILENO);
+		close(prev_pipe_fd[0]); // close read_of prev pipe
+		if (prev_pipe_fd[1] != -1)
+			close(prev_pipe_fd[1]); // close writ_of prev pipe
+	}
+	if (cmd->next != NULL) // when not last cmd
+	{
+		fprintf(stderr, "DEBUG: Setting up output to next pipe\n");
+		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
-
-	if (prev_pipe_fd[0] != -1)
-		close(prev_pipe_fd[0]);
-
-	if (cmd->next != NULL)
-		prev_pipe_fd[0] = pipe_fd[0];
-
-	handle_parent_process(process_id, cmd);
-}
-
-static void	setup_pipe(t_cmd *cmd, int pipe_fd[2])
-{
-	if (cmd->next != NULL)
-	{
-		if (pipe(pipe_fd) == -1)
-			print_error_msg_and_exit(ERR_PIPE);
+		close(pipe_fd[0]);
 	}
 }
 
-static void	redirect_input(t_cmd *cmd)
+static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
 {
-	int	input_fd;
-
-	input_fd = open_input_or_output_file(cmd->redir->file_name, INPUT);
-	if (input_fd == -1)
-		print_error_msg_and_exit(ERR_FILE);
-	dup2(input_fd, STDIN_FILENO);
-	close(input_fd);
-}
-
-static void	redirect_output(t_cmd *cmd)
-{
-	int	output_fd;
-
-	output_fd = open_input_or_output_file(cmd->redir->file_name, OUTPUT);
-	if (output_fd == -1)
-		print_error_msg_and_exit(ERR_FILE);
-	dup2(output_fd, STDOUT_FILENO);
-	close(output_fd);
-}
-
-void handle_file_redirections(t_cmd *cmd)
-{
-	int	in_and_out_file;
-
-	in_and_out_file = determine_filetype(cmd);
-	if (in_and_out_file == INPUT)
-		redirect_input(cmd);
-	else if (in_and_out_file == OUTPUT)
-		redirect_output(cmd);
-}
-
-void handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count)
-{
-	int in_and_out_file;
-
-	in_and_out_file = determine_filetype(cmd);
-	if (cmd_count > 0 && in_and_out_file != INPUT)
+	fprintf(stderr, "DEBUG: First command setup\n");
+	if (cmd->redir)
 	{
+		handle_file_redirections(cmd);
+		fprintf(stderr, "DEBUG: After file redir - stdin: %d, stdout: %d\n",
+				fcntl(STDIN_FILENO, F_GETFD),
+				fcntl(STDOUT_FILENO, F_GETFD));
+	}
+	if (cmd->next && pipe_fd[1] != -1)
+	{
+		fprintf(stderr, "DEBUG: Setting up pipe output. pipe_fd[1]: %d\n", pipe_fd[1]);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+	}
+}
+
+// Helper function to handle middle command setup
+static void	handle_middle_command(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count)
+{
+	fprintf(stderr, "DEBUG: Middle command setup\n");
+	handle_pipe_redirections(cmd, prev_pipe_fd, pipe_fd, cmd_count);
+	if (cmd->redir)
+		handle_file_redirections(cmd);
+}
+
+// Helper function to handle last command setup
+static void	handle_last_command(t_cmd *cmd, int prev_pipe_fd[2])
+{
+	fprintf(stderr, "DEBUG: Last command setup\n");
+	if (prev_pipe_fd[0] != -1)
+	{
+		fprintf(stderr, "DEBUG: Setting up pipe input. prev_pipe_fd[0]: %d\n", prev_pipe_fd[0]);
 		dup2(prev_pipe_fd[0], STDIN_FILENO);
 		close(prev_pipe_fd[0]);
 	}
-	if (cmd->next != NULL && in_and_out_file != OUTPUT)
-	{
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[0]);  // Close read end in child
-		close(pipe_fd[1]);  // Close after dup2
-	}
+	if (prev_pipe_fd[1] != -1)
+		close(prev_pipe_fd[1]);
+
+	if (cmd->redir)
+		handle_file_redirections(cmd);
 }
 
-void handle_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count)
+// Helper function to execute the command
+static void	execute_command(t_cmd *cmd, char *env[])
 {
-	handle_file_redirections(cmd);
-	handle_pipe_redirections(cmd, prev_pipe_fd, pipe_fd, cmd_count);
-	run_builtin_or_execute(cmd, env);
+	if (cmd->builtin)
+		run_builtin(cmd, env);
+	else
+		run_cmd(cmd, env);
 	exit(EXIT_SUCCESS);
 }
 
-void run_pipeline(t_cmd *cmd_list, char *env[])
+// Main child process handler
+void	handle_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count)
 {
-	int	pipe_fd[2];
-	int	prev_pipe_fd[2] = {-1, -1};
-	pid_t process_id;
-	size_t cmd_count = 0;
+	fprintf(stderr, "DEBUG: Child process for command: %s\n", cmd->cmd);
+	if (cmd_count == 0)
+		handle_first_command(cmd, pipe_fd);
+	else if (cmd->next == NULL)
+		handle_last_command(cmd, prev_pipe_fd);
+	else
+		handle_middle_command(cmd, prev_pipe_fd, pipe_fd, cmd_count);
+	print_fd_debug("DEBUG: Final FDs before exec");
+	execute_command(cmd, env);
+}
+
+void	run_pipeline(t_cmd *cmd_list, char *env[])
+{
+	int		pipe_fd[2] = {-1, -1};
+	int		prev_pipe_fd[2] = {-1, -1};
+	pid_t	process_id;
+	size_t	cmd_count;
+	int		original_stdout;
+
+	// Save original stdout
+	original_stdout = dup(STDOUT_FILENO);
+	cmd_count = 0;
+	fprintf(stderr, "DEBUG: Original stdout: %d\n", original_stdout);
 
 	while (cmd_list != NULL)
 	{
-		setup_pipe(cmd_list, pipe_fd);
+		fprintf(stderr, "DEBUG: Processing command: %s\n", cmd_list->cmd);
+
+		// Only create new pipe if there's a next command
+		if (cmd_list->next != NULL)
+		{
+			if (pipe(pipe_fd) == -1)
+				print_error_msg_and_exit(ERR_PIPE);
+			fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
+		}
+		else
+		{
+			pipe_fd[0] = -1;
+			pipe_fd[1] = -1;
+			fprintf(stderr, "DEBUG: Last command, no new pipe created\n");
+		}
+
 		process_id = fork();
 		if (process_id < 0)
 			print_error_msg_and_exit(ERR_FORK);
+
 		if (process_id == 0) // Child process
+		{
+			if (original_stdout != -1)
+				close(original_stdout);
 			handle_child_process(cmd_list, env, prev_pipe_fd, pipe_fd, cmd_count);
+		}
 		else // Parent process
-			prepare_parent_process(cmd_list, process_id, prev_pipe_fd, pipe_fd);
+		{
+			fprintf(stderr, "DEBUG: Parent process\n");
+			// Close previous pipe fds in parent
+			if (prev_pipe_fd[0] != -1)
+			{
+				fprintf(stderr, "DEBUG: Closing prev_pipe_fd[0]: %d\n", prev_pipe_fd[0]);
+				close(prev_pipe_fd[0]);
+			}
+			if (prev_pipe_fd[1] != -1)
+			{
+				fprintf(stderr, "DEBUG: Closing prev_pipe_fd[1]: %d\n", prev_pipe_fd[1]);
+				close(prev_pipe_fd[1]);
+			}
+
+			// Save current pipe as previous for next iteration
+			prev_pipe_fd[0] = pipe_fd[0];
+			prev_pipe_fd[1] = pipe_fd[1];
+
+//			waitpid(process_id, NULL, 0);
+			handle_parent_process(process_id, cmd_list);
+		}
 		cmd_list = cmd_list->next;
 		cmd_count++;
 	}
 
+	// Close any remaining pipe fds
+	if (prev_pipe_fd[0] != -1)
+		close(prev_pipe_fd[0]);
+	if (prev_pipe_fd[1] != -1)
+		close(prev_pipe_fd[1]);
+
+	if (original_stdout != -1)
+		close(original_stdout);
 }
+
 void	run_process(t_cmd *cmd_list, char *env[])
 {
 	size_t	cmd_count;
@@ -222,7 +212,7 @@ void	run_process(t_cmd *cmd_list, char *env[])
 	cmd_count = 0;
 	if (cmd_list == NULL)
 	{
-		printf("No commands to execute\n");
+		printf("No commands to execute\n"); //debug print
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
@@ -230,7 +220,7 @@ void	run_process(t_cmd *cmd_list, char *env[])
 		run_builtin_or_execute(cmd_list, env); // without pipe_fd and inandoutfile and run cmd straigth
 	else if (cmd_count >= 2) // change to else if
 	{
-		printf("run %ld cmds\n", cmd_count);
+		printf("run %ld cmds\n", cmd_count); //debug print
 		run_pipeline(cmd_list, env);
 	}
 }

@@ -21,6 +21,7 @@
 # define OUTPUT 2
 # define NOFILE 3
 # define ERR_CMD "minishell: "
+# define ERR_DUP2 "Dup2 failed "
 # define ERR_FORK "Fork failed."
 # define ERR_PIPE "Pipe Error"
 # define ERR_FILE "Error during opening file"
@@ -32,6 +33,7 @@ void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
 void	print_error_open_file_and_exit(char *filename, int err_code);
 void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
+void	print_fd_debug(const char *message);
 // utils.c
 void	*safe_malloc(size_t size);
 #endif //MINISHELL_H

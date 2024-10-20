@@ -27,3 +27,30 @@ void	print_error_msg_and_exit(char *error)
 	perror(error);
 	exit (EXIT_FAILURE);
 }
+
+void	print_fd_debug(const char *message)
+{
+	char	buf[256];
+	fprintf(stderr, "DEBUG: %s\n", message);
+
+	// Print the actual fd numbers
+	fprintf(stderr, "DEBUG: stdin(0)=%d, stdout(1)=%d\n",
+			fcntl(STDIN_FILENO, F_GETFL),
+			fcntl(STDOUT_FILENO, F_GETFL));
+
+	// Print where stdin points to
+	char stdin_buf[256];
+	char stdout_buf[256];
+	ssize_t stdin_len = readlink("/proc/self/fd/0", stdin_buf, sizeof(stdin_buf)-1);
+	ssize_t stdout_len = readlink("/proc/self/fd/1", stdout_buf, sizeof(stdout_buf)-1);
+
+	if (stdin_len != -1) {
+		stdin_buf[stdin_len] = '\0';
+		fprintf(stderr, "DEBUG: stdin points to: %s\n", stdin_buf);
+	}
+
+	if (stdout_len != -1) {
+		stdout_buf[stdout_len] = '\0';
+		fprintf(stderr, "DEBUG: stdout points to: %s\n\n", stdout_buf);
+	}
+}
