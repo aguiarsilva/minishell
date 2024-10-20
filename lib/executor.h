@@ -10,14 +10,29 @@
 	char	**args; // // -n
 	int		builtin;
 }	t_cmd;*/
-typedef struct s_cmd t_cmd;
-typedef struct s_token t_token;
-typedef struct s_redir t_redir;
+typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
+typedef struct s_redir	t_redir;
 
+//process_handler.c
+void	run_builtin_or_execute(t_cmd *cmd_data, char *env[]);
+void	run_process(t_cmd *cmd_data, char *env[]);
 
 //executor.c
-void	run_process(t_cmd *cmd_data, char *env[]);
 void	run_cmd(t_cmd *cmd_data, char *env[]);
+
+//child_process_handler.c
+pid_t	create_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], int original_stdout);
+
+//pipe_utils.c
+void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2]);
+void	create_pipe_if_needed(t_cmd *cmd, int pipe_fd[2]);
+void	close_pipe_fds(int pipe_fd[2]);
+void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2]);
+
+//redirections.c
+void	handle_file_redirections(t_cmd *cmd);
+void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 
 //exebuildin.c
 int		run_builtin(t_cmd *cmd_data, char **env);
@@ -33,16 +48,10 @@ size_t	get_cmd_data_list_size(t_cmd *cmd_data);
 //child_status.c
 void	check_child_status(pid_t child_pid);
 
-//child_process_handler.c
-void	run_builtin_or_execute(t_cmd *cmd_data, char *env[]);
-
-//file_handler.c
-int		open_input_or_output_file(char *filename, int in_or_out);
-
 //parent_process_handler.c
-void	handle_parent_process(pid_t process_id, t_cmd *cmd_data);
+void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);
+void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2]);
 //test.c
-// t_cmd	*fill_cmd(char **input);
-t_cmd *fill_cmd (t_token *words, t_redir *redir_list);
+t_cmd	*fill_cmd (t_token *words, t_redir *redir_list);
 char	*combine_command_and_args(char *cmd, char **args); // temporary
 #endif //EXECUTOR_H

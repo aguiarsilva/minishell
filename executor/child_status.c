@@ -1,5 +1,5 @@
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 
 void check_child_status(pid_t child_pid)
 {

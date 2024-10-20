@@ -2,12 +2,16 @@
 NAME = minishell
 # Directories and source files
 SRC = main.c \
-executor/executor.c \
-executor/executor_utils.c \
 executor/test.c \
-executor/exebuiltins.c \
+executor/process_handler.c \
 executor/child_process_handler.c \
 executor/parent_process_handler.c \
+executor/child_status.c \
+executor/exebuiltins.c \
+executor/pipe_utils.c \
+executor/executor.c \
+executor/executor_utils.c \
+executor/redirections.c \
 executor/file_handler.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
@@ -17,7 +21,7 @@ parsing/utils_list.c \
 parsing/handle_quotes.c \
 error.c \
 utils.c \
-child_status.c \
+
 
 
 OBJ = $(SRC:.c=.o)

@@ -30,7 +30,7 @@ void	print_error_msg_and_exit(char *error)
 
 void	print_fd_debug(const char *message)
 {
-	char	buf[256];
+
 	fprintf(stderr, "DEBUG: %s\n", message);
 
 	// Print the actual fd numbers

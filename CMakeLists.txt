@@ -13,7 +13,7 @@ set_target_properties(ft_printf PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}
 add_executable(minishell
         main.c
         error.c
-        child_status.c
+        executor/child_status.c
         utils.c
         executor/executor.c
         executor/executor_utils.c
@@ -29,9 +29,11 @@ add_executable(minishell
         parsing/utils_list.c
         parsing/check.c
         parsing/handle_quotes.c
-        executor/file_handler.c
         executor/child_process_handler.c
         executor/parent_process_handler.c
+        executor/redirections.c
+        executor/pipe_utils.c
+        executor/process_handler.c
 
 )
 

@@ -1,2 +1,1 @@
-< input.txt , still creates the redir struct
-cat < input.txt | wc -l > output.txt , does nothing with output.txt
+ls -l | grep "input.txt"  threats input.txt as stdin but it should not
