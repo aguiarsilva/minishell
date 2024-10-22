@@ -14,9 +14,9 @@ void free_cmd_list(t_cmd* head)
 }
 
 // Function to create and initialize a new command
-t_cmd* create_new_cmd_node(char* token_val, t_redir* redir_list)
+t_cmd*	create_new_cmd_node(char* token_val, t_redir* redir_list)
 {
-	t_cmd*	cmd_list_node;
+	t_cmd	*cmd_list_node;
 
 	cmd_list_node = safe_malloc(sizeof(t_cmd));
 	if (cmd_list_node == NULL)
@@ -29,6 +29,7 @@ t_cmd* create_new_cmd_node(char* token_val, t_redir* redir_list)
 	}
 	cmd_list_node->redir = redir_list;
 	cmd_list_node->next = NULL;
+	cmd_list_node->builtin = check_for_builtin(cmd_list_node->cmd);
 	return (cmd_list_node);
 }
 
@@ -94,12 +95,13 @@ int fill_arguments(t_cmd* cmd_data, t_token* token_list, size_t arg_count)
 		cur = cur->next;
 	}
 	cmd_data->args[i] = NULL; // Null-terminate the args array
+
 	return (0);
 }
 
 
 // Main function to parse the token list and fill the command structure
-t_cmd* fill_cmd(t_token* token_list, t_redir* redir_list)
+t_cmd*	fill_cmd(t_token* token_list, t_redir* redir_list)
 {
 	t_cmd* head = NULL; // Head of the command list
 	t_cmd* tail = NULL; // Tail of the command list
@@ -155,7 +157,6 @@ t_cmd* fill_cmd(t_token* token_list, t_redir* redir_list)
 		else
 			break; // Exit if no more commands
 	}
-
 	return (head); // Return the head of the command list
 }
 

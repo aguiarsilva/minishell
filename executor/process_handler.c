@@ -40,7 +40,7 @@ static void	run_pipeline(t_cmd *cmd_list, char *env[])
 void	run_builtin_or_execute(t_cmd *cmd_data, char *env[])
 {
 	if (cmd_data->builtin)
-		run_builtin(cmd_data, env);
+		exit(run_builtin(cmd_data, env));
 	else
 	{
 		run_cmd(cmd_data, env);
