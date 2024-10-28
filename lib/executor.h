@@ -3,13 +3,8 @@
 #define EXECUTOR_H
 
 #include "minishell.h"
-// basis struct for testing
-/*typedef struct s_cmd
-{
-	char	*cmd; // echo 
-	char	**args; // // -n
-	int		builtin;
-}	t_cmd;*/
+
+
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
 typedef struct s_redir	t_redir;

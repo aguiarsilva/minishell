@@ -34,6 +34,7 @@ add_executable(minishell
         executor/redirections.c
         executor/pipe_utils.c
         executor/process_handler.c
+        builtins/env_list.c
 
 )
 

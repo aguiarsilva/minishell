@@ -1,1 +1,3 @@
 ls -l | grep "input.txt"  threats input.txt as stdin but it should not
+
+$ as input crash our program

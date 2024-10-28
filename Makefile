@@ -15,6 +15,7 @@ executor/redirections.c \
 executor/file_handler.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
+builtins/env_list.c \
 parsing/parsing.c \
 parsing/parsing_utils.c \
 parsing/utils_list.c \

@@ -96,39 +96,14 @@ void	print_cmd(t_cmd* command)
 	printf("cmd_list contains %ld cmds\n", lst_size);
 }
 
-// will be moved out of main
+// everything before will be moved out of main
 int	main(const int argc, char *argv[], char *env[])
 {
 	t_cmd	*cmd_data;
 	t_token	*token_list;
 	t_redir	*redir_lst;
 	char	*result;
-//	char	**input;
-//	int		i;
 
-// // was working with this part
-// 	input = safe_malloc(argc * sizeof(char *));
-// 	if (!input)
-// 		return (-1);
-
-// 	i = 0;
-// 	while (i < argc -1)
-// 	{
-// 		input[i] = ft_strdup(argv[i + 1]);
-// 		printf("input[%d] = %s\n", i, input[i]);
-// 		if (!input[i])
-// 			return (-1);
-// 		i++;
-// 	}
-//	int len = strlen(input[1]);
-//	printf ("len = %d\n", len);
-//	i = 0;
-//	while (i < argc)
-//	{
-//		printf("input[%d] = %s\n", i, input[i]);
-//		i++;
-//	}
-	// printf("argc = %d\n", argc);
 	if (argc <= 2)
 		result = readline("");
 	else
@@ -138,9 +113,7 @@ int	main(const int argc, char *argv[], char *env[])
 	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
 	cmd_data = fill_cmd(token_list, redir_lst);
-//	fprintf(stderr, "after fill cmd\n");
 	print_cmd(cmd_data);
-//	fprintf(stderr, "after print cmd\n");
 	if (cmd_data == NULL)
 		return (-1);
 	run_process(cmd_data, env);
