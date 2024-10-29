@@ -96,6 +96,24 @@ void	print_cmd(t_cmd* command)
 	printf("cmd_list contains %ld cmds\n", lst_size);
 }
 
+
+
+void	print_env_list(t_env *lst)
+{
+	t_env	*current;
+
+	current = lst;
+	while (current)
+	{
+		printf("Key: %s, Value: %s, EC: %d\n",
+			current->key ? current->key : "(null)",
+			current->value ? current->value : "(null)",
+			current->exit_code);
+		current = current->next;
+	}
+}
+
+
 // everything before will be moved out of main
 int	main(const int argc, char *argv[], char *env[])
 {
@@ -103,11 +121,16 @@ int	main(const int argc, char *argv[], char *env[])
 	t_token	*token_list;
 	t_redir	*redir_lst;
 	char	*result;
+	t_env	*dup_env;
+	char	**dup_env_array;
 
 	if (argc <= 2)
 		result = readline("");
 	else
  		result = concat_argv(argc, argv); // just for faster debugging
+	// dup_env = create_env(env, argv);
+	// print_env_list(dup_env);
+	// dup_env_array = env_list_to_array(dup_env);
 	token_list = build_list(result, env);
 	assign_token_type(token_list);
 	print_token(token_list);
@@ -117,6 +140,8 @@ int	main(const int argc, char *argv[], char *env[])
 	if (cmd_data == NULL)
 		return (-1);
 	run_process(cmd_data, env);
+	free(result);
 }
+
 
 

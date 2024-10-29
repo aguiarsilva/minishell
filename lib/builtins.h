@@ -13,7 +13,8 @@ typedef struct s_env
 }		t_env;
 
 //env_list.c
-t_env	*create_env(char **ori_env, char *argv[]);
+t_env	*create_env(char **ori_env, char **argv);
+char	**env_list_to_array(t_env *env_list);
 //echo.c
 int		echo(t_cmd *cmd_data);
 int		check_for_builtin(char *cmd);
