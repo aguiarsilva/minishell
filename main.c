@@ -113,7 +113,6 @@ void	print_env_list(t_env *lst)
 	}
 }
 
-
 // everything before will be moved out of main
 int	main(const int argc, char *argv[], char *env[])
 {
@@ -124,13 +123,13 @@ int	main(const int argc, char *argv[], char *env[])
 	t_env	*dup_env;
 	char	**dup_env_array;
 
-	if (argc <= 2)
+	if (argc <= 1)
 		result = readline("");
 	else
  		result = concat_argv(argc, argv); // just for faster debugging
-	// dup_env = create_env(env, argv);
+	dup_env = create_env(env, argv);
 	// print_env_list(dup_env);
-	// dup_env_array = env_list_to_array(dup_env);
+	dup_env_array = env_list_to_array(dup_env);
 	token_list = build_list(result, env);
 	assign_token_type(token_list);
 	print_token(token_list);
@@ -139,7 +138,7 @@ int	main(const int argc, char *argv[], char *env[])
 	print_cmd(cmd_data);
 	if (cmd_data == NULL)
 		return (-1);
-	run_process(cmd_data, env);
+	run_process(cmd_data, dup_env_array);
 	free(result);
 }
 

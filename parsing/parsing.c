@@ -310,6 +310,8 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 	int		filetype;
 
 	current_token = token_list;
+	if (current_token == NULL)
+		return (NULL);
 	redir_list = NULL;
 	filetype = NOFILE;
 	if (get_token_type(current_token->val) != WORD) // prevent create redir struct when not needed but maybe edgecases

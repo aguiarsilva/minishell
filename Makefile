@@ -12,7 +12,6 @@ executor/pipe_utils.c \
 executor/executor.c \
 executor/executor_utils.c \
 executor/redirections.c \
-executor/file_handler.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
 builtins/env_list.c \

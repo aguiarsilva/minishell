@@ -126,7 +126,7 @@ t_token *build_list(char *input, char **env) {
             if (env_var) {
                 ft_strcpy(buffer + buf_index, env_var);
                 buf_index += strlen(env_var);
-                free(env_var);
+                // free(env_var); // should not be freed because its a static string and no malloc was used
             }
         } else {
             // Collect normal characters for the token
