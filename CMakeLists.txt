@@ -23,7 +23,8 @@ add_executable(minishell
         builtins/builtins_utils.c
         parsing/cleanup.c
         parsing/parsing.c
-        parsing/parsing_utils.c
+        lexer/lexer.c
+        lexer/lexer_utils.c
         parsing/prompt_init.c
         parsing/token.c
         parsing/utils_list.c
@@ -35,6 +36,8 @@ add_executable(minishell
         executor/pipe_utils.c
         executor/process_handler.c
         builtins/env_list.c
+        parsing/redir_token.c
+        lexer/lexer.c
 
 )
 

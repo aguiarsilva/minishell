@@ -98,8 +98,6 @@ size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
 void	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
-t_type	get_token_type(char *token);
-void	assign_token_type(t_token *token_list);
 
 /*utils_list.c*/
 // t_token *build_list(t_prompt *prompt, char *msg);
@@ -108,10 +106,6 @@ void	append_node(t_token **head, t_token **curr, t_token *new);
 void	nodes_init(t_token **head, t_token **cur, t_token **new);
 
 /*utils.c*/
-char    *ft_strncpy(char *dest, const char *src, int n);
-char    *ft_strcpy(char *dest, const char *src);
-int ft_strcmp(char *s1, char *s2);
-int	ft_isspace(int c);
 void add_token_to_list(t_token **head, t_token **tail, t_token *new_token);
 t_token *create_append_token(char *input, size_t *i);
 t_token *create_redir_out_token(char *input, size_t *i);

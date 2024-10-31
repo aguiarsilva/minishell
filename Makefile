@@ -16,9 +16,11 @@ builtins/builtins_utils.c \
 builtins/echo.c \
 builtins/env_list.c \
 parsing/parsing.c \
-parsing/parsing_utils.c \
 parsing/utils_list.c \
 parsing/handle_quotes.c \
+parsing/redir_token.c \
+lexer/lexer.c \
+lexer/lexer_utils.c \
 error.c \
 utils.c \
 

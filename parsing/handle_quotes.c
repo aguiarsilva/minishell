@@ -102,9 +102,9 @@ char *handle_env_variable(const char *input, int *i, char **env)
         var_name[var_index++] = input[(*i)++];
 
     var_name[var_index] = '\0';  // Null-terminate the variable name
-
+    fprintf(stderr,"var_name: %s\n", var_name);
     // Fetch the variable value from the environment
     char *var_value = getenv(var_name);
-    fprintf("var_value: %s\n", var_value);
+    fprintf(stderr,"var_value: %s\n", var_value);
     return (var_value ? var_value : "");  // Return the value or an empty string if not found
 }

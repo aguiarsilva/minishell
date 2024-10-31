@@ -1,359 +1,243 @@
 #include "../lib/minishell.h"
 
-t_token	*make_token(char *wd, t_type type)
+// Function to free a command list in case of an error
+static void free_cmd_list(t_cmd* head)
 {
-	t_token	*new_tk;
-	int		len;
-
-	len = ft_strlen(wd);
-	new_tk = malloc(sizeof(t_token));
-	if (new_tk == NULL)
-		return (NULL);
-	new_tk->val = (char *)malloc(sizeof(char) * (len + 1));
-	if (new_tk->val == NULL)
+	while (head != NULL)
 	{
-		free(new_tk);
-		return (NULL);
-	}
-	ft_strcpy(new_tk->val, wd);
-	new_tk->next = NULL;
-	new_tk->type = type;
-	//new_tk->count_cmd = 0;
-	//new_tk->count_wd = 0;
-	//new_tk->multi_cmd = NULL;
-	//new_tk->redir = NULL;
-	return (new_tk);
-}
-
-/*t_token	*multi_cmd_init(t_token *new, t_prompt *prompt)
-{
-	char	*cp_val;
-	char	*wd;
-	bool	redir;
-
-	redir = false;
-	cp_val = ft_strdup(new->val);
-	if (!cp_val)
-		return (NULL);
-	if (!multi_cmd_arr_init(new, cp_val))
-		return (NULL);
-	wd = ft_strtok_rm_quotes(cp_val, prompt->whitespace);
-	while (wd != NULL)
-	{
-		if (is_redir_operator(wd))
-			redir = true;
-		else if (redir)
-			redir = false;
-		else
-			new->multi_cmd[new->count_cmd++] = ft_strudp(wd);
-		wd = ft_strtok_rm_quotes(NULL, prompt->whitespace);
-	}
-	new->multi_cmd[new->count_cmd] = NULL;
-	free(cp_val);
-	return (new);
-}*/
-
-/*bool	multi_cmd_arr_init(t_token *new, char *cp_val)
-{
-	new->count_wd = ft_count_words(new->val); //different count words.
-	new->multi_cmd = malloc(sizeof(char *) * (new->count_wd + 1));
-	if (!new->multi_cmd)
-	{
-		free(cp_val);
-		return (false);
-	}
-	return (true);
-}*/
-t_type	get_token_type(char *token)
-{
-    if (ft_strcmp(token, "<") == 0)
-        return REDIR_IN;
-    else if (ft_strcmp(token, ">") == 0)
-        return REDIR_OUT;
-    else if (ft_strcmp(token, ">>") == 0)
-        return APPEND;
-    else if (ft_strcmp(token, "<<") == 0)
-        return HEREDOC;
-    else if (ft_strcmp(token, "|") == 0)
-        return PIPE;
-    else
-        return WORD;  // Default type is WORD for commands/arguments
-}
-
-void	assign_token_type(t_token *token_list)
-{
-	t_token *current = token_list;
-	while (current != NULL)
-	{
-		current->type = get_token_type(current->val);  // Assign type based on the value
-		current = current->next;  // Move to the next token in the list
+		t_cmd* temp = head;
+		head = head->next;
+		free(temp->cmd);
+		free(temp->args);
+		free(temp);
 	}
 }
 
-void print_redir_list(t_redir *redir_head)
+// Function to create and initialize a new command
+t_cmd*	create_new_cmd_node(char* token_val, t_redir* redir_list)
 {
-	t_redir *current = redir_head; // Start at the head of the list
-	printf("\nin print_redir_list function \n");
+	t_cmd	*cmd_list_node;
 
-	// Check if the list is empty
-	if (current == NULL)
+	cmd_list_node = safe_malloc(sizeof(t_cmd));
+	if (cmd_list_node == NULL)
+		return (NULL);
+	cmd_list_node->cmd = ft_strdup(token_val); // Duplicate the command string
+	if (cmd_list_node->cmd == NULL)
 	{
-		printf("The redirection list is empty.\n");
-		return;
+		free(cmd_list_node);
+		return (NULL);
 	}
-
-	printf("Redirection List:\n");
-	while (current != NULL)
-	{
-		// Print file name and type
-		printf("File Name: %s, Type: ", current->file_name);
-
-		// Print the type as a string
-		switch (current->type){
-		case REDIR_IN:
-			printf("REDIR_IN\n");
-			break;
-		case REDIR_OUT:
-			printf("REDIR_OUT\n");
-			break;
-		case APPEND:
-			printf("APPEND\n");
-			break;
-		case HEREDOC:
-			printf("HEREDOC\n");
-			break;
-		case PIPE:
-			printf("PIPE\n");
-			break;
-		case WORD:
-			printf("WORD\n");
-			break;
-		default:
-			printf("UNKNOWN\n");
-			break;
-		}
-		current = current->next; // Move to the next node
-	}
+	cmd_list_node->redir = redir_list;
+	cmd_list_node->next = NULL;
+	cmd_list_node->builtin = check_for_builtin(cmd_list_node->cmd);
+	return (cmd_list_node);
 }
 
-// t_redir	*create_redir_struct(t_redir **redir_head, char *filename)
+// Function to count the number of arguments in the token list (up to a pipe)
+static size_t count_arguments(t_token* token_list)
+{
+	size_t		arg_count;
+	t_token*	cur;
+
+	arg_count = 0;
+	cur = token_list;
+	while (cur != NULL && cur->type != PIPE)
+	{
+		if (get_token_type(cur->val) == WORD)
+			arg_count++;
+		cur = cur->next;
+	}
+	return (arg_count);
+}
+
+// // Function to fill the arguments array for a command
+// int fill_arguments(t_cmd* cmd_data, t_token* token_list, size_t arg_count)
 // {
-// 	t_redir *new_redir_node;
-// 	t_redir *current_redir;
+// 	size_t	i;
+// 	t_token*	cur;
+// 	t_token* prev; // Keep track of the previous token
 //
-// 	new_redir_node = safe_malloc(sizeof(t_redir));
-// 	if (!new_redir_node)
-// 		return (NULL);
-// 	ft_bzero(new_redir_node, sizeof(*new_redir_node));
-// 	new_redir_node->file_name = ft_strdup(filename);
-// 	if (!new_redir_node->file_name)
-// 	{
-// 		free(new_redir_node);
-// 		return (NULL);
-// 	}
-// 	//new_redir_node->type = SOME_DEFAULT_TYPE; // maybe detect if it is a input or output file
-// 	new_redir_node->next = NULL;
+// 	i = 0;
+// 	cur = token_list;
+// 	prev = NULL;
+// 	// Allocate space for arguments (+1 for NULL terminator)
+// 	cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char*));
+// 	if (!cmd_data->args)
+// 		return (-1);
 //
-// 	if (*redir_head == NULL)
-// 		*redir_head = new_redir_node;
-// 	else
+// 	// Populate the arguments array
+// 	while (cur != NULL && cur->type != PIPE)
 // 	{
-// 		current_redir = *redir_head;
-// 		while (current_redir->next != NULL)
+// 		// Skip the current token if the previous token was a REDIR_IN and the current one is a WORD
+// 		if (prev != NULL && prev->type == REDIR_OUT && get_token_type(cur->val) == WORD)
 // 		{
-// 			current_redir = current_redir->next;
+// 			// Just skip this argument (it's the file name after the '<' redirection)
+// 			prev = cur;
+// 			cur = cur->next;
+// 			continue;
 // 		}
-// 		current_redir->next = new_redir_node;
+//
+// 		// If it's a WORD token, copy it to the args array
+// 		if (get_token_type(cur->val) == WORD)
+// 		{
+// 			cmd_data->args[i] = ft_strdup(cur->val);
+// 			printf("cmd_data_args copied: %s\n", cmd_data->args[i]);
+// 			if (!cmd_data->args[i])
+// 			{
+// 				while (i > 0)
+// 				{
+// 					free(cmd_data->args[--i]);
+// 				}
+// 				free(cmd_data->args);
+// 				return -1;
+// 			}
+// 			i++;
+// 		}
+// 		// Move to the next token, updating `prev` and `cur`
+// 		prev = cur;
+// 		cur = cur->next;
 // 	}
-// 	return (*redir_head);
+// 	cmd_data->args[i] = NULL; // Null-terminate the args array
+//
+// 	return (0);
 // }
 
-// t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node) // with debug prints
-// {
-// 	t_redir *new_redir_node;
-// 	t_redir *current_redir;
-//
-// 	new_redir_node = safe_malloc(sizeof(t_redir));
-// 	// new_redir_node = (t_redir *) malloc(sizeof(t_redir));
-// 	if (!new_redir_node)
-// 	{
-// 		fprintf(stderr, "Memory allocation failed for new redirection node\n");
-// 		return NULL; // Return NULL if allocation fails
-// 	}
-//
-// 	// Initialize the new node
-// 	new_redir_node->file_name = ft_strdup(token_node->val);
-// 	if (!new_redir_node->file_name)
-// 	{
-// 		free(new_redir_node);
-// 		fprintf(stderr, "Memory allocation failed for file_name\n");
-// 		return NULL; // Return NULL if allocation fails
-// 	}
-// 	new_redir_node->type = token_node->type;
-// 	new_redir_node->next = NULL; // Set the next pointer to NULL
-//
-// 	fprintf(stderr, "Creating redir struct for filename: %s\n", token_node->val); // Debugging print
-//
-// 	// If the list is empty, set the new node as head
-// 	if (*redir_head == NULL)
-// 	{
-// 		*redir_head = new_redir_node;
-// //		fprintf(stderr,"Set new node as head of the list.\n");
-// 	} else
-// 	{
-// 		// Traverse to the end of the list and append
-// 		current_redir = *redir_head;
-// 		while (current_redir->next != NULL) {
-// 			current_redir = current_redir->next;
-// 		}
-// 		current_redir->next = new_redir_node; // Append to the end
-// 		fprintf(stderr,"Appended new node to the end of the list.\n");
-// 	}
-//
-// 	return *redir_head; // Return the head of the list
-// }
 
-// Helper function to find the last redirection node in the list
-t_redir	*get_last_redirection_node(t_redir *redir_head)
+// Check if token should be skipped
+bool is_skippable_token(t_token* prev, t_token* cur)
 {
-	t_redir	*current_redir; // maybe rename it later
+	// No previous token, can't be a redirection file
+	if (prev == NULL)
+		return false;
 
-	current_redir = redir_head;
-	while (current_redir && current_redir->next != NULL)
-		current_redir = current_redir->next;
-	return (current_redir);
+	// Not a redirection token
+	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
+		return false;
+
+	// Not a word token (potential filename)
+	if (get_token_type(cur->val) != WORD)
+		return false;
+
+	// If we've reached here, it's a redirection file
+	return true;
 }
 
-// Helper function to create and initialize a new redirection node
-t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
+// Clean up args array on error
+void cleanup_args(char** args, int count)
 {
-	t_redir	*new_redir;
-	char	*filename;
-
-	new_redir= safe_malloc(sizeof(t_redir));
-	if (new_redir == NULL)
-	{
-		printf("Memory allocation failed for redirection node\n");
-		return (NULL);
+	for (int i = 0; i < count; i++) {
+		free(args[i]);
 	}
-	filename = token_node->val;
-	// fprintf(stderr, "token_val: %s\n", filename);
-	new_redir->file_name = ft_strdup(filename);
-	if (new_redir->file_name == NULL)
-	{
-		free(new_redir);
-		printf("Memory allocation failed for file_name\n");
-		return (NULL);
-	}
-	// new_redir->type = token_node->type; // wrong node to define type because its always word
-	if (filetype == INPUT)
-		new_redir->type = REDIR_IN;
-	else if (filetype == OUTPUT)
-		new_redir->type = REDIR_OUT;
-	else
-		new_redir->type = WORD;
-	printf("filename: %s and type after initialization: %d\n", new_redir->file_name, new_redir->type);
-	new_redir->next = NULL;
-	// printf("Initialized redir struct for filename with type : %s %d \n", token_node->val, token_node->type);
-	return (new_redir);
+	free(args);
 }
 
-// Main function to create the redirection struct and add it to the list
-t_redir *create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype)
+// Process a single token into args array
+int process_token(t_cmd* cmd_data, t_token* cur, int* arg_index)
 {
-	t_redir	*new_redir;
+	if (get_token_type(cur->val) != WORD)
+		return 1;
 
-	new_redir = initialize_redirection_node(token_node, filetype);
-	if (new_redir == NULL)
-		return (NULL);
-	if (*redir_head == NULL)
-	{
-		*redir_head = new_redir;
-		// printf("Set new redir node as the head of the list.\n");
-	}
-	else
-	{
-		t_redir *last_redir = get_last_redirection_node(*redir_head);
-		last_redir->next = new_redir;
-		// printf("Appended new redir node to the end of the list.\n");
-	}
-	return (*redir_head); // Return the head of the list
+	cmd_data->args[*arg_index] = ft_strdup(cur->val);
+	if (!cmd_data->args[*arg_index])
+		return 0;  // Allocation failed
+
+	printf("Copied arg: %s\n", cmd_data->args[*arg_index]);
+	(*arg_index)++;
+	return 1;
 }
 
-bool is_filename(const char *str)
+// Main argument filling function
+int fill_arguments(t_cmd* cmd_data, t_token* token_list, size_t arg_count)
 {
-	const char	*dot;
-	const char	*file_extension;
+	int arg_index = 0;
+	t_token* cur = token_list;
+	t_token* prev = NULL;
 
-	dot = ft_strrchr(str, '.');  // Find the last dot in the string
+	// Allocate args array
+	cmd_data->args = malloc((arg_count + 1) * sizeof(char*));
+	if (!cmd_data->args)
+		return -1;
 
-	if (dot && dot != str && *(dot + 1) != '\0')
-	{
-		file_extension = dot + 1;
-		// Optional: Ensure the file extension only contains valid characters (e.g., alphanumeric)
-		while (*file_extension != '\0')
-		{
-			if (!ft_isalpha(*file_extension))
-				return (false);
-			file_extension++;
+	// Process tokens
+	while (cur && cur->type != PIPE) {
+		// Skip certain tokens
+		if (is_skippable_token(prev, cur)) {
+			prev = cur;
+			cur = cur->next;
+			continue;
 		}
-//		fprintf(stderr, "print recogniced file names %s\n", str);
-		return (true);
-	}
-	return (false);
-}
 
-t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
-{
-	t_token *current_token;
-	t_redir	*redir_list;
-	int		filetype;
-
-	current_token = token_list;
-	if (current_token == NULL)
-		return (NULL);
-	redir_list = NULL;
-	filetype = NOFILE;
-	if (get_token_type(current_token->val) != WORD) // prevent create redir struct when not needed but maybe edgecases
-		return (NULL);
-	while (current_token != NULL)
-	{
-		if (get_token_type(current_token->val) == REDIR_IN)
-			filetype = INPUT;
-		else if (get_token_type(current_token->val) == REDIR_OUT)
-			filetype = OUTPUT;
-		if (is_filename(current_token->val))
-		{
-			// redir_list = create_redir_struct(&redir_list, current_token->val);
-			printf("filetype before create_redir_struct %d\n", filetype);
-			redir_list = create_redir_struct(&redir_list, current_token, filetype);
-			if (redir_list == NULL)
-			{
-				printf("Failed to create redirection struct for: %s\n", current_token->val);
-				return (NULL);
-			}
+		// Try to process current token
+		if (!process_token(cmd_data, cur, &arg_index)) {
+			cleanup_args(cmd_data->args, arg_index);
+			return -1;
 		}
-		current_token = current_token->next;
+
+		prev = cur;
+		cur = cur->next;
 	}
-	if (redir_list == NULL)
-	{
-		printf("redir_list is NULL after creation\n");
-	}
-	// else
-	// {
-	// 	fprintf(stderr, "redir_list has been created\n");
-	// }
-	print_redir_list(redir_list);
-	// fprintf(stderr, "printed redir_list_done\n");
-	return (redir_list);
+
+	// Null-terminate args array
+	cmd_data->args[arg_index] = NULL;
+	return 0;
 }
 
-// const char *get_type_name(t_type type)
-// {
-//     switch (type) {
-//         case REDIR_IN: return "REDIR_IN";
-//         case REDIR_OUT: return "REDIR_OUT";
-//         case APPEND: return "APPEND";
-//         case HEREDOC: return "HEREDOC";
-//         case WORD: return "WORD";
-//         case PIPE: return "PIPE;
+// Main function to parse the token list and fill the command structure
+t_cmd*	fill_cmd(t_token* token_list, t_redir* redir_list)
+{
+	t_cmd* head = NULL; // Head of the command list
+	t_cmd* tail = NULL; // Tail of the command list
+	t_cmd* cmd_data;
+	size_t arg_count;
+
+	// Start parsing the token list
+	while (token_list != NULL)
+	{
+		if (token_list->type != WORD)
+		{
+			fprintf(stderr, "Error: First token is not a command (WORD)\n");
+			free_cmd_list(head);
+			return NULL;
+		}
+
+		// Create a new command node
+		cmd_data = create_new_cmd_node(token_list->val, redir_list);
+		if (!cmd_data)
+		{
+			free_cmd_list(head);
+			return NULL;
+		}
+
+		// Count the arguments for this command
+		arg_count = count_arguments(token_list->next);
+		printf("argcount %ld\n", arg_count);
+		// Fill the arguments for the command
+		if (fill_arguments(cmd_data, token_list->next, arg_count) < 0)
+		{
+			free_cmd_list(head);
+			return NULL;
+		}
+
+		// Add the command to the command list
+		if (head == NULL)
+		{
+			head = cmd_data; // Set head if list is empty
+			tail = cmd_data; // Initialize tail
+		}
+		else
+		{
+			tail->next = cmd_data; // Link the new command
+			tail = cmd_data; // Update tail
+		}
+
+		// Move to the next token (after the pipe if it exists)
+		t_token* cur = token_list->next;
+		while (cur != NULL && cur->type != PIPE)
+			cur = cur->next;
+		if (cur != NULL && cur->type == PIPE)
+			token_list = cur->next;
+		else
+			break; // Exit if no more commands
+	}
+	return (head); // Return the head of the command list
+}

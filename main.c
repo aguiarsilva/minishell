@@ -96,8 +96,6 @@ void	print_cmd(t_cmd* command)
 	printf("cmd_list contains %ld cmds\n", lst_size);
 }
 
-
-
 void	print_env_list(t_env *lst)
 {
 	t_env	*current;
@@ -128,7 +126,7 @@ int	main(const int argc, char *argv[], char *env[])
 	else
  		result = concat_argv(argc, argv); // just for faster debugging
 	dup_env = create_env(env, argv);
-	// print_env_list(dup_env);
+	print_env_list(dup_env);
 	dup_env_array = env_list_to_array(dup_env);
 	token_list = build_list(result, env);
 	assign_token_type(token_list);

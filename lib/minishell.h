@@ -28,6 +28,7 @@
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
 
+// delete not needed fuction later
 int		print_error_msg(char *error);
 void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
@@ -36,5 +37,9 @@ void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
 void	print_fd_debug(const char *message);
 // utils.c
 void	*safe_malloc(size_t size);
+char	*ft_strncpy(char *dest, const char *src, int n);
+char	*ft_strcpy(char *dest, const char *src);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_isspace(int c);
 #endif //MINISHELL_H
 
