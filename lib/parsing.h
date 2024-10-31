@@ -126,7 +126,7 @@ void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
 char *handle_single_quotes(const char *input, int *i);
 char *handle_double_quotes(const char *input, int *i, char **env);
-char handle_escape_sequence(const char *input, int *i);
+char handle_escape_sequence(const char *input, int *i, bool interpret);
 char *handle_env_variable(const char *input, int *i, char **env);
 
 

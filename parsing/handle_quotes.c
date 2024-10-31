@@ -24,7 +24,7 @@ char *handle_double_quotes(const char *input, int *i, char **env) {
 
     while (input[*i] != '"' && input[*i] != '\0') {
         if (input[*i] == '\\') { // Handle escape sequences
-            buffer[buf_index++] = handle_escape_sequence(input, i);
+            buffer[buf_index++] = handle_escape_sequence(input, i, false);
         } else if (input[*i] == '$') { // Handle environment variables
             char *env_var = handle_env_variable(input, i, env);
             if (env_var) {
@@ -44,21 +44,50 @@ char *handle_double_quotes(const char *input, int *i, char **env) {
     return buffer; // Return the string inside double quotes
 }
 
-char handle_escape_sequence(const char *input, int *i) {
+// char handle_escape_sequence(const char *input, int *i)
+// {
+//     if (input[*i] == '\\') {
+//         (*i)++; // Move past the backslash
+//         if (input[*i] == 'n') {
+//             (*i)++;
+//             return '\n'; // Return newline character
+//         } else if (input[*i] == 't') {
+//             (*i)++;
+//             return '\t'; // Return tab character
+//         } else if (input[*i] == '\\') {
+//             (*i)++;
+//             return '\\'; // Return a literal backslash
+//         }
+//         // Return the next character as-is if not a recognized escape sequence
+//         return input[(*i)++];
+//     }
+//     return input[(*i)++]; // If not an escape sequence, return the current character
+// }
+
+#include <stdio.h>
+#include <stdbool.h>
+
+// Updated handle_escape_sequence to handle printing of escape characters
+char handle_escape_sequence(const char *input, int *i, bool interpret) {
     if (input[*i] == '\\') {
         (*i)++; // Move past the backslash
-        if (input[*i] == 'n') {
-            (*i)++;
-            return '\n'; // Return newline character
-        } else if (input[*i] == 't') {
-            (*i)++;
-            return '\t'; // Return tab character
-        } else if (input[*i] == '\\') {
-            (*i)++;
-            return '\\'; // Return a literal backslash
+
+        // Handle interpreted escape sequences
+        if (interpret) {
+            if (input[*i] == 'n') {
+                (*i)++;
+                return '\n'; // Return newline character
+            } else if (input[*i] == 't') {
+                (*i)++;
+                return '\t'; // Return tab character
+            } else if (input[*i] == '\\') {
+                (*i)++;
+                return '\\'; // Return a literal backslash
+            }
         }
-        // Return the next character as-is if not a recognized escape sequence
-        return input[(*i)++];
+
+        // If not interpreting, return backslash + next character as-is
+        return '\\';
     }
     return input[(*i)++]; // If not an escape sequence, return the current character
 }
@@ -76,5 +105,6 @@ char *handle_env_variable(const char *input, int *i, char **env)
 
     // Fetch the variable value from the environment
     char *var_value = getenv(var_name);
+    fprintf("var_value: %s\n", var_value);
     return (var_value ? var_value : "");  // Return the value or an empty string if not found
 }

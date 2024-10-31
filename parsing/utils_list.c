@@ -76,6 +76,24 @@ int	ft_isspace(int c)
 	return (0);
 }
 
+bool is_quoted(const char *input)
+{
+    int len = strlen(input);
+
+    // Check if string length is at least 2 to have matching start and end quotes
+    if (len < 2) {
+        return false;
+    }
+
+    // Check if first and last characters are matching quotes
+    if ((input[0] == '\'' && input[len - 1] == '\'') ||
+        (input[0] == '"' && input[len - 1] == '"')) {
+        return true;
+        }
+
+    return false; // Not properly quoted
+}
+
 t_token *build_list(char *input, char **env) {
     t_token *head = NULL;
     t_token *tail = NULL;
@@ -83,7 +101,10 @@ t_token *build_list(char *input, char **env) {
     int len = ft_strlen(input);
     char buffer[1024];  // Buffer to store current token
     int buf_index = 0;
+    bool quoted_string = false;
 
+    quoted_string = is_quoted(input);
+    fprintf(stderr, "The value of bool flag is: %s\n", quoted_string ? "true" : "false");
     while (i < len) {
         // Skip whitespace
         while (i < len && ft_isspace(input[i])) {
@@ -105,6 +126,7 @@ t_token *build_list(char *input, char **env) {
 
         // Handle quotes
         if (input[i] == '\'') {
+            fprintf(stderr, "single quote if \n");
             char *quote_content = handle_single_quotes(input, &i);
             if (quote_content) {
                 ft_strcpy(buffer + buf_index, quote_content);
@@ -112,16 +134,24 @@ t_token *build_list(char *input, char **env) {
                 free(quote_content);
             }
         } else if (input[i] == '"') {
+            fprintf(stderr, "double quote if \n");
             char *quote_content = handle_double_quotes(input, &i, env);
             if (quote_content) {
                 ft_strcpy(buffer + buf_index, quote_content);
                 buf_index += ft_strlen(quote_content);
                 free(quote_content);
             }
-        } else if (input[i] == '\\') {
+        } else if (input[i] == '\\' && quoted_string == true) {
+            fprintf(stderr, "double slash if \n");
             // Collect escape sequences
-            buffer[buf_index++] = handle_escape_sequence(input, &i);
-        } else if (input[i] == '$') {
+            buffer[buf_index++] = handle_escape_sequence(input, &i, false);
+            while (i < len && !ft_isspace(input[i]) && input[i] != '|' &&
+       input[i] != '\'' && input[i] != '"' && input[i] != '\\' && input[i] != '$')
+            {
+                buffer[buf_index++] = input[i++];
+            }
+        } else if (input[i] == '$'){
+            fprintf(stderr, "$ if \n");
             char *env_var = handle_env_variable(input, &i, env);
             if (env_var) {
                 ft_strcpy(buffer + buf_index, env_var);
@@ -129,9 +159,9 @@ t_token *build_list(char *input, char **env) {
                 // free(env_var); // should not be freed because its a static string and no malloc was used
             }
         } else {
-            // Collect normal characters for the token
+            fprintf(stderr, "else if \n");
             while (i < len && !ft_isspace(input[i]) && input[i] != '|' &&
-                   input[i] != '\'' && input[i] != '"' && input[i] != '\\' && input[i] != '$') {
+                    input[i] != '"' && input[i] != '$') {
                 buffer[buf_index++] = input[i++];
             }
         }
