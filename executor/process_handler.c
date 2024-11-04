@@ -1,63 +1,6 @@
 
 #include "../lib/minishell.h"
 
-//static void	run_pipeline(t_cmd *cmd_list, char *env[]) // working
-//{
-//	int		pipe_fd[2];
-//	int		prev_pipe_fd[2];
-//	size_t	cmd_position;
-//	pid_t	process_id;
-//	int		status;
-//	t_cmd	*current;
-//
-//	cmd_position = 0;  // Track position instead of count
-//	init_pipe_fds(pipe_fd, prev_pipe_fd);
-//	current = cmd_list;
-//
-//	while (current != NULL)
-//	{
-//		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n", current->cmd, cmd_position);
-//
-//		if (current->next != NULL)
-//		{
-//			if (pipe(pipe_fd) == -1)
-//				print_error_msg_and_exit(ERR_PIPE);
-//			fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
-//		}
-//
-//		process_id = fork();
-//		if (process_id == -1)
-//			print_error_msg_and_exit(ERR_FORK);
-//
-//		if (process_id == 0)
-//		{
-//			handle_child_process(current, env, prev_pipe_fd, pipe_fd, cmd_position);
-//			exit(EXIT_FAILURE); // Should not reach here
-//		}
-//
-//		// Parent process
-//		fprintf(stderr, "DEBUG: Parent process\n");
-//		if (cmd_position > 0)
-//		{
-//			close(prev_pipe_fd[0]);
-//			close(prev_pipe_fd[1]);
-//		}
-//
-//		if (current->next != NULL)
-//		{
-//			prev_pipe_fd[0] = pipe_fd[0];
-//			prev_pipe_fd[1] = pipe_fd[1];
-//		}
-//
-//		current = current->next;
-//		cmd_position++;
-//	}
-//
-//	// Wait for all child processes
-//	while (wait(&status) > 0)
-//		continue;
-//}
-
 static pid_t	create_process(void)
 {
 	pid_t	process_id;
@@ -99,7 +42,7 @@ static void	execute_command(t_cmd *current, char *env[],
 static void	run_pipeline(t_cmd *cmd_list, char *env[])
 {
 	int		pipe_fd[2];
-	int		prev_pipe_fd[2];
+	int		prev_pipe_fd[2]; // maybe combine this into a struct
 	size_t	cmd_position;
 	t_cmd	*current;
 

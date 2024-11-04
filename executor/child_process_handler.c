@@ -1,26 +1,21 @@
 
 #include "../lib/minishell.h"
 
-static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
+static void handle_first_command(t_cmd *cmd, int pipe_fd[2])
 {
 	fprintf(stderr, "DEBUG: First command setup\n");
 
-	// Set up pipe first if it exists
+	// Handle input redirections if present
+	if (cmd->redir)
+		handle_input_redirections(cmd);
+
+	// Set up pipe output if there's a next command
 	if (cmd->next && pipe_fd[1] != -1)
 	{
-		fprintf(stderr, "DEBUG: Setting up pipe output. pipe_fd[1]: %d\n", pipe_fd[1]);
+		fprintf(stderr, "DEBUG: Setting up pipe output for first command\n");
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
-	}
-
-	// Handle file redirections after pipe setup
-	if (cmd->redir)
-	{
-		handle_file_redirections(cmd);
-		fprintf(stderr, "DEBUG: After file redir - stdin: %d, stdout: %d\n",
-				fcntl(STDIN_FILENO, F_GETFD),
-				fcntl(STDOUT_FILENO, F_GETFD));
 	}
 }
 
@@ -57,56 +52,18 @@ static void	handle_last_command(t_cmd *cmd, int prev_pipe_fd[2])
 
 // Main child process handler
 void	handle_child_process(t_cmd *cmd, char *env[],
-							int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count)
+							int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_position)
 {
 	fprintf(stderr, "DEBUG: Child process for command: %s\n", cmd->cmd);
 
-	if (cmd_count == 0) // First command
-	{
-		fprintf(stderr, "DEBUG: First command setup\n");
-
-		// Handle input redirections first
-		if (cmd->redir)
-		{
-			handle_input_redirections(cmd);
-		}
-
-		// Then set up pipe output if there's a next command
-		if (cmd->next && pipe_fd[1] != -1)
-		{
-			fprintf(stderr, "DEBUG: Setting up pipe output for first command\n");
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
-			close(pipe_fd[0]);
-		}
-	}
-	else if (!cmd->next) // Last command
-	{
+	// Handle command based on its position in the pipeline
+	if (cmd_position == 0)
+		handle_first_command(cmd, pipe_fd);
+	else if (!cmd->next)
 		handle_last_command(cmd, prev_pipe_fd);
-	}
-	else // Middle command
-	{
-		handle_middle_command(cmd, prev_pipe_fd, pipe_fd, cmd_count);
-	}
-
+	else
+		handle_middle_command(cmd, prev_pipe_fd, pipe_fd, cmd_position);
 	print_fd_debug("DEBUG: Final FDs before exec");
 	run_builtin_or_execute(cmd, env);
 }
 
-//// Create child process
-//pid_t	create_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], int original_stdout)
-//{
-//	pid_t	process_id;
-//	size_t	cmd_count;
-//	process_id = fork();
-//	cmd_count = get_cmd_data_list_size(cmd);
-//	if (process_id < 0)
-//		print_error_msg_and_exit(ERR_FORK);
-//	if (process_id == 0)
-//	{
-//		if (original_stdout != -1)
-//			close(original_stdout);
-//		handle_child_process(cmd, env, prev_pipe_fd, pipe_fd, cmd_count);
-//	}
-//	return (process_id);
-//}
