@@ -18,6 +18,7 @@ void	run_cmd(t_cmd *cmd_data, char *env[]);
 
 //child_process_handler.c
 pid_t	create_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], int original_stdout);
+void	handle_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 
 //pipe_utils.c
 void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2]);
@@ -28,6 +29,7 @@ void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2]);
 //redirections.c
 void	handle_file_redirections(t_cmd *cmd);
 void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
+void	handle_input_redirections(t_cmd *cmd);
 
 //exebuildin.c
 int		run_builtin(t_cmd *cmd_data, char **env);

@@ -1,40 +1,123 @@
 
 #include "../lib/minishell.h"
 
-// Main pipeline function
+//static void	run_pipeline(t_cmd *cmd_list, char *env[]) // working
+//{
+//	int		pipe_fd[2];
+//	int		prev_pipe_fd[2];
+//	size_t	cmd_position;
+//	pid_t	process_id;
+//	int		status;
+//	t_cmd	*current;
+//
+//	cmd_position = 0;  // Track position instead of count
+//	init_pipe_fds(pipe_fd, prev_pipe_fd);
+//	current = cmd_list;
+//
+//	while (current != NULL)
+//	{
+//		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n", current->cmd, cmd_position);
+//
+//		if (current->next != NULL)
+//		{
+//			if (pipe(pipe_fd) == -1)
+//				print_error_msg_and_exit(ERR_PIPE);
+//			fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
+//		}
+//
+//		process_id = fork();
+//		if (process_id == -1)
+//			print_error_msg_and_exit(ERR_FORK);
+//
+//		if (process_id == 0)
+//		{
+//			handle_child_process(current, env, prev_pipe_fd, pipe_fd, cmd_position);
+//			exit(EXIT_FAILURE); // Should not reach here
+//		}
+//
+//		// Parent process
+//		fprintf(stderr, "DEBUG: Parent process\n");
+//		if (cmd_position > 0)
+//		{
+//			close(prev_pipe_fd[0]);
+//			close(prev_pipe_fd[1]);
+//		}
+//
+//		if (current->next != NULL)
+//		{
+//			prev_pipe_fd[0] = pipe_fd[0];
+//			prev_pipe_fd[1] = pipe_fd[1];
+//		}
+//
+//		current = current->next;
+//		cmd_position++;
+//	}
+//
+//	// Wait for all child processes
+//	while (wait(&status) > 0)
+//		continue;
+//}
+
+static pid_t	create_process(void)
+{
+	pid_t	process_id;
+
+	process_id = fork();
+	if (process_id == -1)
+		print_error_msg_and_exit(ERR_FORK);
+	return (process_id);
+}
+
+static void	create_pipe(int pipe_fd[2])
+{
+	if (pipe(pipe_fd) == -1)
+		print_error_msg_and_exit(ERR_PIPE);
+	fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
+}
+
+static void	execute_command(t_cmd *current, char *env[],
+							int prev_pipe_fd[2], int pipe_fd[2],
+							size_t cmd_position)
+{
+	pid_t	process_id;
+
+	if (current->next != NULL)
+		create_pipe(pipe_fd);
+
+	process_id = create_process();
+
+	if (process_id == 0)
+	{
+		handle_child_process(current, env, prev_pipe_fd, pipe_fd, cmd_position);
+		exit(EXIT_FAILURE); // Should not reach here
+	}
+
+	// Parent process handling
+	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
+}
+
 static void	run_pipeline(t_cmd *cmd_list, char *env[])
 {
 	int		pipe_fd[2];
 	int		prev_pipe_fd[2];
-	size_t	cmd_count;
-	int		original_stdout;
-	pid_t	process_id;
+	size_t	cmd_position;
+	t_cmd	*current;
 
-	cmd_count = 0;
+	cmd_position = 0;
 	init_pipe_fds(pipe_fd, prev_pipe_fd);
-	original_stdout = dup(STDOUT_FILENO);
-	fprintf(stderr, "DEBUG: Original stdout: %d\n", original_stdout);
-	while (cmd_list != NULL)
+	current = cmd_list;
+
+	while (current != NULL)
 	{
-		fprintf(stderr, "DEBUG: Processing command: %s\n", cmd_list->cmd);
+		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n",
+				current->cmd, cmd_position);
 
-		create_pipe_if_needed(cmd_list, pipe_fd);
+		execute_command(current, env, prev_pipe_fd, pipe_fd, cmd_position);
 
-		process_id = create_child_process(cmd_list, env, prev_pipe_fd,
-										  pipe_fd, original_stdout);
-
-		if (process_id > 0) // Parent process
-			handle_parent_pipes_and_process(process_id, cmd_list,
-				prev_pipe_fd, pipe_fd);
-
-		cmd_list = cmd_list->next;
-		cmd_count++;
+		current = current->next;
+		cmd_position++;
 	}
 
-	// Cleanup // seems to do nothing
-//	close_pipe_fds(prev_pipe_fd);
-//	if (original_stdout != -1)
-//		close(original_stdout);
 }
 
 void	run_builtin_or_execute(t_cmd *cmd_data, char *env[])

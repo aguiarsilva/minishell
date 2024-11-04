@@ -98,7 +98,6 @@ t_token* build_list(char* input, char** env)
 		}
 		else
 		{
-			fprintf(stderr, "else if \n");
 			while (i < len && !ft_isspace(input[i]) && input[i] != '|' &&
 				input[i] != '"' && input[i] != '$')
 			{

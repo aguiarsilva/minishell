@@ -7,6 +7,7 @@
 # include "executor.h"
 # include "parsing.h"
 # include "builtins.h"
+# include "lexer.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>

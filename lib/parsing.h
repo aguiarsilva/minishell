@@ -25,7 +25,6 @@ typedef struct s_prompt
 	char	*whitespace;
 }	t_prompt;
 
-
 typedef struct s_redir
 {
 	char			*file_name;
@@ -49,6 +48,7 @@ typedef struct s_cmd
 	int				builtin;
 	t_redir			*redir;
 	struct s_cmd	*next;
+//	int				saved_stdout;
 }	t_cmd;
 
 /*check.c*/
