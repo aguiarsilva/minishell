@@ -26,90 +26,10 @@ char* concat_argv(int argc, char* argv[])
 		strcat(one_dim_array, argv[i]);
 	}
 
-	return one_dim_array; // Return the concatenated string
+	return (one_dim_array); // Return the concatenated string
 }
 
-void print_token(t_token* token)
-{
-	int index = 0; // Index to keep track of the position in the list
 
-	while (token != NULL)
-	{
-		printf("Token %d: \n", index);
-		printf("  Value: %s\n", token->val ? token->val : "(null)");
-		printf("  Type: %d\n", token->type); // Print the token type
-		token = token->next; // Move to the next token
-		index++; // Increment index
-	}
-}
-
-void	print_cmd(t_cmd* command)
-{
-	int	i;
-	size_t	lst_size;
-//	t_cmd	*current;
-
-	lst_size = 0;
-	// Check if the command list is empty
-	if (command == NULL)
-	{
-		printf("Command list is empty.\n");
-		return;
-	}
-
-	// Iterate through the list of commands
-	while (command != NULL)
-	{
-		i = 0;
-
-		// Print command (cmd)
-		if (command->cmd != NULL)
-		{
-			printf("\nCommand: %s\n", command->cmd);
-		} else
-		{
-			printf("Command: (null)\n");
-		}
-
-		// Print arguments (args)
-		if (command->args != NULL)
-		{
-			printf("Arguments:\n");
-			while (command->args[i] != NULL)
-			{
-				printf("  Arg[%d]: %s\n", i, command->args[i]);
-				i++;
-			}
-		}
-		else
-		{
-			printf("Arguments: (null)\n");
-		}
-
-		// Print built-in status
-		printf("Built-in: %d\n", command->builtin);
-
-		// Move to the next command in the list
-		lst_size++;
-		command = command->next;
-	}
-	printf("cmd_list contains %ld cmds\n", lst_size);
-}
-
-void	print_env_list(t_env *lst)
-{
-	t_env	*current;
-
-	current = lst;
-	while (current)
-	{
-		printf("Key: %s, Value: %s, EC: %d\n",
-			current->key ? current->key : "(null)",
-			current->value ? current->value : "(null)",
-			current->exit_code);
-		current = current->next;
-	}
-}
 
 // everything before will be moved out of main
 int	main(const int argc, char *argv[], char *env[])
@@ -128,7 +48,9 @@ int	main(const int argc, char *argv[], char *env[])
 	dup_env = create_env(env, argv);
 //	print_env_list(dup_env);
 	dup_env_array = env_list_to_array(dup_env);
-	token_list = build_list(result, env);
+	token_list = build_list(result, dup_env_array);
+	if (!dup_env)
+		return (1);
 	assign_token_type(token_list);
 	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);

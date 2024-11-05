@@ -35,9 +35,11 @@ add_executable(minishell
         executor/redirections.c
         executor/pipe_utils.c
         executor/process_handler.c
-        builtins/env_list.c
+        env_list.c
         parsing/redir_token.c
         lexer/lexer.c
+        printer.c
+        env_list_utils.c
 
 )
 

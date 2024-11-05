@@ -1,42 +1,6 @@
 
-#include "../lib/minishell.h"
+#include "lib/minishell.h"
 
-// Helper function to convert t_env linked list to char**
-char **env_list_to_array(t_env *env_list)
-{
-	int		env_count;
-	t_env	*current;
-	size_t	key_len;
-	size_t	value_len;
-
-	env_count = 0;
-	current = env_list;
-	while (current != NULL)
-	{
-		env_count++;
-		current = current->next;
-	}
-
-	char **env_array = (char **)malloc(sizeof(char *) * (env_count + 1));
-
-	// Convert the linked list to the array
-	current = env_list;
-	int i = 0;
-	while (current != NULL)
-	{
-		key_len = strlen(current->key);
-		value_len = strlen(current->value);
-		env_array[i] = malloc(key_len + value_len + 2);
-		ft_strcpy(env_array[i], current->key);
-		env_array[i][key_len] = '=';
-		ft_strcpy(env_array[i] + key_len + 1, current->value);
-		i++;
-		current = current->next;
-	}
-	env_array[i] = NULL;
-
-	return (env_array);
-}
 t_env	*create_env_node(char *key, char *value)
 {
 	t_env	*node;
@@ -75,43 +39,13 @@ static void	split_env_variable(char *env_var, char **key, char **value)
 	*value = ft_substr(delimiter + 1, 0, ft_strlen(env_var) - (offset));
 }
 
-static void	free_env_node(t_env *node)
-{
-	if (node)
-	{
-		if (node->key)
-			free(node->key);
-		if (node->value)
-			free(node->value);
-		free(node);
-	}
-}
-
-static void	free_env_list(t_env **env_lst)
-{
-	t_env	*current;
-
-	while (*env_lst)
-	{
-		current = *env_lst;
-		*env_lst = (*env_lst)->next;
-		if (current->key)
-			free(current->key);
-		if (current->value)
-			free(current->value);
-		free(current);
-	}
-}
-
 void	env_lst_addback(t_env **lst, t_env *new)
 {
 	t_env	**current;
 	char	*current_key;
 	char	*current_value;
 
-
 	current = lst;
-
 	while (*current)
 	{
 		current_key = (*current)->key;
@@ -131,21 +65,6 @@ void	env_lst_addback(t_env **lst, t_env *new)
 		current = &(*current)->next;
 	}
 	*current = new;
-}
-
-void	print_node(t_env *node) // debug only
-{
-	t_env	*current;
-
-	current = node;
-	while (current)
-	{
-		printf("Key: %s, Value: %s, EC: %d\n",
-			current->key ? current->key : "(null)",
-			current->value ? current->value : "(null)",
-			current->exit_code);
-		current = current->next;
-	}
 }
 
 static t_env	*initialize_base_env(char **argv)
@@ -177,7 +96,7 @@ t_env	*create_env(char **ori_env, char **argv)
 	{
 		split_env_variable(ori_env[i], &key, &value);
 		new_node = create_env_node(key, value);
-		// print_node(new_node);
+		// print_env_node(new_node); // for debug only
 		env_lst_addback(&dup_env_lst, new_node);
 		free(key);
 		free(value);

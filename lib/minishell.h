@@ -29,7 +29,7 @@
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
 
-// delete not needed fuction later
+// error.c delete not needed fuction later
 int		print_error_msg(char *error);
 void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
@@ -42,5 +42,17 @@ char	*ft_strncpy(char *dest, const char *src, int n);
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isspace(int c);
+
+// printer.c
+void	print_env_list(t_env *lst);
+void	print_env_node(t_env *node);
+void	print_token(t_token *token);
+void	print_redir_list(t_redir *redir_head);
+void	print_cmd(t_cmd *command);
+
+// env_list_utils.c
+char	**env_list_to_array(t_env *env_list);
+void	free_env_node(t_env *node);
+void	free_env_list(t_env **env_lst);
 #endif //MINISHELL_H
 

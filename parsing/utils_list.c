@@ -16,7 +16,7 @@ static bool is_quoted(const char* input)
 	return (false); // Not properly quoted
 }
 
-t_token* build_list(char* input, char** env)
+t_token*	build_list(char* input, char** env)
 {
 	t_token* head = NULL;
 	t_token* tail = NULL;
@@ -366,7 +366,7 @@ void add_command_to_list(t_cmd** head, t_cmd** tail, t_cmd* new_cmd)
 	}
 }
 
-void add_token_to_command(t_cmd* cmd, t_token* token)
+void	add_token_to_command(t_cmd* cmd, t_token* token)
 {
 	// Add the token value to the command arguments
 	size_t arg_count = 0; // Count existing arguments

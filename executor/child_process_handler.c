@@ -1,7 +1,7 @@
 
 #include "../lib/minishell.h"
 
-static void handle_first_command(t_cmd *cmd, int pipe_fd[2])
+static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
 {
 	fprintf(stderr, "DEBUG: First command setup\n");
 
