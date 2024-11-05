@@ -3,17 +3,17 @@
 t_type	get_token_type(char *token)
 {
 	if (ft_strcmp(token, "<") == 0)
-		return REDIR_IN;
+		return (REDIR_IN);
 	else if (ft_strcmp(token, ">") == 0)
-		return REDIR_OUT;
+		return (REDIR_OUT);
 	else if (ft_strcmp(token, ">>") == 0)
-		return APPEND;
+		return (APPEND);
 	else if (ft_strcmp(token, "<<") == 0)
-		return HEREDOC;
+		return (HEREDOC);
 	else if (ft_strcmp(token, "|") == 0)
-		return PIPE;
+		return (PIPE);
 	else
-		return WORD;  // Default type is WORD for commands/arguments
+		return (WORD);  // Default type is WORD for commands/arguments
 }
 
 

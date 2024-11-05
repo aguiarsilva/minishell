@@ -53,10 +53,8 @@ static void	run_pipeline(t_cmd *cmd_list, char *env[])
 	while (current != NULL)
 	{
 		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n",
-				current->cmd, cmd_position);
-
+			current->cmd, cmd_position);
 		execute_command(current, env, prev_pipe_fd, pipe_fd, cmd_position);
-
 		current = current->next;
 		cmd_position++;
 	}
@@ -85,9 +83,9 @@ void	run_process(t_cmd *cmd_list, char *env[])
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
-	if (cmd_count == 1)
-		run_builtin_or_execute(cmd_list, env); //
-	else if (cmd_count >= 2)
+//	if (cmd_count == 1)
+//		run_builtin_or_execute(cmd_list, env); // not properly tested to just remove single execution
+	if (cmd_count >= 1)
 	{
 		printf("run %ld cmds\n", cmd_count); //debug print
 		run_pipeline(cmd_list, env);

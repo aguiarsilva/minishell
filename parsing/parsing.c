@@ -1,11 +1,13 @@
 #include "../lib/minishell.h"
 
 // Function to free a command list in case of an error
-static void free_cmd_list(t_cmd* head)
+static void	free_cmd_list(t_cmd* head)
 {
+	t_cmd	*temp;
+
 	while (head != NULL)
 	{
-		t_cmd* temp = head;
+		temp = head;
 		head = head->next;
 		free(temp->cmd);
 		free(temp->args);
@@ -34,7 +36,7 @@ t_cmd*	create_new_cmd_node(char* token_val, t_redir* redir_list)
 }
 
 // Function to count the number of arguments in the token list (up to a pipe)
-static size_t count_arguments(t_token* token_list)
+static size_t	count_arguments(t_token *token_list)
 {
 	size_t		arg_count;
 	t_token*	cur;
@@ -50,100 +52,52 @@ static size_t count_arguments(t_token* token_list)
 	return (arg_count);
 }
 
-// // Function to fill the arguments array for a command
-// int fill_arguments(t_cmd* cmd_data, t_token* token_list, size_t arg_count)
-// {
-// 	size_t	i;
-// 	t_token*	cur;
-// 	t_token* prev; // Keep track of the previous token
-//
-// 	i = 0;
-// 	cur = token_list;
-// 	prev = NULL;
-// 	// Allocate space for arguments (+1 for NULL terminator)
-// 	cmd_data->args = safe_malloc((arg_count + 1) * sizeof(char*));
-// 	if (!cmd_data->args)
-// 		return (-1);
-//
-// 	// Populate the arguments array
-// 	while (cur != NULL && cur->type != PIPE)
-// 	{
-// 		// Skip the current token if the previous token was a REDIR_IN and the current one is a WORD
-// 		if (prev != NULL && prev->type == REDIR_OUT && get_token_type(cur->val) == WORD)
-// 		{
-// 			// Just skip this argument (it's the file name after the '<' redirection)
-// 			prev = cur;
-// 			cur = cur->next;
-// 			continue;
-// 		}
-//
-// 		// If it's a WORD token, copy it to the args array
-// 		if (get_token_type(cur->val) == WORD)
-// 		{
-// 			cmd_data->args[i] = ft_strdup(cur->val);
-// 			printf("cmd_data_args copied: %s\n", cmd_data->args[i]);
-// 			if (!cmd_data->args[i])
-// 			{
-// 				while (i > 0)
-// 				{
-// 					free(cmd_data->args[--i]);
-// 				}
-// 				free(cmd_data->args);
-// 				return -1;
-// 			}
-// 			i++;
-// 		}
-// 		// Move to the next token, updating `prev` and `cur`
-// 		prev = cur;
-// 		cur = cur->next;
-// 	}
-// 	cmd_data->args[i] = NULL; // Null-terminate the args array
-//
-// 	return (0);
-// }
-
-
 // Check if token should be skipped
-bool is_skippable_token(t_token* prev, t_token* cur)
+bool	is_skippable_token(t_token* prev, t_token* cur)
 {
 	// No previous token, can't be a redirection file
 	if (prev == NULL)
-		return false;
+		return (false);
 
 	// Not a redirection token
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
-		return false;
+		return (false);
 
 	// Not a word token (potential filename)
 	if (get_token_type(cur->val) != WORD)
-		return false;
+		return (false);
 
 	// If we've reached here, it's a redirection file
-	return true;
+	return (true);
 }
 
-// Clean up args array on error
-void cleanup_args(char** args, int count)
+void	cleanup_args(char** args, int count)
 {
-	for (int i = 0; i < count; i++) {
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
 		free(args[i]);
+		i++;
 	}
 	free(args);
 }
 
+
 // Process a single token into args array
-int process_token(t_cmd* cmd_data, t_token* cur, int* arg_index)
+int	process_token(t_cmd* cmd_data, t_token* cur, int* arg_index)
 {
 	if (get_token_type(cur->val) != WORD)
-		return 1;
+		return (1);
 
 	cmd_data->args[*arg_index] = ft_strdup(cur->val);
 	if (!cmd_data->args[*arg_index])
-		return 0;  // Allocation failed
+		return (0);  // Allocation failed
 
-	printf("Copied arg: %s\n", cmd_data->args[*arg_index]);
+//	ft_printf(stderr, "Copied arg: %s\n", cmd_data->args[*arg_index]); // broken print
 	(*arg_index)++;
-	return 1;
+	return (1);
 }
 
 // Main argument filling function
@@ -183,13 +137,15 @@ int fill_arguments(t_cmd* cmd_data, t_token* token_list, size_t arg_count)
 }
 
 // Main function to parse the token list and fill the command structure
-t_cmd*	fill_cmd(t_token* token_list, t_redir* redir_list)
+t_cmd*	fill_cmd(t_token *token_list, t_redir *redir_list)
 {
-	t_cmd* head = NULL; // Head of the command list
-	t_cmd* tail = NULL; // Tail of the command list
-	t_cmd* cmd_data;
-	size_t arg_count;
+	t_cmd	*head;
+	t_cmd	*tail;
+	t_cmd	*cmd_data;
+	size_t	arg_count;
 
+	head = NULL;
+	tail = NULL;
 	// Start parsing the token list
 	while (token_list != NULL)
 	{
@@ -210,12 +166,11 @@ t_cmd*	fill_cmd(t_token* token_list, t_redir* redir_list)
 
 		// Count the arguments for this command
 		arg_count = count_arguments(token_list->next);
-		printf("argcount %ld\n", arg_count);
 		// Fill the arguments for the command
 		if (fill_arguments(cmd_data, token_list->next, arg_count) < 0)
 		{
 			free_cmd_list(head);
-			return NULL;
+			return (NULL);
 		}
 
 		// Add the command to the command list

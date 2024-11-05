@@ -48,7 +48,7 @@ void	check_child_status(pid_t child_pid);
 //parent_process_handler.c
 void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);
 void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2]);
+
 //test.c
 t_cmd	*fill_cmd (t_token *words, t_redir *redir_list);
-char	*combine_command_and_args(char *cmd, char **args); // temporary
 #endif //EXECUTOR_H

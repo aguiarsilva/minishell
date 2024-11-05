@@ -123,7 +123,6 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 		printf("redir_list is NULL after creation\n"); // just debug will delete later
 
 //	print_redir_list(redir_list);
-	// fprintf(stderr, "printed redir_list_done\n");
 	return (redir_list);
 }
 

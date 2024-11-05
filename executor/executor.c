@@ -12,6 +12,35 @@
 
 #include "../lib/minishell.h"
 
+static char	*combine_command_and_args(char *cmd, char **args)
+{
+	size_t	cmd_length;
+	size_t	args_length;
+	int		i;
+	char	*full_cmd;
+
+	cmd_length = strlen(cmd);
+	args_length = 0;
+	i = 0;
+	while (args && args[i])
+	{
+		args_length += strlen(args[i]) + 1;
+		i++;
+	}
+	full_cmd = safe_malloc(cmd_length + args_length + 1);
+	if (!full_cmd)
+		exit(EXIT_FAILURE);
+	ft_strcpy(full_cmd, cmd);
+	i = 0;
+	while (args && args[i])
+	{
+		ft_strcat(full_cmd, " ");
+		ft_strcat(full_cmd, args[i]);
+		i++;
+	}
+	return (full_cmd);
+}
+
 void	run_cmd(t_cmd *cmd_data, char *env[])
 {
 	char	*full_cmd;

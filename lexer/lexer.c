@@ -1,3 +1,4 @@
+
 #include "../lib/minishell.h"
 
 t_token	*make_token(char *wd, t_type type)
@@ -23,10 +24,12 @@ t_token	*make_token(char *wd, t_type type)
 
 void	assign_token_type(t_token *token_list)
 {
-	t_token *current = token_list;
+	t_token	*current;
+
+	current = token_list;
 	while (current != NULL)
 	{
-		current->type = get_token_type(current->val);  // Assign type based on the value
-		current = current->next;  // Move to the next token in the list
+		current->type = get_token_type(current->val);
+		current = current->next;
 	}
 }

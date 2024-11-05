@@ -46,11 +46,11 @@ int	main(const int argc, char *argv[], char *env[])
 	else
  		result = concat_argv(argc, argv); // just for faster debugging
 	dup_env = create_env(env, argv);
+	if (!dup_env)
+		return (1);
 //	print_env_list(dup_env);
 	dup_env_array = env_list_to_array(dup_env);
 	token_list = build_list(result, dup_env_array);
-	if (!dup_env)
-		return (1);
 	assign_token_type(token_list);
 	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
