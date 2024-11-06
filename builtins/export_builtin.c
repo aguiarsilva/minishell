@@ -108,6 +108,13 @@ int	export_builtin(char** args, t_env** env_list)
 		i++;
 	}
 	printf("i = %d\n", i);
+	if (args[0] == NULL)
+	{
+		printf("export no arguments");
+		print_env_list(*env_list);
+		return (0);
+	}
+	//
 	if (args[0] && args[1] == NULL) // combine them if no spaces are there
 	{
 		sign = ft_strchr(args[0], '=');
