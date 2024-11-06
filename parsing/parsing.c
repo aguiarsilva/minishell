@@ -166,6 +166,7 @@ t_cmd*	fill_cmd(t_token *token_list, t_redir *redir_list)
 
 		// Count the arguments for this command
 		arg_count = count_arguments(token_list->next);
+		// fprintf(stderr, "argcount %lu\n", arg_count);
 		// Fill the arguments for the command
 		if (fill_arguments(cmd_data, token_list->next, arg_count) < 0)
 		{

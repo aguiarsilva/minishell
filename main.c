@@ -58,7 +58,7 @@ int	main(const int argc, char *argv[], char *env[])
 	print_cmd(cmd_data);
 	if (cmd_data == NULL)
 		return (-1);
-	run_process(cmd_data, dup_env_array);
+	run_process(cmd_data, dup_env_array, *dup_env);
 	free(result);
 }
 

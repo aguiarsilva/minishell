@@ -18,7 +18,7 @@ static void	create_pipe(int pipe_fd[2])
 	fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
 }
 
-static void	execute_command(t_cmd *current, char *env[],
+static void	execute_command(t_cmd *current, char *env[], t_env dup_env,
 							int prev_pipe_fd[2], int pipe_fd[2],
 							size_t cmd_position)
 {
@@ -31,7 +31,7 @@ static void	execute_command(t_cmd *current, char *env[],
 
 	if (process_id == 0)
 	{
-		handle_child_process(current, env, prev_pipe_fd, pipe_fd, cmd_position);
+		handle_child_process(current, env, dup_env, prev_pipe_fd, pipe_fd, cmd_position);
 		exit(EXIT_FAILURE); // Should not reach here
 	}
 
@@ -39,7 +39,7 @@ static void	execute_command(t_cmd *current, char *env[],
 	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
 }
 
-static void	run_pipeline(t_cmd *cmd_list, char *env[])
+static void	run_pipeline(t_cmd *cmd_list, char *env[], t_env dup_env)
 {
 	int		pipe_fd[2];
 	int		prev_pipe_fd[2]; // maybe combine this into a struct
@@ -54,17 +54,17 @@ static void	run_pipeline(t_cmd *cmd_list, char *env[])
 	{
 		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n",
 			current->cmd, cmd_position);
-		execute_command(current, env, prev_pipe_fd, pipe_fd, cmd_position);
+		execute_command(current, env, dup_env, prev_pipe_fd, pipe_fd, cmd_position);
 		current = current->next;
 		cmd_position++;
 	}
 
 }
 
-void	run_builtin_or_execute(t_cmd *cmd_data, char *env[])
+void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], t_env dup_env)
 {
 	if (cmd_data->builtin)
-		exit(run_builtin(cmd_data, env));
+		exit(run_builtin(cmd_data, env, &dup_env));
 	else
 	{
 		run_cmd(cmd_data, env);
@@ -72,7 +72,7 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[])
 	}
 }
 
-void	run_process(t_cmd *cmd_list, char *env[])
+void	run_process(t_cmd *cmd_list, char *env[], t_env dup_env)
 {
 	size_t	cmd_count;
 
@@ -83,11 +83,11 @@ void	run_process(t_cmd *cmd_list, char *env[])
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
-//	if (cmd_count == 1)
-//		run_builtin_or_execute(cmd_list, env); // not properly tested to just remove single execution
-	if (cmd_count >= 1)
+	if (cmd_count == 1)
+		run_builtin_or_execute(cmd_list, env, dup_env); // not properly tested to just remove single execution
+	else if (cmd_count >= 2)
 	{
 		printf("run %ld cmds\n", cmd_count); //debug print
-		run_pipeline(cmd_list, env);
+		run_pipeline(cmd_list, env, dup_env);
 	}
 }

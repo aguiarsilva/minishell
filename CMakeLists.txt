@@ -18,9 +18,9 @@ add_executable(minishell
         executor/executor.c
         executor/executor_utils.c
         executor/exebuiltins.c
-        executor/test.c
         builtins/echo.c
         builtins/builtins_utils.c
+        builtins/export_builtin.c
         parsing/cleanup.c
         parsing/parsing.c
         lexer/lexer.c
@@ -40,6 +40,8 @@ add_executable(minishell
         lexer/lexer.c
         printer.c
         env_list_utils.c
+        builtins/export_builtin.c
+        env_utils.c
 
 )
 
