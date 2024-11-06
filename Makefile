@@ -14,6 +14,7 @@ executor/executor_utils.c \
 executor/redirections.c \
 builtins/builtins_utils.c \
 builtins/echo.c \
+builtins/export_builtin.c \
 parsing/parsing.c \
 parsing/utils_list.c \
 parsing/handle_quotes.c \
@@ -22,6 +23,7 @@ lexer/lexer.c \
 lexer/lexer_utils.c \
 env_list.c \
 env_list_utils.c \
+env_utils.c \
 error.c \
 utils.c \
 printer.c \
