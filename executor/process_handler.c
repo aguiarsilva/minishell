@@ -67,7 +67,7 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], t_env dup_env)
 		exit(run_builtin(cmd_data, env, &dup_env));
 	else
 	{
-		run_cmd(cmd_data, env);
+		run_cmd(cmd_data, &dup_env);
 		print_error_msg_and_exit(ERR_UNKNOWN);
 	}
 }
@@ -83,11 +83,11 @@ void	run_process(t_cmd *cmd_list, char *env[], t_env dup_env)
 		return ;
 	}
 	cmd_count = get_cmd_data_list_size(cmd_list);
-	if (cmd_count == 1)
-		run_builtin_or_execute(cmd_list, env, dup_env); // not properly tested to just remove single execution
-	else if (cmd_count >= 2)
-	{
+	// if (cmd_count == 1)
+	// 	run_builtin_or_execute(cmd_list, env, dup_env); // not sure if i should should differentiate between one or more cmds
+	// else if (cmd_count >= 2)
+	// {
 		printf("run %ld cmds\n", cmd_count); //debug print
 		run_pipeline(cmd_list, env, dup_env);
-	}
+	// }
 }

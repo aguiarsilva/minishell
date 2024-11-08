@@ -87,7 +87,7 @@ char* combine_args(char** args, int start)
 	}
 }
 
-int	export_builtin(char** args, t_env** env_list)
+int	export_builtin(char** args, t_env** env_list) // an else case is missing
 {
 	int exit_code = 0;
 	int i = 0;

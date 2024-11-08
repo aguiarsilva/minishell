@@ -15,7 +15,7 @@ void	run_builtin_or_execute(t_cmd *cmd_data, char *env[], t_env dup_env);
 void	run_process(t_cmd *cmd_data, char *env[], t_env dup_env);
 
 //executor.c
-void	run_cmd(t_cmd *cmd_data, char *env[]);
+void	run_cmd(t_cmd *cmd_data, t_env *dup_env);
 
 //child_process_handler.c
 pid_t	create_child_process(t_cmd *cmd, char *env[], int prev_pipe_fd[2], int pipe_fd[2], int original_stdout);

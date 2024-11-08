@@ -12,7 +12,7 @@ int	run_builtin(t_cmd *cmd_data, char **env, t_env *env_list)
 		exit_code = echo(cmd_data);
 	else if (ft_strncmp(cmd_data->cmd, "export", ft_strlen(cmd_data->cmd)) == 0 && \
 			ft_strlen(cmd_data->cmd) == 6)
-		exit_code = export_builtin(cmd_data->args, &env_list); // Call export_builtin here
+		exit_code = export_builtin(cmd_data->args, &env_list);
 	return (exit_code);
 }
 
