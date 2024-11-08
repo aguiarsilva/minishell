@@ -32,7 +32,7 @@ char* concat_argv(int argc, char* argv[])
 
 
 // everything before will be moved out of main
-int	main(const int argc, char *argv[], char *env[])
+int	main(const int argc, char *argv[], char *env[])  // next step remove env env[] and use everywhere dup_env
 {
 	t_cmd	*cmd_data;
 	t_token	*token_list;
