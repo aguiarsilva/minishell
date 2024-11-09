@@ -51,7 +51,7 @@ static void	handle_last_command(t_cmd *cmd, int prev_pipe_fd[2])
 }
 
 // Main child process handler
-void	handle_child_process(t_cmd *cmd, char *env[], t_env dup_env,
+void	handle_child_process(t_cmd *cmd, t_env env_lst,
 							int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_position)
 {
 	fprintf(stderr, "DEBUG: Child process for command: %s\n", cmd->cmd);
@@ -64,6 +64,6 @@ void	handle_child_process(t_cmd *cmd, char *env[], t_env dup_env,
 	else
 		handle_middle_command(cmd, prev_pipe_fd, pipe_fd, cmd_position);
 	print_fd_debug("DEBUG: Final FDs before exec");
-	run_builtin_or_execute(cmd, env, dup_env);
+	run_builtin_or_execute(cmd, env_lst);
 }
 

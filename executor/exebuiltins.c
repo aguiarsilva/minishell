@@ -2,7 +2,7 @@
 #include "../lib/minishell.h"
 // add if for each build ins
 
-int	run_builtin(t_cmd *cmd_data, char **env, t_env *env_list)
+int	run_builtin(t_cmd *cmd_data, t_env *env_list)
 {
 	int	exit_code;
 

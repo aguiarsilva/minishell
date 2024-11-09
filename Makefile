@@ -2,7 +2,6 @@
 NAME = minishell
 # Directories and source files
 SRC = main.c \
-executor/test.c \
 executor/process_handler.c \
 executor/child_process_handler.c \
 executor/parent_process_handler.c \
