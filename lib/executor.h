@@ -8,17 +8,16 @@
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
 typedef struct s_redir	t_redir;
-typedef struct s_env    t_env;
+typedef struct s_env	t_env;
 
 //process_handler.c
-void	run_builtin_or_execute(t_cmd *cmd_data, t_env env_lst);
-void	run_process(t_cmd *cmd_data, t_env env_lst);
-
+void	run_builtin_or_execute(t_cmd *cmd_data, t_env **env_lst);
+void	run_process(t_cmd *cmd_list, t_env **env_lst);
 //executor.c
-void	run_cmd(t_cmd *cmd_data, t_env *env_lst);
+void	run_cmd(t_cmd *cmd_data, t_env **env_lst);
 
 //child_process_handler.c
-void	handle_child_process(t_cmd *cmd, t_env env_lst, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
+void	handle_child_process(t_cmd *cmd, t_env **env_lst, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 
 //pipe_utils.c
 void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2]);
@@ -32,7 +31,7 @@ void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], s
 void	handle_input_redirections(t_cmd *cmd);
 
 //exebuildin.c
-int		run_builtin(t_cmd *cmd_data, t_env *env_list);
+int		run_builtin(t_cmd *cmd_data, t_env **env_list);
 
 //executor_utils.c
 char	*get_env_value_by_name(char *envVarName, char **env);

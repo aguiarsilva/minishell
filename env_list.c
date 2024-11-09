@@ -82,13 +82,13 @@ static t_env	*initialize_base_env(char **argv)
 
 t_env	*create_env(char **ori_env, char **argv)
 {
-	t_env	*dup_env_lst;
+	t_env	*env_lst;
 	t_env	*new_node;
 	char	*key;
 	char	*value;
 	int		i;
 
-	dup_env_lst = NULL;
+	env_lst = NULL;
 	i = 0;
 	if (ori_env == NULL)
 		return (initialize_base_env(argv));
@@ -97,10 +97,10 @@ t_env	*create_env(char **ori_env, char **argv)
 		split_env_variable(ori_env[i], &key, &value);
 		new_node = create_env_node(key, value);
 		// print_env_node(new_node); // for debug only
-		env_lst_addback(&dup_env_lst, new_node);
+		env_lst_addback(&env_lst, new_node);
 		free(key);
 		free(value);
 		i++;
 	}
-	return (dup_env_lst);
+	return (env_lst);
 }

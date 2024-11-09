@@ -16,7 +16,7 @@ static bool is_quoted(const char* input)
 	return (false); // Not properly quoted
 }
 
-t_token*	build_list(char* input, char** env)
+t_token*	build_list(char* input, t_env *env_lst)
 {
 	t_token* head = NULL;
 	t_token* tail = NULL;
@@ -66,7 +66,7 @@ t_token*	build_list(char* input, char** env)
 		else if (input[i] == '"')
 		{
 			fprintf(stderr, "double quote if \n");
-			char* quote_content = handle_double_quotes(input, &i, env);
+			char* quote_content = handle_double_quotes(input, &i);
 			if (quote_content)
 			{
 				ft_strcpy(buffer + buf_index, quote_content);
@@ -88,7 +88,7 @@ t_token*	build_list(char* input, char** env)
 		else if (input[i] == '$')
 		{
 			fprintf(stderr, "$ if \n");
-			char* env_var = handle_env_variable(input, &i, env);
+			char* env_var = handle_env_variable(input, &i);
 			if (env_var)
 			{
 				ft_strcpy(buffer + buf_index, env_var);

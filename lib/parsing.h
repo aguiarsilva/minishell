@@ -101,7 +101,7 @@ char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
 /*utils_list.c*/
 // t_token *build_list(t_prompt *prompt, char *msg);
-t_token *build_list(char *input, char **env);
+t_token *build_list(char *input, t_env *lst);
 void	append_node(t_token **head, t_token **curr, t_token *new);
 void	nodes_init(t_token **head, t_token **cur, t_token **new);
 
@@ -119,9 +119,9 @@ t_cmd *build_command_list(char *input);
 void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
 char *handle_single_quotes(const char *input, int *i);
-char *handle_double_quotes(const char *input, int *i, char **env);
+char *handle_double_quotes(const char *input, int *i);
 char handle_escape_sequence(const char *input, int *i, bool interpret);
-char *handle_env_variable(const char *input, int *i, char **env);
+char *handle_env_variable(const char *input, int *i);
 
 
 #endif

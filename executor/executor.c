@@ -41,7 +41,7 @@ static char	*combine_command_and_args(char *cmd, char **args)
 	return (full_cmd);
 }
 
-void	run_cmd(t_cmd *cmd_data, t_env *env_lst)
+void	run_cmd(t_cmd *cmd_data, t_env **env_lst)
 {
 	char	*full_cmd;
 	char	**split_cmd;
@@ -50,7 +50,7 @@ void	run_cmd(t_cmd *cmd_data, t_env *env_lst)
 //	fprintf(stderr, "cmd_data->cmd: %s\n", cmd_data->cmd);
 	full_cmd = combine_command_and_args(cmd_data->cmd, cmd_data->args); // temporary
 	// fprintf(stderr, "full_cmd after combine call: %s\n", full_cmd);
-	env = env_list_to_array(env_lst);
+	env = env_list_to_array(*env_lst);
 	exec_path = get_exec_path(cmd_data->cmd, env);
 	split_cmd = parse_command_with_quotes(full_cmd);
 //	 fprintf(stderr, "Executable Path: %s\n", exec_path);

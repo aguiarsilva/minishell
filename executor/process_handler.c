@@ -18,7 +18,7 @@ static void	create_pipe(int pipe_fd[2])
 	fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
 }
 
-static void	execute_command(t_cmd *current, t_env env_lst,
+static void	execute_command(t_cmd *current, t_env **env_lst,
 							int prev_pipe_fd[2], int pipe_fd[2],
 							size_t cmd_position)
 {
@@ -39,7 +39,7 @@ static void	execute_command(t_cmd *current, t_env env_lst,
 	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
 }
 
-static void	run_pipeline(t_cmd *cmd_list, t_env env_lst)
+static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 {
 	int		pipe_fd[2];
 	int		prev_pipe_fd[2]; // maybe combine this into a struct
@@ -61,18 +61,18 @@ static void	run_pipeline(t_cmd *cmd_list, t_env env_lst)
 
 }
 
-void	run_builtin_or_execute(t_cmd *cmd_data, t_env env_lst)
+void	run_builtin_or_execute(t_cmd *cmd_data, t_env **env_lst)
 {
 	if (cmd_data->builtin)
-		exit(run_builtin(cmd_data, &env_lst));
+		exit(run_builtin(cmd_data, env_lst));
 	else
 	{
-		run_cmd(cmd_data, &env_lst);
+		run_cmd(cmd_data, env_lst);
 		print_error_msg_and_exit(ERR_UNKNOWN);
 	}
 }
 
-void	run_process(t_cmd *cmd_list, t_env env_lst)
+void	run_process(t_cmd *cmd_list, t_env **env_lst)
 {
 	size_t	cmd_count;
 
@@ -87,7 +87,7 @@ void	run_process(t_cmd *cmd_list, t_env env_lst)
 	// 	run_builtin_or_execute(cmd_list, env, dup_env); // not sure if i should should differentiate between one or more cmds
 	// else if (cmd_count >= 2)
 	// {
-		printf("run %ld cmds\n", cmd_count); //debug print
-		run_pipeline(cmd_list, env_lst);
+	printf("run %ld cmds\n", cmd_count); //debug print
+	run_pipeline(cmd_list, env_lst);
 	// }
 }
