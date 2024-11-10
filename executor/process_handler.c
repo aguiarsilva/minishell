@@ -58,7 +58,6 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 		current = current->next;
 		cmd_position++;
 	}
-
 }
 
 void	run_builtin_or_execute(t_cmd *cmd_lst, t_env **env_lst)
@@ -87,7 +86,14 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 	// 	run_builtin_or_execute(cmd_list, env, dup_env); // not sure if i should should differentiate between one or more cmds
 	// else if (cmd_count >= 2)
 	// {
-	printf("run %ld cmds\n", cmd_count); //debug print
-	run_pipeline(cmd_lst, env_lst);
-	// }
+	if (cmd_count == 1 && cmd_lst->builtin) // this works for cd without arguments
+	{
+		run_builtin(cmd_lst, env_lst);
+		return ;
+	}
+	else
+	{
+		printf("run %ld cmds\n", cmd_count); //debug print
+		run_pipeline(cmd_lst, env_lst);
+	}
 }

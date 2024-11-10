@@ -1,6 +1,6 @@
 
 #include "../lib/minishell.h"
-// add if for each build ins
+// add if for each builtins
 
 int	run_builtin(t_cmd *cmd_data, t_env **env_lst)
 {

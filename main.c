@@ -29,8 +29,53 @@ char* concat_argv(int argc, char* argv[])
 	return (one_dim_array); // Return the concatenated string
 }
 
-// everything before will be moved out of main
-int	main(const int argc, char *argv[], char *env[])
+//int	main(const int argc, char *argv[], char *env[]) //added while true to test cmds interacting with each other
+//{
+//	t_cmd	*cmd_lst;
+//	t_token	*token_list;
+//	t_redir	*redir_lst;
+//	char	*result;
+//	t_env	*env_lst;
+//
+//	env_lst = create_env(env, argv);
+//	if (argc <= 1)
+//	{
+//		while (1)
+//		{
+//			result = readline("");
+//			token_list = build_list(result, env_lst);
+//			assign_token_type(token_list);
+//			print_token(token_list);
+//			redir_lst = extract_redirection_list_from_tokens(token_list);
+//			cmd_lst = fill_cmd(token_list, redir_lst);
+//			print_cmd(cmd_lst);
+//			if (cmd_lst == NULL)
+//				return (-1);
+////			print_env_list(env_lst);
+//			run_process(cmd_lst, &env_lst);
+//		}
+//	}
+//	else
+//		result = concat_argv(argc, argv); // just for faster debugging
+//	env_lst = create_env(env, argv);
+//	if (!env_lst)
+//		return (1);
+////	print_env_list(env_lst);
+//	token_list = build_list(result, env_lst); // env_lst is not used in any function in build_list
+//	assign_token_type(token_list);
+//	print_token(token_list);
+//	redir_lst = extract_redirection_list_from_tokens(token_list);
+//	cmd_lst = fill_cmd(token_list, redir_lst);
+//	print_cmd(cmd_lst);
+//	if (cmd_lst == NULL)
+//		return (-1);
+//	run_process(cmd_lst, &env_lst);
+//	print_env_list(env_lst);
+//	free(result);
+//}
+
+//everything before will be moved out of main
+int	main(const int argc, char *argv[], char *env[]) // without while true for readline
 {
 	t_cmd	*cmd_lst;
 	t_token	*token_list;
@@ -42,7 +87,7 @@ int	main(const int argc, char *argv[], char *env[])
 	if (argc <= 1)
 		result = readline("");
 	else
- 		result = concat_argv(argc, argv); // just for faster debugging
+		result = concat_argv(argc, argv); // just for faster debugging
 	env_lst = create_env(env, argv);
 	if (!env_lst)
 		return (1);
@@ -58,6 +103,7 @@ int	main(const int argc, char *argv[], char *env[])
 	run_process(cmd_lst, &env_lst);
 	free(result);
 }
+
 
 
 
