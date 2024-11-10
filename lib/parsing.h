@@ -48,7 +48,6 @@ typedef struct s_cmd
 	int				builtin;
 	t_redir			*redir;
 	struct s_cmd	*next;
-//	int				saved_stdout;
 }	t_cmd;
 
 /*check.c*/

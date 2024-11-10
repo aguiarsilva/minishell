@@ -61,33 +61,33 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 
 }
 
-void	run_builtin_or_execute(t_cmd *cmd_data, t_env **env_lst)
+void	run_builtin_or_execute(t_cmd *cmd_lst, t_env **env_lst)
 {
-	if (cmd_data->builtin)
-		exit(run_builtin(cmd_data, env_lst));
+	if (cmd_lst->builtin)
+		exit(run_builtin(cmd_lst, env_lst));
 	else
 	{
-		run_cmd(cmd_data, env_lst);
+		run_cmd(cmd_lst, env_lst);
 		print_error_msg_and_exit(ERR_UNKNOWN);
 	}
 }
 
-void	run_process(t_cmd *cmd_list, t_env **env_lst)
+void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 {
 	size_t	cmd_count;
 
 	cmd_count = 0;
-	if (cmd_list == NULL)
+	if (cmd_lst == NULL)
 	{
 		printf("No commands to execute\n"); //debug print
 		return ;
 	}
-	cmd_count = get_cmd_data_list_size(cmd_list);
+	cmd_count = get_cmd_data_list_size(cmd_lst);
 	// if (cmd_count == 1)
 	// 	run_builtin_or_execute(cmd_list, env, dup_env); // not sure if i should should differentiate between one or more cmds
 	// else if (cmd_count >= 2)
 	// {
 	printf("run %ld cmds\n", cmd_count); //debug print
-	run_pipeline(cmd_list, env_lst);
+	run_pipeline(cmd_lst, env_lst);
 	// }
 }

@@ -42,6 +42,8 @@ add_executable(minishell
         env_list_utils.c
         builtins/export_builtin.c
         env_utils.c
+        builtins/pwd.c
+        builtins/cd.c
 
 )
 

@@ -2,7 +2,7 @@
 #include "../lib/minishell.h"
 // add if for each build ins
 
-int	run_builtin(t_cmd *cmd_data, t_env **env_list)
+int	run_builtin(t_cmd *cmd_data, t_env **env_lst)
 {
 	int	exit_code;
 
@@ -10,9 +10,15 @@ int	run_builtin(t_cmd *cmd_data, t_env **env_list)
 	if (ft_strncmp(cmd_data->cmd, "echo", ft_strlen(cmd_data->cmd)) == 0 && \
 			ft_strlen(cmd_data->cmd) == 4)
 		exit_code = echo(cmd_data);
-	else if (ft_strncmp(cmd_data->cmd, "export", ft_strlen(cmd_data->cmd)) == 0 && \
+	else if (!ft_strncmp(cmd_data->cmd, "export", ft_strlen(cmd_data->cmd)) && \
 			ft_strlen(cmd_data->cmd) == 6)
-		exit_code = export_builtin(cmd_data->args, env_list);
+		exit_code = export_builtin(cmd_data->args, env_lst);
+	else if (!ft_strncmp(cmd_data->cmd, "pwd", ft_strlen(cmd_data->cmd)) && \
+			ft_strlen(cmd_data->cmd) == 3)
+		exit_code = pwd();
+	else if (!ft_strncmp(cmd_data->cmd, "cd", ft_strlen(cmd_data->cmd)) && \
+			ft_strlen(cmd_data->cmd) == 2)
+		exit_code = cd_dir(cmd_data, *env_lst);
 	return (exit_code);
 }
 

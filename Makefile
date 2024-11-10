@@ -12,8 +12,10 @@ executor/executor.c \
 executor/executor_utils.c \
 executor/redirections.c \
 builtins/builtins_utils.c \
+builtins/cd.c \
 builtins/echo.c \
 builtins/export_builtin.c \
+builtins/pwd.c \
 parsing/parsing.c \
 parsing/utils_list.c \
 parsing/handle_quotes.c \

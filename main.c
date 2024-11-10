@@ -32,7 +32,7 @@ char* concat_argv(int argc, char* argv[])
 // everything before will be moved out of main
 int	main(const int argc, char *argv[], char *env[])
 {
-	t_cmd	*cmd_data;
+	t_cmd	*cmd_lst;
 	t_token	*token_list;
 	t_redir	*redir_lst;
 	char	*result;
@@ -51,11 +51,11 @@ int	main(const int argc, char *argv[], char *env[])
 	assign_token_type(token_list);
 	print_token(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);
-	cmd_data = fill_cmd(token_list, redir_lst);
-	print_cmd(cmd_data);
-	if (cmd_data == NULL)
+	cmd_lst = fill_cmd(token_list, redir_lst);
+	print_cmd(cmd_lst);
+	if (cmd_lst == NULL)
 		return (-1);
-	run_process(cmd_data, &env_lst);
+	run_process(cmd_lst, &env_lst);
 	free(result);
 }
 

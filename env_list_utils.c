@@ -70,3 +70,41 @@ void	free_env_list(t_env **env_lst)
 		free(current);
 	}
 }
+
+char	*get_key_in_env_lst(t_env *env_lst, char *key)
+{
+	char	*value;
+
+	value = NULL;
+	while (env_lst)
+	{
+		if (ft_strncmp(env_lst->key, key, ft_strlen(env_lst->key)) == 0)
+		{
+			value = ft_strdup(env_lst->value);
+			if (!value)
+				return (NULL);
+		}
+		env_lst = env_lst->next;
+	}
+	return (value);
+}
+
+int	set_value_in_env_lst(t_env *env_lst, char *key, char *value)
+{
+	while (env_lst)
+	{
+		if (ft_strncmp(env_lst->key, key, ft_strlen(env_lst->key)) == 0)
+		{
+			if (*env_lst->value != '\0')
+				free(env_lst->value);
+			if (!value)
+				env_lst->value = ft_strdup("\0");
+			else
+				env_lst->value = ft_strdup(value);
+			if (!env_lst->value)
+				return (1);
+		}
+		env_lst = env_lst->next;
+	}
+	return (0);
+}

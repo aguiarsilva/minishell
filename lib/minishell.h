@@ -21,6 +21,11 @@
 # define INPUT 1
 # define OUTPUT 2
 # define NOFILE 3
+# define CMD_NO_ARGUMENTS 0
+# define PATH_VALID 0
+# define ERR_NO_CUR_DIR "cd: error retrieving current directory: getcwd:"
+# define ERR_PARENT_DIR_ACCESS " cannot access parent directories: No such file or directory\n"
+# define ERR_NO_SUCH_DIR " No such file or directory\n"
 # define ERR_CMD "minishell: "
 # define ERR_DUP2 "Dup2 failed "
 # define ERR_FORK "Fork failed."
@@ -50,9 +55,13 @@ void	print_token(t_token *token);
 void	print_redir_list(t_redir *redir_head);
 void	print_cmd(t_cmd *command);
 
+//env_list.c
+t_env	*create_env(char **ori_env, char **argv);
 // env_list_utils.c
 char	**env_list_to_array(t_env *env_list);
 void	free_env_node(t_env *node);
 void	free_env_list(t_env **env_lst);
+char	*get_key_in_env_lst(t_env *env_lst, char *key);
+int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
 #endif //MINISHELL_H
 

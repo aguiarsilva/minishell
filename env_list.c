@@ -1,7 +1,7 @@
 
 #include "lib/minishell.h"
 
-t_env	*create_env_node(char *key, char *value)
+static t_env	*create_env_node(char *key, char *value)
 {
 	t_env	*node;
 	int		shell_level;
@@ -39,7 +39,7 @@ static void	split_env_variable(char *env_var, char **key, char **value)
 	*value = ft_substr(delimiter + 1, 0, ft_strlen(env_var) - (offset));
 }
 
-void	env_lst_addback(t_env **lst, t_env *new)
+static void	env_lst_addback(t_env **lst, t_env *new)
 {
 	t_env	**current;
 	char	*current_key;
