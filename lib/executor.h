@@ -49,5 +49,5 @@ void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);
 void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2]);
 
 //test.c
-t_cmd	*fill_cmd (t_token *words, t_redir *redir_list);
+t_cmd	*fill_cmd_lst (t_token *token_list, t_redir *redir_list);
 #endif //EXECUTOR_H

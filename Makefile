@@ -17,6 +17,8 @@ builtins/echo.c \
 builtins/export_builtin.c \
 builtins/pwd.c \
 parsing/parsing.c \
+parsing/parsing_free.c \
+parsing/parsing_utils.c \
 parsing/utils_list.c \
 parsing/handle_quotes.c \
 parsing/redir_token.c \

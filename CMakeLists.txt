@@ -44,6 +44,8 @@ add_executable(minishell
         env_utils.c
         builtins/pwd.c
         builtins/cd.c
+        parsing/parsing_utils.c
+        parsing/parsing_free.c
 
 )
 

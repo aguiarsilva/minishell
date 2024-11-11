@@ -71,6 +71,15 @@ t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int file
 t_redir	*extract_redirection_list_from_tokens(t_token *token_list);
 bool	is_filename(const char *str);
 
+//parsing_utils.c
+t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
+void	add_new_cmd_to_cmd_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
+bool	is_skippable_token(t_token *prev, t_token *cur);
+size_t	count_arguments(t_token *token_list);
+//parsing_free.c
+void	free_cmd_list(t_cmd *head);
+void	cleanup_args(char **args, int count);
+t_cmd	*cleanup_cmd_list(t_cmd *head);
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
 
