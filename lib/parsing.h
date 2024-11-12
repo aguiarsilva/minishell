@@ -130,6 +130,7 @@ char *handle_single_quotes(const char *input, int *i);
 char *handle_double_quotes(const char *input, int *i);
 char handle_escape_sequence(const char *input, int *i, bool interpret);
 char *handle_env_variable(const char *input, int *i);
+char get_interpreted_escape_char(const char *input, int *i);
 
 
 #endif

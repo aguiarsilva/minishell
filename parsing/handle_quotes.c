@@ -2,56 +2,50 @@
 
 char	*handle_single_quotes(const char *input, int *i)
 {
-	int start = ++(*i);  // Skip the opening single quote
-	char *buffer = malloc(1024);  // Buffer to store the result
-	int buf_index = 0;
+	int start;  
+	char *buffer;  
+	int buf_index;
 
+	start = ++(*i); // Skip the opening single quote
+	buffer = malloc(1024); // Buffer to store the result
+	buf_index = 0;
 	while (input[*i] != '\'' && input[*i] != '\0')
-	{  // Loop until the closing single quote
-		buffer[buf_index++] = input[(*i)++];
-	}
-
+		buffer[buf_index++] = input[(*i)++]; // Loop until the closing single quote
 	if (input[*i] == '\'')
-	{  // If a closing quote was found, skip it
-		(*i)++;
-	}
-
+		(*i)++;	// If a closing quote was found, skip it
 	buffer[buf_index] = '\0';  // Null-terminate the buffer
 	return buffer;  // Return the string inside single quotes
 }
 
 char	*handle_double_quotes(const char *input, int *i)
 {
-	int start = ++(*i);  // Skip the opening double quote
-	char *buffer = malloc(1024);  // Buffer to store the result
-	int buf_index = 0;
+	int start;  // Skip the opening double quote
+	char *buffer;  // Buffer to store the result
+	int buf_index;
+	char *env_var;
 
+	start = ++(*i);
+	buffer = malloc(1024);
+	buf_index = 0;
 	while (input[*i] != '"' && input[*i] != '\0')
 	{
 		if (input[*i] == '\\')
-		{ // Handle escape sequences
-			buffer[buf_index++] = handle_escape_sequence(input, i, false);
-		}
+			buffer[buf_index++] = handle_escape_sequence(input, i, false); // Handle escape sequences
 		else if (input[*i] == '$')
 		{ // Handle environment variables
-			char *env_var = handle_env_variable(input, i);
+			env_var = handle_env_variable(input, i);
 			if (env_var)
 			{
-				strcpy(&buffer[buf_index], env_var);
-				buf_index += strlen(env_var);
+				ft_strcpy(&buffer[buf_index], env_var);
+				buf_index += ft_strlen(env_var);
 				free(env_var);
 			}
 		}
 		else
-		{
 			buffer[buf_index++] = input[(*i)++]; // Normal character
-		}
 	}
-
 	if (input[*i] == '"')
-	{ // Skip the closing double quote
-		(*i)++;
-	}
+		(*i)++;	// Skip the closing double quote
 	buffer[buf_index] = '\0'; // Null-terminate the buffer
 	return buffer; // Return the string inside double quotes
 }
@@ -79,48 +73,51 @@ char	*handle_double_quotes(const char *input, int *i)
 #include <stdio.h>
 #include <stdbool.h>
 
+char get_interpreted_escape_char(const char *input, int *i)
+{
+    char escape_char;
+    
+	escape_char = input[*i];
+    while (escape_char == 'n' || escape_char == 't' || escape_char == '\\')
+    {
+        (*i)++;
+        while (escape_char == 'n')
+            return '\n';
+        while (escape_char == 't')
+            return '\t';
+        while (escape_char == '\\')
+            return '\\';
+    }
+    return '\\';
+}
+
 // Updated handle_escape_sequence to handle printing of escape characters
 char handle_escape_sequence(const char *input, int *i, bool interpret)
 {
-	if (input[*i] == '\\')
-	{
-		(*i)++; // Move past the backslash
-
-		// Handle interpreted escape sequences
-		if (interpret)
-		{
-			if (input[*i] == 'n')
-			{
-				(*i)++;
-				return '\n'; // Return newline character
-			}
-			else if (input[*i] == 't')
-			{
-				(*i)++;
-				return '\t'; // Return tab character
-			}
-			else if (input[*i] == '\\')
-			{
-				(*i)++;
-				return '\\'; // Return a literal backslash
-			}
-		}
-
-		// If not interpreting, return backslash + next character as-is
-		return '\\';
-	}
-	return input[(*i)++]; // If not an escape sequence, return the current character
+    char current_char;
+    
+	current_char = input[*i];
+    while (current_char == '\\')
+    {
+        (*i)++;
+        while (interpret)
+            return get_interpreted_escape_char(input, i);
+        return '\\';
+    }
+    
+    (*i)++;
+    return current_char;
 }
 
 char *handle_env_variable(const char *input, int *i)
 {
 	char var_name[100];
-	int var_index = 0;
+	int var_index;
 
+	var_index = 0;
 	(*i)++;  // Skip the '$' symbol
 	while (ft_isalnum(input[*i]) || input[*i] == '_')  // Parse variable name
 		var_name[var_index++] = input[(*i)++];
-
 	var_name[var_index] = '\0';  // Null-terminate the variable name
 	fprintf(stderr, "var_name: %s\n", var_name);
 	// Fetch the variable value from the environment
