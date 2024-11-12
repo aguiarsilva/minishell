@@ -50,6 +50,15 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
+typedef struct s_lexer
+{
+	t_token *head;
+	t_token *tail;
+	char    buffer[1024];
+	int     buf_index;
+	bool    quoted;
+} t_lexer;
+
 /*check.c*/
 bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
@@ -73,7 +82,7 @@ bool	is_filename(const char *str);
 
 //parsing_utils.c
 t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
-void	add_new_cmd_to_cmd_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
+void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 bool	is_skippable_token(t_token *prev, t_token *cur);
 size_t	count_arguments(t_token *token_list);
 //parsing_free.c
@@ -109,12 +118,12 @@ char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
 /*utils_list.c*/
 // t_token *build_list(t_prompt *prompt, char *msg);
-t_token *build_list(char *input, t_env *lst);
+t_token *build_lst(char *input, t_env *lst);
 void	append_node(t_token **head, t_token **curr, t_token *new);
 void	nodes_init(t_token **head, t_token **cur, t_token **new);
 
 /*utils.c*/
-void add_token_to_list(t_token **head, t_token **tail, t_token *new_token);
+void add_new_token_to_lst(t_token **head, t_token **tail, t_token *new_token);
 t_token *create_append_token(char *input, size_t *i);
 t_token *create_redir_out_token(char *input, size_t *i);
 t_token *create_heredoc_token(char *input, size_t *i);
@@ -133,9 +142,22 @@ char *handle_double_quotes(const char *input, int *i);
 char handle_escape_sequence(const char *input, int *i, bool interpret);
 char *handle_env_variable(const char *input, int *i);
 
+//build_lst_utils.c
+void	process_pipe(t_token** head, t_token** tail, int* i);
+void	process_quotes(char* input, int* i, char* buffer, int* buf_index);
+void	process_escape_sequence(char* input, int* i, char* buffer, int* buf_index);
+void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+void	process_regular_text(char* input, int* i, char* buffer, int* buf_index);
+//build_lst_utils2.c
+bool	is_quoted(const char* input);
+void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token);
+void	append_node(t_token** head, t_token** curr, t_token* new);
+void	nodes_init(t_token** head, t_token** cur, t_token** new);
+int		skip_whitespace(const char *input, int i, int len);
 /*handle_quotes_utils.c*/
 char get_interpreted_escape_char(const char *input, int *i);
 void process_character(const char *input, int *i, char *buffer, int *buf_index);
-void process_env_variable(const char *input, int *i, char *buffer, int *buf_index);
+void process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+
 
 #endif

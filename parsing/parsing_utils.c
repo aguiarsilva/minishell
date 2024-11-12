@@ -21,7 +21,7 @@ t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list)
 	return (cmd_list_node);
 }
 
-void	add_new_cmd_to_cmd_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd)
+void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd)
 {
 	if (*head == NULL)
 	{

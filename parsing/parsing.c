@@ -74,7 +74,7 @@ static t_cmd	*create_cmd_from_tokens(t_token *token_list,
 	arg_count = count_arguments(token_list->next);
 	if (fill_arguments(cmd_data, token_list->next, &arg_count) < 0)
 		return (cleanup_cmd_list(*head));
-	add_new_cmd_to_cmd_list(head, tail, cmd_data);
+	add_new_cmd_to_cmd_lst(head, tail, cmd_data);
 	return (NULL);
 }
 

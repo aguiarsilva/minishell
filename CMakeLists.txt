@@ -27,7 +27,7 @@ add_executable(minishell
         lexer/lexer_utils.c
         parsing/prompt_init.c
         parsing/token.c
-        parsing/utils_list.c
+        parsing/build_lst.c
         parsing/check.c
         parsing/handle_quotes.c
         executor/child_process_handler.c
@@ -46,6 +46,10 @@ add_executable(minishell
         builtins/cd.c
         parsing/parsing_utils.c
         parsing/parsing_free.c
+        parsing/handle_quotes_utils.c
+        parsing/build_lst_utils.c
+        parsing/handle_operator_utils.c
+        parsing/build_lst_utils2.c
 
 )
 
