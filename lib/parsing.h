@@ -131,6 +131,7 @@ char *handle_double_quotes(const char *input, int *i);
 char handle_escape_sequence(const char *input, int *i, bool interpret);
 char *handle_env_variable(const char *input, int *i);
 char get_interpreted_escape_char(const char *input, int *i);
-
+void process_character(const char *input, int *i, char *buffer, int *buf_index);
+void process_env_variable(const char *input, int *i, char *buffer, int *buf_index);
 
 #endif

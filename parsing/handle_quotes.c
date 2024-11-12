@@ -17,7 +17,34 @@ char	*handle_single_quotes(const char *input, int *i)
 	return buffer;  // Return the string inside single quotes
 }
 
-char	*handle_double_quotes(const char *input, int *i)
+char *handle_double_quotes(const char *input, int *i)
+{
+    char *buffer;
+    int buf_index;
+    
+    (*i)++;  // Skip opening quote
+    buffer = malloc(1024);
+    buf_index = 0;
+    while (input[*i] != '"' && input[*i] != '\0')
+    {
+        while (input[*i] == '$')
+        {
+            process_env_variable(input, i, buffer, &buf_index);
+            break;
+        }
+        while (input[*i] != '$')
+        {
+            process_character(input, i, buffer, &buf_index);
+            break;
+        }
+    }
+    while (input[*i] == '"')
+        (*i)++;
+    buffer[buf_index] = '\0';
+    return buffer;
+}
+
+/*char	*handle_double_quotes(const char *input, int *i)
 {
 	int start;  // Skip the opening double quote
 	char *buffer;  // Buffer to store the result
@@ -48,7 +75,7 @@ char	*handle_double_quotes(const char *input, int *i)
 		(*i)++;	// Skip the closing double quote
 	buffer[buf_index] = '\0'; // Null-terminate the buffer
 	return buffer; // Return the string inside double quotes
-}
+}*/
 
 // char handle_escape_sequence(const char *input, int *i)
 // {
@@ -72,24 +99,6 @@ char	*handle_double_quotes(const char *input, int *i)
 
 #include <stdio.h>
 #include <stdbool.h>
-
-char get_interpreted_escape_char(const char *input, int *i)
-{
-    char escape_char;
-    
-	escape_char = input[*i];
-    while (escape_char == 'n' || escape_char == 't' || escape_char == '\\')
-    {
-        (*i)++;
-        while (escape_char == 'n')
-            return '\n';
-        while (escape_char == 't')
-            return '\t';
-        while (escape_char == '\\')
-            return '\\';
-    }
-    return '\\';
-}
 
 // Updated handle_escape_sequence to handle printing of escape characters
 char handle_escape_sequence(const char *input, int *i, bool interpret)
