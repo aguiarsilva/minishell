@@ -126,10 +126,14 @@ size_t get_next_token_len(char *input, size_t start);
 t_cmd *build_command_list(char *input);
 void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
+
+/*handle_quotes.c*/
 char *handle_single_quotes(const char *input, int *i);
 char *handle_double_quotes(const char *input, int *i);
 char handle_escape_sequence(const char *input, int *i, bool interpret);
 char *handle_env_variable(const char *input, int *i);
+
+/*handle_quotes_utils.c*/
 char get_interpreted_escape_char(const char *input, int *i);
 void process_character(const char *input, int *i, char *buffer, int *buf_index);
 void process_env_variable(const char *input, int *i, char *buffer, int *buf_index);
