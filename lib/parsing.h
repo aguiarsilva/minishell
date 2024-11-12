@@ -116,19 +116,21 @@ char	*quoted_str(char *str, const char *delim);
 void	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
-/*utils_list.c*/
+//build_lst.c
+void	add_new_token_to_lst(t_token **head, t_token **tail,
+			t_token *new_token);
+//build_lst_utils.c
 // t_token *build_list(t_prompt *prompt, char *msg);
-t_token *build_lst(char *input, t_env *lst);
-void	append_node(t_token **head, t_token **curr, t_token *new);
-void	nodes_init(t_token **head, t_token **cur, t_token **new);
+t_token	*build_lst(char *input, t_env *lst);
 
-/*utils.c*/
-void add_new_token_to_lst(t_token **head, t_token **tail, t_token *new_token);
-t_token *create_append_token(char *input, size_t *i);
-t_token *create_redir_out_token(char *input, size_t *i);
-t_token *create_heredoc_token(char *input, size_t *i);
-t_token *create_redir_in_token(char *input, size_t *i);
-t_token *create_pipe_token(char *input, size_t *i);
+//handle_operator_utils.c
+t_token	*create_append_token(size_t *i);
+t_token	*create_redir_out_token(void);
+t_token	*create_heredoc_token(size_t *i);
+t_token	*create_redir_in_token(void);
+t_token	*create_pipe_token(void);
+
+
 bool handle_operator(char *input, size_t *i, t_token **head, t_token **tail);
 t_token *get_next_token(char *input, size_t *i, bool expect_command);
 size_t get_next_token_len(char *input, size_t start);
@@ -137,10 +139,10 @@ void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
 
 /*handle_quotes.c*/
-char *handle_single_quotes(const char *input, int *i);
-char *handle_double_quotes(const char *input, int *i);
-char handle_escape_sequence(const char *input, int *i, bool interpret);
-char *handle_env_variable(const char *input, int *i);
+char	*handle_single_quotes(const char *input, int *i);
+char	*handle_double_quotes(const char *input, int *i);
+char	handle_escape_sequence(const char *input, int *i, bool interpret);
+char	*handle_env_variable(const char *input, int *i);
 
 //build_lst_utils.c
 void	process_pipe(t_token** head, t_token** tail, int* i);
@@ -155,9 +157,9 @@ void	append_node(t_token** head, t_token** curr, t_token* new);
 void	nodes_init(t_token** head, t_token** cur, t_token** new);
 int		skip_whitespace(const char *input, int i, int len);
 /*handle_quotes_utils.c*/
-char get_interpreted_escape_char(const char *input, int *i);
-void process_character(const char *input, int *i, char *buffer, int *buf_index);
-void process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+char	get_interpreted_escape_char(const char *input, int *i);
+void	process_character(const char *input, int *i, char *buffer, int *buf_index);
+void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
 
 
 #endif

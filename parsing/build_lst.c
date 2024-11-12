@@ -3,12 +3,13 @@
 #include "../lib/minishell.h"
 
 // Helper function to create and add token if buffer is not empty
-static void create_token_if_needed(t_token** head, t_token** tail, char* buffer, int buf_index)
+static void	create_token_if_needed(t_token **head, t_token **tail, char *buffer, int buf_index)
 {
+	t_token* new_token;
 	if (buf_index > 0)
 	{
 		buffer[buf_index] = '\0';
-		t_token* new_token = make_token(buffer, WORD);
+		new_token = make_token(buffer, WORD);
 		if (new_token)
 		{
 			add_new_token_to_lst(head, tail, new_token);
@@ -25,9 +26,9 @@ static void	init_lexer_data(t_lexer *lexer_data, char *input)
 	lexer_data->quoted = is_quoted(input);
 }
 
-static void process_token(t_lexer *lexer_data, char *input, int *i, int len)
+static void	process_token(t_lexer *lexer_data, char *input, int *i, int len)
 {
-	char *current;
+	char	*current;
 
 	lexer_data->buf_index = 0;
 	current = &input[*i];
@@ -44,7 +45,7 @@ static void process_token(t_lexer *lexer_data, char *input, int *i, int len)
 	create_token_if_needed(&lexer_data->head, &lexer_data->tail, lexer_data->buffer, lexer_data->buf_index);
 }
 
-t_token *build_lst(char *input, t_env *env_lst)
+t_token	*build_lst(char *input, t_env *env_lst)
 {
 	t_lexer	lexer_data;
 	int		i;
@@ -208,26 +209,28 @@ t_token *build_lst(char *input, t_env *env_lst)
 
 
 
-bool handle_operator(char* input, size_t* i, t_token** head, t_token** tail)
-{
-	t_token* new_token = NULL;
-
-	if (input[*i] == '|')
-		new_token = create_pipe_token(input, i);
-	else if (input[*i] == '>' && input[*i + 1] == '>')
-		new_token = create_append_token(input, i);
-	else if (input[*i] == '>')
-		new_token = create_redir_out_token(input, i);
-	else if (input[*i] == '<' && input[*i + 1] == '<')
-		new_token = create_heredoc_token(input, i);
-	else if (input[*i] == '<')
-		new_token = create_redir_in_token(input, i);
-	if (new_token)
-	{
-		add_new_token_to_lst(head, tail, new_token);
-		(*i)++; // Move to the next character after processing the operator
-		return (true); // Indicate that an operator was handled
-	}
-	return (false); // No operator was handled
-}
+//bool	handle_operator(char *input, size_t *i, t_token **head, t_token **tail) // not used????
+//{
+//	t_token	*new_token;
+//
+//	new_token = NULL;
+//
+//	if (input[*i] == '|')
+//		new_token = create_pipe_token();
+//	else if (input[*i] == '>' && input[*i + 1] == '>')
+//		new_token = create_append_token(i);
+//	else if (input[*i] == '>')
+//		new_token = create_redir_out_token();
+//	else if (input[*i] == '<' && input[*i + 1] == '<')
+//		new_token = create_heredoc_token(i);
+//	else if (input[*i] == '<')
+//		new_token = create_redir_in_token();
+//	if (new_token)
+//	{
+//		add_new_token_to_lst(head, tail, new_token);
+//		(*i)++; // Move to the next character after processing the operator
+//		return (true); // Indicate that an operator was handled
+//	}
+//	return (false); // No operator was handled
+//}
 
