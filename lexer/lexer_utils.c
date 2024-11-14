@@ -12,6 +12,8 @@ t_type	get_token_type(char *token)
 		return (HEREDOC);
 	else if (ft_strcmp(token, "|") == 0)
 		return (PIPE);
+	else if (ft_strcmp(token, "=") == 0)
+		return (EQUAL);
 	else
 		return (WORD);  // Default type is WORD for commands/arguments
 }

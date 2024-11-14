@@ -11,6 +11,7 @@ typedef struct s_lexer	t_lexer;
 //lexer.c
 t_type	get_token_type(char *token);
 void	assign_token_type(t_token *token_list);
+t_token *create_word_list(char *input);
 
 //lexer_utils.c
 t_type	get_token_type(char *token);
