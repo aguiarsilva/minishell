@@ -24,7 +24,7 @@ static t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
 		return (NULL);
 	}
 	filename = token_node->val;
-	// fprintf(stderr, "token_val: %s\n", filename);
+	fprintf(stderr, "token_val: %s and file type: %d\n", filename, filetype);
 	new_redir->file_name = ft_strdup(filename);
 	if (new_redir->file_name == NULL)
 	{
@@ -33,7 +33,7 @@ static t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
 		return (NULL);
 	}
 	// new_redir->type = token_node->type; // wrong node to define type because its always word
-	if (filetype == INPUT)
+	if (filetype == INPUT || filetype == HEREDOC_INPUT)
 		new_redir->type = REDIR_IN;
 	else if (filetype == OUTPUT)
 		new_redir->type = REDIR_OUT;
@@ -136,91 +136,121 @@ int	create_heredoc(t_token *token_list)
 	return (close(fd_temp), 0);
 }
 
-int	get_file_type(t_token *token)
+void	insert_token_between(t_token *cur_token, t_token *new_token)
 {
-	if (get_token_type(token->val) == REDIR_IN)
-		return (INPUT);
-	else if (get_token_type(token->val) == REDIR_OUT)
-		return (OUTPUT);
-	else if (get_token_type(token->val) == HEREDOC)
-		return (INPUT);
-	return (NOFILE);
+	if (cur_token->next != NULL)
+	{
+		new_token->next = cur_token->next;
+		cur_token->next = new_token;
+	}
+	else
+	{
+		cur_token->next = new_token;
+		new_token->next = NULL;
+	}
 }
 
-t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
+void	handle_heredoc(t_token *cur_token, t_token **next_token,
+					t_token **prev_token, int file_type)
+{
+	t_token	*file_token;
+
+	file_token = NULL;
+	if (file_type == HEREDOC_INPUT)
+	{
+		create_heredoc(cur_token);
+		file_token = make_token("temp0", WORD);
+		insert_token_between(cur_token, file_token);
+		*next_token = file_token->next;
+		*prev_token = file_token;
+	}
+}
+void	add_to_redirection_list(t_token *cur_token, t_redir **redir_lst,
+								int file_type, t_token *prev_token)
+{
+	if (is_filename(cur_token->val) || cur_token->eof_flag)
+	{
+		if (cur_token->eof_flag)
+			create_redir_struct(redir_lst, prev_token, file_type);
+		else
+			create_redir_struct(redir_lst, cur_token, file_type);
+	}
+}
+
+t_redir	*extract_redirection_list_from_tokens(t_token *token_lst)
 {
 	t_token	*cur_token;
-	t_redir	*redir_list;
-	int		filetype;
-	t_token	*file_token;
-	t_token	*prev_token = NULL;
-	cur_token = token_list;
-	if (cur_token == NULL)
+	t_redir	*redir_lst;
+	int		file_type;
+	t_token	*prev_token;
+
+	cur_token = token_lst;
+	if (cur_token == NULL || get_token_type(cur_token->val) != WORD)
 		return (NULL);
-	redir_list = NULL;
-	filetype = NOFILE;
-	if (get_token_type(cur_token->val) != WORD) // prevent create redir struct when not needed but maybe edgecases
-		return (NULL);
+	redir_lst = NULL;
+	prev_token = NULL;
 	while (cur_token != NULL)
 	{
 		if (get_token_type(cur_token->val) == REDIR_IN)
-			filetype = INPUT;
+			file_type = INPUT;
+		if (get_token_type(cur_token->val) == HEREDOC)
+			file_type = HEREDOC_INPUT;
 		else if (get_token_type(cur_token->val) == REDIR_OUT)
-			filetype = OUTPUT;
-		else if (get_token_type(cur_token->val) == HEREDOC)
-		{
-			filetype = INPUT;
-			create_heredoc(cur_token);
-			// create token add it between the current_node and next node
-			file_token = make_token("temp0", WORD);
-			printf("file token node is : %s\n", file_token->val);
-			// Insert the file_token between current token and next token
-			if (cur_token->next != NULL)
-			{
-				file_token->next = cur_token->next; // Set file_token's next to cur_token's next
-				cur_token->next = file_token;      // Link cur_token to file_token
-				prev_token = file_token;          // Update prev_token to the newly inserted file_token
-			}
-			else
-			{
-				cur_token->next = file_token; // If no next token, just append
-				file_token->next = NULL;     // The new token is now the last node
-				prev_token = file_token;     // Update prev_token to the newly inserted file_token
-			}
-			// After insertion, skip the newly inserted token (skip to the next token after file_token)
-			cur_token = file_token->next;
-			continue; // Skip the current iteration since we've already handled the new token
-		}
-		if (is_filename(cur_token->val) || cur_token->eof_flag == true)
-		{
-			if (cur_token->eof_flag == true)
-			{
-				redir_list = create_redir_struct(&redir_list, prev_token, filetype); // Use the updated prev_token
-				if (redir_list == NULL)
-				{
-					printf("Failed to create redirection struct for: %s\n", cur_token->val);
-					return (NULL);
-				}
-			}
-			else
-			{
-				redir_list = create_redir_struct(&redir_list, cur_token, filetype);
-				if (redir_list == NULL)
-				{
-					printf("Failed to create redirection struct for: %s\n", cur_token->val);
-					return (NULL);
-				}
-			}
-		}
+			file_type = OUTPUT;
+		handle_heredoc(cur_token, &cur_token, &prev_token, file_type);
+		add_to_redirection_list(cur_token, &redir_lst, file_type, prev_token);
 		prev_token = cur_token;
 		cur_token = cur_token->next;
 	}
-	if (redir_list == NULL)
-		printf("redir_list is NULL after creation\n"); // just debug will delete later
-
-//  print_redir_list(redir_list);
-	return (redir_list);
+		if (redir_lst == NULL)
+			printf("redir_lst is NULL after creation\n"); // just debug will delete later
+//	print_redir_list(redir_lst);
+	return (redir_lst);
 }
+
+//t_redir	*extract_redirection_list_from_tokens(t_token *token_lst) not refactoed
+//{
+//	t_token	*cur_token;
+//	t_redir	*redir_lst;
+//	int		file_type;
+//	t_token	*file_token;
+//	t_token	*prev_token;
+//
+//	cur_token = token_lst;
+//	if (cur_token == NULL)
+//		return (NULL);
+//	redir_lst = NULL;
+//	file_type = NOFILE;
+//	prev_token = NULL;
+//	if (get_token_type(cur_token->val) != WORD)
+//		return (NULL);
+//	while (cur_token != NULL)
+//	{
+//		file_type = get_file_type(cur_token);
+//		if (file_type == HEREDOC_INPUT)
+//		{
+//			create_heredoc(cur_token);
+//			file_token = make_token("temp0", WORD);
+//			insert_token_between(cur_token, file_token);
+//			prev_token = file_token;
+//			cur_token = file_token->next;
+//			continue ;
+//		}
+//		if (is_filename(cur_token->val) || cur_token->eof_flag == true)
+//		{
+//			if (cur_token->eof_flag)
+//				create_redir_struct(&redir_lst, prev_token, file_type);
+//			else
+//				create_redir_struct(&redir_lst, cur_token, file_type);
+//		}
+//		prev_token = cur_token;
+//		cur_token = cur_token->next;
+//	}
+//	if (redir_lst == NULL)
+//		printf("redir_list is NULL after creation\n"); // just debug will delete later
+////  print_redir_list(redir_list);
+//	return (redir_lst);
+//}
 
 // int flag_heredoc(t_token** tk_lst, t_cmd* new_cmd)
 // {

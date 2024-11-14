@@ -21,6 +21,7 @@
 # define INPUT 1
 # define OUTPUT 2
 # define NOFILE 3
+# define HEREDOC_INPUT 4
 # define CMD_NO_ARGUMENTS 0
 # define PATH_VALID 0
 # define ERR_NO_CUR_DIR "cd: error retrieving current directory: getcwd:"

@@ -79,7 +79,7 @@ t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
 bool	multi_cmd_arr_init(t_token *new, char *cp_val);
 const char *get_type_name(t_type type);
 t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype);
-t_redir	*extract_redirection_list_from_tokens(t_token *token_list);
+t_redir	*extract_redirection_list_from_tokens(t_token *token_lst);
 bool	is_filename(const char *str);
 
 //parsing_utils.c
