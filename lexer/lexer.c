@@ -41,48 +41,80 @@ void	assign_token_type(t_token *token_list)
 }
 
 t_token *create_word_list(char *input) {
-    t_token *head = NULL, *tail = NULL;
-    size_t i, len = strlen(input);
-    char buffer[1024] = {0};
-    size_t buf_index = 0;
+	t_token *head = NULL, *tail = NULL;
+	size_t i, len = strlen(input);
+	char buffer[1024] = {0};
+	size_t buf_index = 0;
 
-    for (i = 0; i < len; i++) {
-        // Check for whitespace
-        if (isspace(input[i])) {
-            if (buf_index > 0) {
-                t_token *new_token = make_token(buffer, WORD);
-                add_new_token_to_lst(&head, &tail, new_token);
-                memset(buffer, 0, 1024);
-                buf_index = 0;
-            }
-            continue;
-        }
+	for (i = 0; i < len; i++) {
+		// Check for whitespace
+		if (isspace(input[i])) {
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
+			continue;
+		}
 
-        // Check for special characters
-        if (input[i] == '=' || input[i] == '<' || input[i] == '>' || input[i] == '|') {
-            // Create token from buffer (if any)
-            if (buf_index > 0) {
-                t_token *new_token = make_token(buffer, WORD);
-                add_new_token_to_lst(&head, &tail, new_token);
-                memset(buffer, 0, 1024);
-                buf_index = 0;
-            }
+		// Check for special characters
+		if (input[i] == '=' || input[i] == '|') {
+			// Create token from buffer (if any)
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
 
-            // Create token for special character
-            char special_char[2] = {input[i], '\0'};
-            t_token *special_token = make_token(special_char, get_token_type(special_char));
-            add_new_token_to_lst(&head, &tail, special_token);
-        }
-        else {
-            buffer[buf_index++] = input[i];
-        }
-    }
+			// Create token for special character
+			char special_char[2] = {input[i], '\0'};
+			t_token *special_token = make_token(special_char, get_token_type(special_char));
+			add_new_token_to_lst(&head, &tail, special_token);
+		}
+		else if (input[i] == '<' && i + 1 < len && input[i + 1] == '<') {
+			// Handle two consecutive '<' characters
+			// Create token from buffer (if any)
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
 
-    // Create last token from buffer (if any)
-    if (buf_index > 0) {
-        t_token *new_token = make_token(buffer, WORD);
-        add_new_token_to_lst(&head, &tail, new_token);
-    }
+			// Create token for '<<'
+			char double_left[3] = {'<', '<', '\0'};
+			t_token *double_left_token = make_token(double_left, get_token_type(double_left));
+			add_new_token_to_lst(&head, &tail, double_left_token);
+			i++; // Skip the second '<'
+		}
+		else if (input[i] == '>' && i + 1 < len && input[i + 1] == '>') {
+			// Handle two consecutive '>' characters
+			// Create token from buffer (if any)
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
 
-    return head;
+			// Create token for '>>'
+			char double_right[3] = {'>', '>', '\0'};
+			t_token *double_right_token = make_token(double_right, get_token_type(double_right));
+			add_new_token_to_lst(&head, &tail, double_right_token);
+			i++; // Skip the second '>'
+		}
+		else {
+			buffer[buf_index++] = input[i];
+		}
+	}
+
+	// Create last token from buffer (if any)
+	if (buf_index > 0) {
+		t_token *new_token = make_token(buffer, WORD);
+		add_new_token_to_lst(&head, &tail, new_token);
+	}
+
+	return head;
 }
