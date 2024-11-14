@@ -7,7 +7,11 @@ static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
 
 	// Handle input redirections if present
 	if (cmd->redir)
+	{
 		handle_input_redirections(cmd);
+		handle_file_redirections(cmd);
+	}
+
 
 	// Set up pipe output if there's a next command
 	if (cmd->next && pipe_fd[1] != -1)
