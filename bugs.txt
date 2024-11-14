@@ -1,3 +1,5 @@
 ls -l | grep "input.txt"  threats input.txt as stdin but it should not
 
 ls -l > output.txt does not write to output.txt when only a single cmd
+
+echo "<< EOF" gets detected as Heredoc

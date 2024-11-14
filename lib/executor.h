@@ -4,7 +4,6 @@
 
 #include "minishell.h"
 
-
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
 typedef struct s_redir	t_redir;
@@ -19,6 +18,9 @@ void	run_cmd(t_cmd *cmd_data, t_env **env_lst);
 //child_process_handler.c
 void	handle_child_process(t_cmd *cmd, t_env **env_lst, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 
+//execute_heredoc.c
+void	handle_heredoc(t_token *cur_token, t_token **next_token,
+			t_token **prev_token, int file_type);
 //pipe_utils.c
 void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2]);
 void	create_pipe_if_needed(t_cmd *cmd, int pipe_fd[2]);
@@ -48,6 +50,4 @@ void	check_child_status(pid_t child_pid);
 void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);
 void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2]);
 
-//test.c
-t_cmd	*fill_cmd_lst (t_token *token_list, t_redir *redir_list);
 #endif //EXECUTOR_H

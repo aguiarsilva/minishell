@@ -50,6 +50,8 @@ add_executable(minishell
         parsing/build_lst_utils.c
         parsing/handle_operator_utils.c
         parsing/build_lst_utils2.c
+        parsing/redir_token_utils.c
+        executor/execute_heredoc.c
 
 )
 

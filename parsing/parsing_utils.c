@@ -38,19 +38,35 @@ void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd)
 // Check if token should be skipped
 bool	is_skippable_token(t_token *prev, t_token *cur)
 {
-	// No previous token, can't be a redirection file
+	// Check for a valid previous token; required for redirection
 	if (prev == NULL)
 		return (false);
+	// Debugging output to track values
+//	printf("prev val = %s, prev type = %d; cur val = %s, cur type = %d\n",
+//		   prev->val, prev->type, cur->val, cur->type);
 
-	// Not a redirection token
+	// Check for HEREDOC type in the previous token, with current token as WORD
+	if (prev->type == HEREDOC && cur->type == WORD)
+	{
+		printf("Skipping due to HEREDOC; cur val = %s\n", cur->val); // Debug print
+		return (true);
+	}
+	// Check if the current token has EOF flag set
+	if (cur->eof_flag == true)
+	{
+		printf("Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
+		return (true);
+	}
+
+	// Check if the previous token is a redirection operator
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
 		return (false);
 
-	// Not a word token (potential filename)
+	// Check if the current token is a word (possible filename)
 	if (get_token_type(cur->val) != WORD)
 		return (false);
 
-	// If we've reached here, it's a redirection file
+	// All checks passed; it is a skippable redirection file token
 	return (true);
 }
 

@@ -9,6 +9,7 @@ executor/child_status.c \
 executor/exebuiltins.c \
 executor/pipe_utils.c \
 executor/executor.c \
+executor/execute_heredoc.c \
 executor/executor_utils.c \
 executor/redirections.c \
 builtins/builtins_utils.c \
@@ -26,6 +27,7 @@ parsing/build_lst_utils2.c \
 parsing/handle_quotes_utils.c \
 parsing/handle_quotes.c \
 parsing/redir_token.c \
+parsing/redir_token_utils.c \
 lexer/lexer.c \
 lexer/lexer_utils.c \
 env_list.c \
