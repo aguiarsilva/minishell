@@ -49,20 +49,17 @@ static t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
 t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype)
 {
 	t_redir	*new_redir;
+	t_redir	*last_redir;
 
 	new_redir = initialize_redirection_node(token_node, filetype);
 	if (new_redir == NULL)
 		return (NULL);
 	if (*redir_head == NULL)
-	{
 		*redir_head = new_redir;
-		// printf("Set new redir node as the head of the list.\n");
-	}
 	else
 	{
-		t_redir *last_redir = get_last_redirection_node(*redir_head);
+		last_redir = get_last_redirection_node(*redir_head);
 		last_redir->next = new_redir;
-		// printf("Appended new redir node to the end of the list.\n");
 	}
 	return (*redir_head); // Return the head of the list
 }
@@ -121,7 +118,7 @@ int	create_heredoc(t_token *token_list)
 	{
 		write(0, "> ", 2);
 		buf[0] = get_next_line(STDIN_FILENO);
-		fprintf(stderr, "buf0 %s\n", buf[0]);
+//		fprintf(stderr, "buf0 %s\n", buf[0]);
 		if (!buf[0])
 			return (1);
 		rm_newline(&buf[0]);
@@ -138,6 +135,18 @@ int	create_heredoc(t_token *token_list)
 	free(buf[0]);
 	return (close(fd_temp), 0);
 }
+
+int	get_file_type(t_token *token)
+{
+	if (get_token_type(token->val) == REDIR_IN)
+		return (INPUT);
+	else if (get_token_type(token->val) == REDIR_OUT)
+		return (OUTPUT);
+	else if (get_token_type(token->val) == HEREDOC)
+		return (INPUT);
+	return (NOFILE);
+}
+
 t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 {
 	t_token	*cur_token;
@@ -154,7 +163,6 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 		return (NULL);
 	while (cur_token != NULL)
 	{
-		prev_token = cur_token;
 		if (get_token_type(cur_token->val) == REDIR_IN)
 			filetype = INPUT;
 		else if (get_token_type(cur_token->val) == REDIR_OUT)
@@ -165,16 +173,19 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 			create_heredoc(cur_token);
 			// create token add it between the current_node and next node
 			file_token = make_token("temp0", WORD);
+			printf("file token node is : %s\n", file_token->val);
 			// Insert the file_token between current token and next token
 			if (cur_token->next != NULL)
 			{
 				file_token->next = cur_token->next; // Set file_token's next to cur_token's next
-				cur_token->next = file_token;       // Link cur_token to file_token
+				cur_token->next = file_token;      // Link cur_token to file_token
+				prev_token = file_token;          // Update prev_token to the newly inserted file_token
 			}
 			else
 			{
 				cur_token->next = file_token; // If no next token, just append
-				file_token->next = NULL;      // The new token is now the last node
+				file_token->next = NULL;     // The new token is now the last node
+				prev_token = file_token;     // Update prev_token to the newly inserted file_token
 			}
 			// After insertion, skip the newly inserted token (skip to the next token after file_token)
 			cur_token = file_token->next;
@@ -184,8 +195,7 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 		{
 			if (cur_token->eof_flag == true)
 			{
-				printf("prev node is : %s\n", prev_token->val);
-				redir_list = create_redir_struct(&redir_list, prev_token, filetype); // still not the right node
+				redir_list = create_redir_struct(&redir_list, prev_token, filetype); // Use the updated prev_token
 				if (redir_list == NULL)
 				{
 					printf("Failed to create redirection struct for: %s\n", cur_token->val);
@@ -194,7 +204,6 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 			}
 			else
 			{
-				printf("else called?\n");
 				redir_list = create_redir_struct(&redir_list, cur_token, filetype);
 				if (redir_list == NULL)
 				{
@@ -202,14 +211,14 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_list)
 					return (NULL);
 				}
 			}
-
 		}
+		prev_token = cur_token;
 		cur_token = cur_token->next;
 	}
 	if (redir_list == NULL)
 		printf("redir_list is NULL after creation\n"); // just debug will delete later
 
-	print_redir_list(redir_list);
+//  print_redir_list(redir_list);
 	return (redir_list);
 }
 

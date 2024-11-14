@@ -16,7 +16,7 @@ void	print_env_list(t_env *lst)
 	}
 }
 
-void	print_token(t_token* token)
+void	print_token_lst(t_token* token)
 {
 	int	index; // Index to keep track of the position in the list
 
