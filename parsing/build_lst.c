@@ -44,7 +44,13 @@ static void	process_token(t_lexer *lexer_data, char *input, int *i, int len)
 	create_token_if_needed(&lexer_data->head, &lexer_data->tail, lexer_data->buffer, lexer_data->buf_index);
 }
 
-t_token	*build_lst(char *input, t_env *env_lst)
+t_token *build_lst(char *input, t_env *env_lst) {
+    t_token *word_list = create_word_list(input);
+    assign_token_type(word_list);
+    return word_list;
+}
+
+/*t_token	*build_lst(char *input, t_env *env_lst)
 {
 	t_lexer	lexer_data;
 	int		i;
@@ -61,7 +67,7 @@ t_token	*build_lst(char *input, t_env *env_lst)
 		process_token(&lexer_data, input, &i, len);
 	}
 	return (lexer_data.head);
-}
+}*/
 // // Main token builder function
 // t_token*	build_lst(char* input, t_env* env_lst)
 // {

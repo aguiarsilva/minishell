@@ -17,6 +17,7 @@ typedef enum s_type
 	HEREDOC = 'H', // 72
 	WORD = 'W', // 87
 	PIPE = '|', //124
+	EQUAL = '=',
 }	t_type;
 
 typedef struct s_prompt
@@ -162,5 +163,6 @@ char	get_interpreted_escape_char(const char *input, int *i);
 void	process_character(const char *input, int *i, char *buffer, int *buf_index);
 void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
 
+t_token *split_into_words(char *input);
 
 #endif
