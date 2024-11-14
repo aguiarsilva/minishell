@@ -47,6 +47,7 @@ char	*ft_strncpy(char *dest, const char *src, int n);
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isspace(int c);
+void	ft_putstr_fd_mod(char *s, int fd);
 
 // printer.c
 void	print_env_list(t_env *lst);

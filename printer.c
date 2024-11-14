@@ -30,6 +30,7 @@ void	print_token(t_token* token)
 			printf("  Value: (null)\n");
 
 		printf("  Type: %d\n", token->type); // Print the token type
+		printf("  EOF Flag: %s\n", token->eof_flag ? "true" : "false");
 		token = token->next; // Move to the next token
 		index++; // Increment index
 	}

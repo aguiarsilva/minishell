@@ -37,6 +37,7 @@ typedef struct s_token
 {
 	char				*val;
 	t_type				type;
+	int					eof_flag;
 	//int					idx;
 	struct s_token		*next;
 }	t_token;
@@ -52,12 +53,12 @@ typedef struct s_cmd
 
 typedef struct s_lexer
 {
-	t_token *head;
-	t_token *tail;
-	char    buffer[1024];
-	int     buf_index;
-	bool    quoted;
-} t_lexer;
+	t_token	*head;
+	t_token	*tail;
+	char	buffer[1024];
+	int		buf_index;
+	bool	quoted;
+}	t_lexer;
 
 /*check.c*/
 bool	is_quote(char c);

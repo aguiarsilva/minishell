@@ -17,6 +17,7 @@ t_token	*make_token(char *wd, t_type type)
 		return (NULL);
 	}
 	ft_strcpy(new_tk->val, wd);
+	new_tk->eof_flag = false;
 	new_tk->next = NULL;
 	new_tk->type = type;
 	return (new_tk);
@@ -25,11 +26,16 @@ t_token	*make_token(char *wd, t_type type)
 void	assign_token_type(t_token *token_list)
 {
 	t_token	*current;
+	t_token	*previous;
 
 	current = token_list;
+	previous = NULL;
 	while (current != NULL)
 	{
 		current->type = get_token_type(current->val);
+		if (previous != NULL && get_token_type(previous->val) == HEREDOC)
+			current->eof_flag = true;
+		previous = current;
 		current = current->next;
 	}
 }

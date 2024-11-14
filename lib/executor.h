@@ -38,8 +38,8 @@ char	*get_env_value_by_name(char *envVarName, char **env);
 char	**parse_command_with_quotes(char *cmd);
 void	ft_free_array(char **array);
 char	*get_exec_path(char *cmd, char **env);
-void	free_cmd_data(t_cmd *cmd_data);
-size_t	get_cmd_data_list_size(t_cmd *cmd_data);
+void	free_cmd_data(t_cmd *cmd_lst);
+size_t	get_cmd_lst_size(t_cmd *cmd_data);
 
 //child_status.c
 void	check_child_status(pid_t child_pid);

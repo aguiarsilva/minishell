@@ -48,7 +48,7 @@ int	ft_printf(const char *format, ...)
 	while (format[current_index])
 	{
 		if (format[current_index] == '%'
-			&& ft_strchr("cspdiuxX%", format[current_index + 1]) != 0)
+			&& ft_strchr_duplicate("cspdiuxX%", format[current_index + 1]) != 0)
 		{
 			c_printed += flag_check(format[current_index + 1], arg_ptr);
 			current_index++;

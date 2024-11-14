@@ -32,7 +32,7 @@ void	*ft_calloc_complete(size_t count, size_t size)
 	return (ptr);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr_duplicate(const char *s, int c)
 {
 	while (*s != '\0' && (unsigned char)c != *s)
 		s++;

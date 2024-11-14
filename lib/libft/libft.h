@@ -58,7 +58,7 @@ void		ft_putchar_fd(char c, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 void		ft_putstr_fd(char *s, int fd);
-char		*ft_strchr(const char *s, int c);
+char		*ft_strchr_duplicate(const char *s, int c);
 char		*ft_strcat(char *dest, const char *src);
 size_t		ft_strlcat(char *dst, const char *src, size_t size);
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);

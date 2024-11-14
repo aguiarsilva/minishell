@@ -38,7 +38,7 @@ void	process_quotes(char *input, int *i, char *buffer, int *buf_index)
 }
 
 // Helper function to process escape sequences
-void process_escape_sequence(char* input, int* i, char* buffer, int* buf_index)
+void	process_escape_sequence(char* input, int* i, char* buffer, int* buf_index)
 {
 	fprintf(stderr, "double slash if \n");
 	buffer[(*buf_index)++] = handle_escape_sequence(input, i, false);
@@ -54,7 +54,7 @@ void process_escape_sequence(char* input, int* i, char* buffer, int* buf_index)
 	}
 }
 // Helper function to process environment variables
-void process_env_variable(char* input, int* i, char* buffer, int* buf_index)
+void	process_env_variable(char* input, int* i, char* buffer, int* buf_index)
 {
 	fprintf(stderr, "$ if \n");
 	char* env_var;
@@ -67,11 +67,12 @@ void process_env_variable(char* input, int* i, char* buffer, int* buf_index)
 	}
 }
 // Helper function to process regular text
-void process_regular_text(char* input, int* i, char* buffer, int* buf_index)
+
+void	process_regular_text(char *input, int *i, char *buffer, int *buf_index)
 {
-	while (*i < ft_strlen(input) && !ft_isspace(input[*i]) &&
-			input[*i] != '|' && input[*i] != '"' &&
-			input[*i] != '$')
+	while (*i < ft_strlen(input) && !ft_isspace(input[*i])
+		&& input[*i] != '|' && input[*i] != '"'
+		&&input[*i] != '$')
 	{
 		buffer[*buf_index] = input[*i];
 		(*buf_index)++;

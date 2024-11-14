@@ -117,7 +117,7 @@ int	export_builtin(char** args, t_env** env_list) // an else case is missing
 	//
 	if (args[0] && args[1] == NULL) // combine them if no spaces are there
 	{
-		sign = ft_strchr(args[0], '=');
+		sign = ft_strchr_duplicate(args[0], '=');
 		key = ft_strtrim(args[0], sign);
 		value = ft_strtrim(sign + 1, " ");
 		// fprintf(stderr, "key :%s\n", key);
@@ -145,7 +145,7 @@ int	export_builtin(char** args, t_env** env_list) // an else case is missing
 			if (one_set_of_export)
 			{
 				printf("exportexample: %s\n", one_set_of_export);
-				sign = ft_strchr(one_set_of_export, '=');
+				sign = ft_strchr_duplicate(one_set_of_export, '=');
 
 				if (sign)
 				{

@@ -114,7 +114,7 @@ char	*read_file(int fd, char *line_read)
 		}
 		read_buffer[bytes_read] = '\0';
 		line_read = ft_strjoin_and_free(line_read, read_buffer);
-		if (ft_strchr(read_buffer, '\n'))
+		if (ft_strchr_duplicate(read_buffer, '\n'))
 			break ;
 	}
 	free(read_buffer);

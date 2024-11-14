@@ -71,7 +71,7 @@ char	*quoted_str(char *str, const char *delim)
 				ch_quote = *tk_end;
 			}
 		}
-		else if (!in_quote && ft_strchr(delim, *tk_end))
+		else if (!in_quote && ft_strchr_duplicate(delim, *tk_end))
 			break ;
 		tk_end++;
 	}

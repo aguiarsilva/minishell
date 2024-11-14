@@ -31,7 +31,7 @@ int	ft_getstart(const char *s1, const char *set)
 	i = 0;
 	while (i < len)
 	{
-		if (ft_strchr(set, s1[i]) == 0)
+		if (ft_strchr_duplicate(set, s1[i]) == 0)
 			break ;
 		i++;
 	}
@@ -48,7 +48,7 @@ int	ft_getend(const char *s1, const char *set)
 	i = 0;
 	while (i < len)
 	{
-		if (ft_strchr(set, s1[len - i - 1]) == 0)
+		if (ft_strchr_duplicate(set, s1[len - i - 1]) == 0)
 			break ;
 		i++;
 	}

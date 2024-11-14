@@ -27,7 +27,7 @@ char	*get_env_value_by_name(char *envVarName, char **env)
 	{
 		if (ft_strncmp(env[i], envVarName, ft_strlen(envVarName)) == 0)
 		{
-			equal_sign_pos = ft_strchr(env[i], '=');
+			equal_sign_pos = ft_strchr_duplicate(env[i], '=');
 			if (equal_sign_pos)
 			{
 				path = equal_sign_pos + 1;
@@ -91,28 +91,28 @@ char	**parse_command_with_quotes(char *cmd)
 	return (split_cmd);
 }
 
-void	free_cmd_data(t_cmd *cmd_data)
+void	free_cmd_data(t_cmd *cmd_lst)
 {
 	int	i;
 
 	i = 0;
-	if (cmd_data)
+	if (cmd_lst)
 	{
-		free(cmd_data->cmd);
-		if (cmd_data->args)
+		free(cmd_lst->cmd);
+		if (cmd_lst->args)
 		{
-			while (cmd_data->args[i])
+			while (cmd_lst->args[i])
 			{
-				free(cmd_data->args[i]);
+				free(cmd_lst->args[i]);
 				i++;
 			}
-			free(cmd_data->args);
+			free(cmd_lst->args);
 		}
-		free(cmd_data);
+		free(cmd_lst);
 	}
 }
 
-size_t	get_cmd_data_list_size(t_cmd *cmd_data)
+size_t	get_cmd_lst_size(t_cmd *cmd_data)
 {
 	size_t	lst_size;
 	t_cmd	*current;

@@ -5,15 +5,14 @@
 // Helper function to create and add token if buffer is not empty
 static void	create_token_if_needed(t_token **head, t_token **tail, char *buffer, int buf_index)
 {
-	t_token* new_token;
+	t_token	*new_token;
+
 	if (buf_index > 0)
 	{
 		buffer[buf_index] = '\0';
 		new_token = make_token(buffer, WORD);
 		if (new_token)
-		{
 			add_new_token_to_lst(head, tail, new_token);
-		}
 	}
 }
 
@@ -58,7 +57,7 @@ t_token	*build_lst(char *input, t_env *env_lst)
 	{
 		i = skip_whitespace(input, i, len);
 		if (i >= len)
-			break;
+			break ;
 		process_token(&lexer_data, input, &i, len);
 	}
 	return (lexer_data.head);

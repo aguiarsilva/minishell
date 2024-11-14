@@ -33,7 +33,7 @@ static void	split_env_variable(char *env_var, char **key, char **value)
 	char	*delimiter;
 	int		offset;
 
-	delimiter = ft_strchr(env_var, '=');
+	delimiter = ft_strchr_duplicate(env_var, '=');
 	offset = delimiter - env_var;
 	*key = ft_substr(env_var, 0, offset);
 	*value = ft_substr(delimiter + 1, 0, ft_strlen(env_var) - (offset));
