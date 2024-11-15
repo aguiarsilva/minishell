@@ -67,6 +67,7 @@ char* concat_argv(int argc, char* argv[])
 //	redir_lst = extract_redirection_list_from_tokens(token_list);
 //	cmd_lst = fill_cmd(token_list, redir_lst);
 //	print_cmd(cmd_lst);
+//	free_tk(token_list);
 //	if (cmd_lst == NULL)
 //		return (-1);
 //	run_process(cmd_lst, &env_lst);
@@ -98,6 +99,7 @@ int	main(const int argc, char *argv[], char *env[]) // without while true for re
 	redir_lst = extract_redirection_list_from_tokens(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 	print_cmd(cmd_lst);
+	free_tk(token_list);
 	if (cmd_lst == NULL)
 		return (-1);
 	run_process(cmd_lst, &env_lst);

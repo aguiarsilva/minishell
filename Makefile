@@ -24,6 +24,7 @@ parsing/parsing_utils.c \
 parsing/build_lst.c \
 parsing/build_lst_utils.c \
 parsing/build_lst_utils2.c \
+parsing/cleanup.c \
 parsing/handle_quotes_utils.c \
 parsing/handle_quotes.c \
 parsing/redir_token.c \
