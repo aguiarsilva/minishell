@@ -102,6 +102,7 @@ void	init_prompt(t_prompt *prompt);
 
 //redir_token_utils.c
 bool	is_filename(const char *str);
+int		determine_redirection_type(int filetype);
 /*redir_utils*/
 void	add_file_to_list(t_redir **lst, t_redir *file_name);
 t_redir	*create_file(char *delimiter, t_type type, char *file_name);

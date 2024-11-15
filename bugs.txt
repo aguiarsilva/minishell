@@ -1,5 +1,3 @@
-ls -l | grep "input.txt"  threats input.txt as stdin but it should not
-
-ls -l > output.txt does not write to output.txt when only a single cmd
+ls -l > output when there is no file extension it just prints to stdout
 
 echo "<< EOF" gets detected as Heredoc

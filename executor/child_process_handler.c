@@ -4,15 +4,15 @@
 static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
 {
 	fprintf(stderr, "DEBUG: First command setup\n");
-
-	// Handle input redirections if present
-	if (cmd->redir)
-	{
-		handle_input_redirections(cmd);
-		handle_file_redirections(cmd);
-	}
-
-
+	// Handle file redirections if present
+//	if (cmd->redir)
+//	{
+//		if (cmd->redir->type == REDIR_IN)
+//			handle_input_redirections(cmd);
+//		else if (cmd->redir->type == REDIR_OUT || cmd->redir->type == APPEND)
+//			handle_output_redirections(cmd);
+//	}
+	handle_file_redirections(cmd);
 	// Set up pipe output if there's a next command
 	if (cmd->next && pipe_fd[1] != -1)
 	{
@@ -50,8 +50,7 @@ static void	handle_last_command(t_cmd *cmd, int prev_pipe_fd[2])
 		close(prev_pipe_fd[1]);
 
 	// Handle output redirections if any
-	if (cmd->redir)
-		handle_file_redirections(cmd);
+	handle_file_redirections(cmd);
 }
 
 // Main child process handler

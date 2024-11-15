@@ -33,12 +33,7 @@ static t_redir	*initialize_redirection_node(t_token *token_node, int filetype)
 		printf("Memory allocation failed for file_name\n");
 		return (NULL);
 	}
-	if (filetype == INPUT || filetype == HEREDOC_INPUT)
-		new_redir->type = REDIR_IN;
-	else if (filetype == OUTPUT)
-		new_redir->type = REDIR_OUT;
-	else
-		new_redir->type = WORD;
+	new_redir->type = determine_redirection_type(filetype);
 	printf("filename: %s and type after initialization: %d\n", new_redir->file_name, new_redir->type); //debug printf
 	new_redir->next = NULL;
 	return (new_redir);
@@ -94,6 +89,8 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_lst)
 			file_type = INPUT;
 		if (get_token_type(cur_token->val) == HEREDOC)
 			file_type = HEREDOC_INPUT;
+		else if (get_token_type(cur_token->val) == APPEND)
+			file_type = APPEND_OUTPUT;
 		else if (get_token_type(cur_token->val) == REDIR_OUT)
 			file_type = OUTPUT;
 		handle_heredoc(cur_token, &cur_token, &prev_token, file_type);

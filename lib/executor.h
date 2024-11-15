@@ -29,6 +29,7 @@ void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2]);
 
 //redirections.c
 void	handle_file_redirections(t_cmd *cmd);
+void	handle_output_redirections(t_cmd *cmd);
 void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 void	handle_input_redirections(t_cmd *cmd);
 

@@ -23,3 +23,15 @@ bool	is_filename(const char *str)
 	}
 	return (false);
 }
+
+int	determine_redirection_type(int filetype)
+{
+	if (filetype == INPUT || filetype == HEREDOC_INPUT)
+		return (REDIR_IN);
+	else if (filetype == OUTPUT)
+		return (REDIR_OUT);
+	else if (filetype == APPEND_OUTPUT)
+		return (APPEND);
+	else
+		return (WORD);
+}
