@@ -35,3 +35,17 @@ int	determine_redirection_type(int filetype)
 	else
 		return (WORD);
 }
+
+bool	is_file_without_extension(t_token *prev_token, t_token *cur_token)
+{
+	if (!prev_token || !cur_token)
+		return (false);
+
+	if ((prev_token->type == REDIR_OUT
+			|| prev_token->type == REDIR_IN
+			|| prev_token->type == APPEND)
+		&& cur_token->type == WORD)
+		return (true);
+
+	return (false);
+}

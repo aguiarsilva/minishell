@@ -62,7 +62,8 @@ t_redir	*create_redir_struct(t_redir **redir_head,
 void	add_to_redirection_list(t_token *cur_token, t_redir **redir_lst,
 								int file_type, t_token *prev_token)
 {
-	if (is_filename(cur_token->val) || cur_token->eof_flag)
+	if (is_filename(cur_token->val) || cur_token->eof_flag
+		||is_file_without_extension(prev_token, cur_token))
 	{
 		if (cur_token->eof_flag)
 			create_redir_struct(redir_lst, prev_token, file_type);
