@@ -45,10 +45,11 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 //	printf("prev val = %s, prev type = %d; cur val = %s, cur type = %d\n",
 //		   prev->val, prev->type, cur->val, cur->type);
 
-	// Check for HEREDOC type in the previous token, with current token as WORD
-	if (prev->type == HEREDOC && cur->type == WORD)
+// Check for specific redirection types that make the token skippable
+	if ((prev->type == APPEND || prev->type == HEREDOC) && cur->type == WORD)
 	{
-		printf("Skipping due to HEREDOC; cur val = %s\n", cur->val); // Debug print
+		printf("Skipping due to %s; cur val = %s\n",
+			prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
 		return (true);
 	}
 	// Check if the current token has EOF flag set
@@ -57,7 +58,6 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 		printf("Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
 		return (true);
 	}
-
 	// Check if the previous token is a redirection operator
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
 		return (false);
