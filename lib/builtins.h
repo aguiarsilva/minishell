@@ -20,7 +20,7 @@ int		cd_dir(t_cmd *cmd_lst, t_env *env_lst);
 int		echo(t_cmd *cmd_data);
 //export_buildin.c
 int		export_builtin(char **args, t_env **env_list);
-int		is_valid_identifier(const char *key);
+bool	is_valid_identifier(const char *key);
 int		print_export_error(const char *key);
 //env_utils.c
 void	add_or_update_env_var(t_env **env_list, char *key, char *value);

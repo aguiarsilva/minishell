@@ -101,7 +101,7 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_lst)
 	}
 	if (redir_lst == NULL)
 		printf("redir_lst is NULL after creation\n"); // just debug will delete later
-	print_redir_list(redir_lst);
+//	print_redir_list(redir_lst);
 	return (redir_lst);
 }
 

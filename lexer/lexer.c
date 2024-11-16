@@ -40,7 +40,8 @@ void	assign_token_type(t_token *token_list)
 	}
 }
 
-t_token *create_word_list(char *input) {
+t_token	*create_word_list(char *input)
+{
 	t_token *head = NULL, *tail = NULL;
 	size_t i, len = strlen(input);
 	char buffer[1024] = {0};
@@ -59,7 +60,7 @@ t_token *create_word_list(char *input) {
 		}
 
 		// Check for special characters
-		if (input[i] == '=' || input[i] == '|') {
+		if (input[i] == '|') { //removed = check
 			// Create token from buffer (if any)
 			if (buf_index > 0) {
 				t_token *new_token = make_token(buffer, WORD);

@@ -3,52 +3,54 @@
 #include "../lib/minishell.h"
 
 // Helper function to create and add token if buffer is not empty
-static void	create_token_if_needed(t_token **head, t_token **tail, char *buffer, int buf_index)
+//static void	create_token_if_needed(t_token **head, t_token **tail, char *buffer, int buf_index)
+//{
+//	t_token	*new_token;
+//
+//	if (buf_index > 0)
+//	{
+//		buffer[buf_index] = '\0';
+//		new_token = make_token(buffer, WORD);
+//		if (new_token)
+//			add_new_token_to_lst(head, tail, new_token);
+//	}
+//}
+//
+//// Initialize lexer state
+//static void	init_lexer_data(t_lexer *lexer_data, char *input)
+//{
+//	lexer_data->head = NULL;
+//	lexer_data->tail = NULL;
+//	lexer_data->buf_index = 0;
+//	lexer_data->quoted = is_quoted(input);
+//}
+//
+//static void	process_token(t_lexer *lexer_data, char *input, int *i, int len)
+//{
+//	char	*current;
+//
+//	lexer_data->buf_index = 0;
+//	current = &input[*i];
+//	if (*current == '|')
+//		process_pipe(&lexer_data->head, &lexer_data->tail, i);
+//	else if (*current == '\'' || *current == '"')
+//		process_quotes(input, i, lexer_data->buffer, &lexer_data->buf_index);
+//	else if (*current == '\\' && lexer_data->quoted)
+//		process_escape_sequence(input, i, lexer_data->buffer, &lexer_data->buf_index);
+//	else if (*current == '$')
+//		process_env_variable(input, i, lexer_data->buffer, &lexer_data->buf_index);
+//	else
+//		process_regular_text(input, i, lexer_data->buffer, &lexer_data->buf_index);
+//	create_token_if_needed(&lexer_data->head, &lexer_data->tail, lexer_data->buffer, lexer_data->buf_index);
+//}
+
+t_token	*build_lst(char *input, t_env *env_lst)
 {
-	t_token	*new_token;
+	t_token	*word_list;
 
-	if (buf_index > 0)
-	{
-		buffer[buf_index] = '\0';
-		new_token = make_token(buffer, WORD);
-		if (new_token)
-			add_new_token_to_lst(head, tail, new_token);
-	}
-}
-
-// Initialize lexer state
-static void	init_lexer_data(t_lexer *lexer_data, char *input)
-{
-	lexer_data->head = NULL;
-	lexer_data->tail = NULL;
-	lexer_data->buf_index = 0;
-	lexer_data->quoted = is_quoted(input);
-}
-
-static void	process_token(t_lexer *lexer_data, char *input, int *i, int len)
-{
-	char	*current;
-
-	lexer_data->buf_index = 0;
-	current = &input[*i];
-	if (*current == '|')
-		process_pipe(&lexer_data->head, &lexer_data->tail, i);
-	else if (*current == '\'' || *current == '"')
-		process_quotes(input, i, lexer_data->buffer, &lexer_data->buf_index);
-	else if (*current == '\\' && lexer_data->quoted)
-		process_escape_sequence(input, i, lexer_data->buffer, &lexer_data->buf_index);
-	else if (*current == '$')
-		process_env_variable(input, i, lexer_data->buffer, &lexer_data->buf_index);
-	else
-		process_regular_text(input, i, lexer_data->buffer, &lexer_data->buf_index);
-	create_token_if_needed(&lexer_data->head, &lexer_data->tail, lexer_data->buffer, lexer_data->buf_index);
-}
-
-t_token *build_lst(char *input, t_env *env_lst)
-{
-	t_token *word_list = create_word_list(input);
+	word_list = create_word_list(input);
 	assign_token_type(word_list);
-	return word_list;
+	return (word_list);
 }
 
 //t_token	*build_lst(char *input, t_env *env_lst)

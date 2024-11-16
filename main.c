@@ -84,7 +84,6 @@ int	main(const int argc, char *argv[], char *env[]) // without while true for re
 	char	*result;
 	t_env	*env_lst;
 
-
 	if (argc <= 1)
 		result = readline("");
 	else
