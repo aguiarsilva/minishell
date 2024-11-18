@@ -26,4 +26,8 @@ int		print_export_error(const char *key);
 void	add_or_update_env_var(t_env **env_list, char *key, char *value);
 //pwd.c
 int		pwd(void);
+
+//env.c
+int		env_builtin(t_cmd *cmd_data, t_env *env_lst);
+
 #endif

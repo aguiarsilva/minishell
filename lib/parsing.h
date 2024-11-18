@@ -120,7 +120,7 @@ void	signal_restore(void	(*past_signal[2])(int));
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
-void	remove_quotes(char **str);
+//void	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
 //build_lst.c
@@ -150,6 +150,7 @@ char	*handle_single_quotes(const char *input, int *i);
 char	*handle_double_quotes(const char *input, int *i);
 char	handle_escape_sequence(const char *input, int *i, bool interpret);
 char	*handle_env_variable(const char *input, int *i);
+void	remove_quotes(char *str, int *was_quoted);
 
 //build_lst_utils.c
 void	process_pipe(t_token** head, t_token** tail, int* i);

@@ -134,3 +134,28 @@ char *handle_env_variable(const char *input, int *i)
 	fprintf(stderr, "var_value: %s\n", var_value);
 	return (var_value ? var_value : "");  // Return the value or an empty string if not found
 }
+
+void remove_quotes(char *str, int *was_quoted) {
+    int i, j;
+    int in_quotes = 0;
+    char quote_type = 0;
+    
+    if (!str) return;
+    *was_quoted = 0;  // Initialize to not quoted
+    
+    for (i = 0, j = 0; str[i] != '\0'; i++) {
+        if ((str[i] == '"' || str[i] == '\'') && (!in_quotes || quote_type == str[i])) {
+            *was_quoted = 1;  // Mark that this string was quoted
+            if (!in_quotes) {
+                in_quotes = 1;
+                quote_type = str[i];
+            } else {
+                in_quotes = 0;
+                quote_type = 0;
+            }
+            continue;
+        }
+        str[j++] = str[i];
+    }
+    str[j] = '\0';
+}
