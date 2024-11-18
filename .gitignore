@@ -15,5 +15,5 @@ minishell
 /cmake-build-debug/
 /cmake-build-release/
 /build/
-
 /temp0
+temp0

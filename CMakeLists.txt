@@ -21,6 +21,9 @@ add_executable(minishell
         builtins/echo.c
         builtins/builtins_utils.c
         builtins/export_builtin.c
+        builtins/pwd.c
+        builtins/cd.c
+        builtins/unset.c
         parsing/cleanup.c
         parsing/parsing.c
         lexer/lexer.c
@@ -42,8 +45,6 @@ add_executable(minishell
         env_list_utils.c
         builtins/export_builtin.c
         env_utils.c
-        builtins/pwd.c
-        builtins/cd.c
         parsing/parsing_utils.c
         parsing/parsing_free.c
         parsing/handle_quotes_utils.c
