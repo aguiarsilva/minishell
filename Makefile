@@ -18,6 +18,7 @@ builtins/echo.c \
 builtins/export_builtin.c \
 builtins/pwd.c \
 builtins/env.c \
+builtins/unset.c \
 parsing/handle_operator_utils.c \
 parsing/parsing.c \
 parsing/parsing_free.c \

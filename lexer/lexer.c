@@ -335,7 +335,40 @@ t_token *create_word_list(char *input, t_env *env_lst) {
             t_token *special_token = make_word_token(special_char,
                 input[i] == '=' ? WORD : get_token_type(special_char), env_lst);
             add_new_token_to_lst(&head, &tail, special_token);
-        } else {
+        } 
+        else if (input[i] == '<' && i + 1 < len && input[i + 1] == '<') {
+			// Handle two consecutive '<' characters
+			// Create token from buffer (if any)
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
+
+			// Create token for '<<'
+			char double_left[3] = {'<', '<', '\0'};
+			t_token *double_left_token = make_token(double_left, get_token_type(double_left));
+			add_new_token_to_lst(&head, &tail, double_left_token);
+			i++; // Skip the second '<'
+		}
+		else if (input[i] == '>' && i + 1 < len && input[i + 1] == '>') {
+			// Handle two consecutive '>' characters
+			// Create token from buffer (if any)
+			if (buf_index > 0) {
+				t_token *new_token = make_token(buffer, WORD);
+				add_new_token_to_lst(&head, &tail, new_token);
+				memset(buffer, 0, 1024);
+				buf_index = 0;
+			}
+
+			// Create token for '>>'
+			char double_right[3] = {'>', '>', '\0'};
+			t_token *double_right_token = make_token(double_right, get_token_type(double_right));
+			add_new_token_to_lst(&head, &tail, double_right_token);
+			i++; // Skip the second '>'
+		}
+        else {
             buffer[buf_index++] = input[i];
         }
     }

@@ -30,4 +30,7 @@ int		pwd(void);
 //env.c
 int		env_builtin(t_cmd *cmd_data, t_env *env_lst);
 
+//unset.c
+int		unset_builtin(char **args, t_env **env_lst);
+
 #endif
