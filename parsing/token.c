@@ -78,54 +78,54 @@ char	*quoted_str(char *str, const char *delim)
 	return (tk_end);
 }
 
-void	remove_quotes(char **str)
-{
-	char	*src;
-	char	*dest;
-	char	begin_quote;
+//void	remove_quotes(char **str)
+//{
+//	char	*src;
+//	char	*dest;
+//	char	begin_quote;
+//
+//	src = *str;
+//	dest = *str;
+//	begin_quote = '\0';
+//	if (*src == '"' || *src == '\'')
+//	{
+//		begin_quote = *src;
+//		src++;
+//	}
+//	while (*src)
+//	{
+//		if (begin_quote == '\0' && (*src == '"' || *src == '\''))
+//		{
+//			src++;
+//			continue ;
+//		}
+//		*dest++ = *src++;
+//	}
+//	if (begin_quote != '\0' && dest > *str && (*dest - 1) == begin_quote)
+//		dest--;
+//	*dest = '\0';
+//}
 
-	src = *str;
-	dest = *str;
-	begin_quote = '\0';
-	if (*src == '"' || *src == '\'')
-	{
-		begin_quote = *src;
-		src++;
-	}
-	while (*src)
-	{
-		if (begin_quote == '\0' && (*src == '"' || *src == '\''))
-		{
-			src++;
-			continue ;
-		}
-		*dest++ = *src++;
-	}
-	if (begin_quote != '\0' && dest > *str && (*dest - 1) == begin_quote)
-		dest--;
-	*dest = '\0';
-}
-
-char	*ft_strtok_rm_quotes(char *str, const char *delim)
-{
-	static char		*last_tk;
-	char			*cur_tk_end;
-
-	if (str == NULL)
-		str = last_tk;
-	if (str == NULL)
-		return (NULL);
-	str += ft_strspn(str, delim);
-	if (*str == '\0')
-		return (NULL);
-	cur_tk_end = quoted_str(str, delim);
-	if (*cur_tk_end == '\0')
-		last_tk = NULL;
-	else
-	{
-		*cur_tk_end = '\0';
-		last_tk = cur_tk_end + 1;
-	}
-	remove_quotes(&str);
-	return (str);
-}
+//char	*ft_strtok_rm_quotes(char *str, const char *delim)
+//{
+//	static char		*last_tk;
+//	char			*cur_tk_end;
+//
+//	if (str == NULL)
+//		str = last_tk;
+//	if (str == NULL)
+//		return (NULL);
+//	str += ft_strspn(str, delim);
+//	if (*str == '\0')
+//		return (NULL);
+//	cur_tk_end = quoted_str(str, delim);
+//	if (*cur_tk_end == '\0')
+//		last_tk = NULL;
+//	else
+//	{
+//		*cur_tk_end = '\0';
+//		last_tk = cur_tk_end + 1;
+//	}
+//	remove_quotes(&str);
+//	return (str);
+//}

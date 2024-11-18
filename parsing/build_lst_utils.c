@@ -3,14 +3,14 @@
 #include "../lib/minishell.h"
 
 // Helper function to process pipe tokens
-void	process_pipe(t_token **head, t_token **tail, int *i)
-{
-	t_token	*pipe_token;
-
-	pipe_token = make_token("|", PIPE);
-	add_new_token_to_lst(head, tail, pipe_token);
-	(*i)++;
-}
+//void	process_pipe(t_token **head, t_token **tail, int *i)
+//{
+//	t_token	*pipe_token;
+//
+//	pipe_token = make_token("|", PIPE, env_lst);
+//	add_new_token_to_lst(head, tail, pipe_token);
+//	(*i)++;
+//}
 
 // Helper function to process quoted strings
 void	process_quotes(char *input, int *i, char *buffer, int *buf_index)

@@ -61,3 +61,25 @@ void	ft_putstr_fd_mod(char *s, int fd)
 		write(fd, s++, 1);
 	write(fd, "\n", 1);
 }
+
+char	*ft_charjoin_mod(char *s1, char s2)
+{
+	char	*ret;
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = ft_strlen(s1) + 1;
+	ret = malloc((len + 1) * sizeof(*ret));
+	if (!ret)
+		return (free(s1), NULL);
+	while (s1[i])
+	{
+		ret[i] = s1[i];
+		i++;
+	}
+	ret[i++] = s2;
+	ret[i] = '\0';
+	free(s1);
+	return (ret);
+}

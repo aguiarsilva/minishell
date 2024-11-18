@@ -48,7 +48,7 @@ t_token	*build_lst(char *input, t_env *env_lst)
 {
 	t_token	*word_list;
 
-	word_list = create_word_list(input);
+	word_list = create_word_list(input, env_lst);
 	assign_token_type(word_list);
 	return (word_list);
 }

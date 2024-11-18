@@ -52,6 +52,7 @@ add_executable(minishell
         parsing/build_lst_utils2.c
         parsing/redir_token_utils.c
         executor/execute_heredoc.c
+        builtins/env.c
 
 )
 
