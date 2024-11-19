@@ -42,7 +42,7 @@ char* concat_argv(int argc, char* argv[])
 // 	{
 // 		while (1)
 // 		{
-// 			result = readline("");
+// 			result = readline("\033[1;36mminishell\033[34m$ \033[0m");
 // 			add_history(result);
 // 			token_list = build_lst(result, env_lst);
 // 			assign_token_type(token_list);
