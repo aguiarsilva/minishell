@@ -102,5 +102,7 @@ t_env	*create_env(char **ori_env, char **argv)
 		free(value);
 		i++;
 	}
+	new_node = create_env_node("EC", NULL);
+	env_lst_addback(&env_lst, new_node);
 	return (env_lst);
 }

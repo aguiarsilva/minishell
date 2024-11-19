@@ -67,5 +67,6 @@ void	free_env_node(t_env *node);
 void	free_env_list(t_env **env_lst);
 char	*get_key_in_env_lst(t_env *env_lst, char *key);
 int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
+void	update_env_exit_code(t_env *env_list, const char *key, t_cmd *cmd_lst);
 #endif //MINISHELL_H
 

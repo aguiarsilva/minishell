@@ -45,7 +45,7 @@ void	free_cmd_data(t_cmd *cmd_lst);
 size_t	get_cmd_lst_size(t_cmd *cmd_data);
 
 //child_status.c
-void	check_child_status(pid_t child_pid);
+void	check_child_status(pid_t child_pid, t_cmd *cmd_lst);
 
 //parent_process_handler.c
 void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);

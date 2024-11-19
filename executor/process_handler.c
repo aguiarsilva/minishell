@@ -37,6 +37,9 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	// Parent process handling
 	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
+//	printf("DEBUG after handled parent exit check exitcode of cmd %s, %d\n", current->cmd, current->exit_code);
+	update_env_exit_code(*env_lst, "EC", current);
+//	print_env_list(*env_lst);
 }
 
 static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
@@ -63,7 +66,7 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 void	run_builtin_or_execute(t_cmd *cmd_lst, t_env **env_lst)
 {
 	if (cmd_lst->builtin)
-		exit(run_builtin(cmd_lst, env_lst));
+		exit(run_builtin(cmd_lst, env_lst)); // should probably not exit here and just update the ec
 	else
 	{
 		run_cmd(cmd_lst, env_lst);

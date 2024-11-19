@@ -108,3 +108,21 @@ int	set_value_in_env_lst(t_env *env_lst, char *key, char *value)
 	}
 	return (0);
 }
+
+// Function to update exit_code in t_env based on key
+void	update_env_exit_code(t_env *env_list, const char *key, t_cmd *cmd_lst)
+{
+	while (env_list != NULL)
+	{
+		// Check if the current key matches the input key
+		if (ft_strcmp(env_list->key, key) == 0)
+		{
+			env_list->exit_code = cmd_lst->exit_code; // Update the exit_code
+			printf("Updated exit_code for key '%s' to %d\n", key, cmd_lst->exit_code);
+			return ;
+		}
+		env_list = env_list->next; // Move to the next node
+	}
+	// If key is not found, print a message
+	fprintf(stderr, "Key '%s' not found in environment list.\n", key);
+}
