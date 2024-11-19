@@ -108,7 +108,7 @@ int	determine_exp_var(char *temp, t_env *lst, char **exp_var)
 		if (!(*exp_var))
 			return (1);
 	}
-	else if (temp[0] == '?')
+	else if (temp[0] == '?') // not working as intended it segmentsfaults
 	{
 		*exp_var = find_exit_code(temp, lst);
 		if (!(*exp_var))

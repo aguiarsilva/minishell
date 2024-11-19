@@ -134,6 +134,8 @@ void	print_cmd(t_cmd* command)
 			printf("Arguments:\n");
 			while (command->args[i] != NULL)
 			{
+				if (command->args[i] == "")
+					printf("empty arg in args[%d]", i);
 				printf("  Arg[%d]: %s\n", i, command->args[i]);
 				i++;
 			}

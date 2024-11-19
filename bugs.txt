@@ -1,3 +1,1 @@
-ls -l > output when there is no file extension it just prints to stdout
-
 echo "<< EOF" gets detected as Heredoc

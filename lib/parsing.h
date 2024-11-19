@@ -157,7 +157,7 @@ void	remove_quotes(char *str, int *was_quoted);
 void	process_pipe(t_token** head, t_token** tail, int* i);
 void	process_quotes(char* input, int* i, char* buffer, int* buf_index);
 void	process_escape_sequence(char* input, int* i, char* buffer, int* buf_index);
-void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+// void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
 void	process_regular_text(char* input, int* i, char* buffer, int* buf_index);
 //build_lst_utils2.c
 bool	is_quoted(const char* input);

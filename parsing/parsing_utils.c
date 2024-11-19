@@ -52,6 +52,11 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 			prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
 		return (true);
 	}
+	// if (prev->type == REDIR_IN && cur->type == WORD)
+	// {
+	// 	printf("Skipping due to redir detected; cur val = %s\n", cur->val); // Debug print
+	// 	return (true);
+	// }
 	// Check if the current token has EOF flag set
 	if (cur->eof_flag == true)
 	{

@@ -63,7 +63,8 @@ void	run_cmd(t_cmd *cmd_data, t_env **env_lst)
 	// free(cmd);
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
-		fprintf(stderr, "Error executing %s: %s\n", exec_path, strerror(errno)); // maybe its possible to return with my error function
+		// fprintf(stderr, "Error executing %s: %s\n", exec_path, strerror(errno)); // maybe its possible to return with my error function
+		printf(" is a directory\n"); //should have a custom error function which also contains exit code
 		free(exec_path);
 		ft_free_array(split_cmd);
 		exit(EXIT_FAILURE);
