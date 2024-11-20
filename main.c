@@ -1,7 +1,7 @@
 
 #include "lib/minishell.h"
 
-// Function to concatenate argv into a single-dimensional char array
+// Function to concatenate argv into a single-dimensional char array // only for faster debugging
 char* concat_argv(int argc, char* argv[])
 {
 	// Step 1: Calculate total length needed for concatenated string
@@ -38,9 +38,12 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	t_env	*env_lst;
 	void	(*past_signal[2])(int);
 
-	env_lst = create_env(env, argv);
+
 	if (argc <= 1)
 	{
+		env_lst = create_env(env, argv);
+		if (!env_lst)
+			return (1);
 		signal(SIGINT, interrupt_signal);
 		signal(SIGQUIT, SIG_IGN);
 		while (1)
@@ -71,24 +74,22 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 			free(result);
 		}
 	}
-// 	else
-// 		result = concat_argv(argc, argv); // just for faster debugging
-// 	env_lst = create_env(env, argv);
-// 	if (!env_lst)
-// 		return (1);
-// //	print_env_list(env_lst);
-// 	token_list = build_lst(result, env_lst); // env_lst is not used in any function in build_list
-// 	assign_token_type(token_list);
-// 	print_token_lst(token_list);
-// 	redir_lst = extract_redirection_list_from_tokens(token_list);
-// 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
-// 	print_cmd(cmd_lst);
-// 	free_tk(token_list);
-// 	if (cmd_lst == NULL)
-// 		return (-1);
-// 	run_process(cmd_lst, &env_lst);
-// 	print_env_list(env_lst);
-	// free(result);
+	else
+		result = concat_argv(argc, argv); // just for faster debugging
+	env_lst = create_env(env, argv);
+//	print_env_list(env_lst);
+	token_list = build_lst(result, env_lst); // env_lst is not used in any function in build_list
+	assign_token_type(token_list);
+	print_token_lst(token_list);
+	redir_lst = extract_redirection_list_from_tokens(token_list);
+	cmd_lst = fill_cmd_lst(token_list, redir_lst);
+	print_cmd(cmd_lst);
+	// free_tk(token_list);
+	if (cmd_lst == NULL)
+		return (-1);
+	run_process(cmd_lst, &env_lst);
+	// print_env_list(env_lst);
+	free(result);
 }
 
 // // everything before will be moved out of main

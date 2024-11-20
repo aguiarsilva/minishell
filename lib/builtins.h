@@ -18,10 +18,13 @@ int		check_for_builtin(char *cmd);
 int		cd_dir(t_cmd *cmd_lst, t_env *env_lst);
 //echo.c
 int		echo(t_cmd *cmd_data);
-//export_buildin.c
+//export_builtin.c
 int		export_builtin(char **args, t_env **env_list);
-bool	is_valid_identifier(const char *key);
-int		print_export_error(const char *key);
+
+//export_builtin.c
+bool	is_valid_identifier(const char *key, bool check_first_char);
+char	*ft_strndup(const char *s1, size_t n);
+
 //env_utils.c
 void	add_or_update_env_var(t_env **env_list, char *key, char *value);
 //pwd.c

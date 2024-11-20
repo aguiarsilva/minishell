@@ -16,6 +16,7 @@ builtins/builtins_utils.c \
 builtins/cd.c \
 builtins/echo.c \
 builtins/export_builtin.c \
+builtins/export_builtin_utils.c \
 builtins/pwd.c \
 builtins/env.c \
 builtins/unset.c \
