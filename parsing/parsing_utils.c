@@ -76,7 +76,7 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 	return (true);
 }
 
-bool	is_special_command(const char *cmd)
+bool	is_special_command(char *cmd)
 {
 	if (!cmd)
 		return false;

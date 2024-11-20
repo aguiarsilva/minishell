@@ -90,7 +90,7 @@ t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
 void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 bool	is_skippable_token(t_token *prev, t_token *cur);
 size_t	count_arguments(t_token *token_list);
-bool	is_special_command(const char *cmd);
+bool	is_special_command(char *cmd);
 //parsing_free.c
 void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);
@@ -149,18 +149,18 @@ void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 void add_token_to_command(t_cmd *cmd, t_token *token);
 
 /*handle_quotes.c*/
-char	*handle_single_quotes(const char *input, int *i);
-char	*handle_double_quotes(const char *input, int *i);
-char	handle_escape_sequence(const char *input, int *i, bool interpret);
+char	*handle_single_quotes(char *input, size_t *i);
+char	*handle_double_quotes(char *input, size_t *i);
+char	handle_escape_sequence(char *input, size_t *i, bool interpret);
 char	*handle_env_variable(const char *input, int *i);
 void	remove_quotes(char *str, int *was_quoted);
 
 //build_lst_utils.c
 void	process_pipe(t_token** head, t_token** tail, int* i);
 void	process_quotes(char* input, int* i, char* buffer, int* buf_index);
-void	process_escape_sequence(char* input, int* i, char* buffer, int* buf_index);
+void	process_escape_sequence(char* input, size_t *i, char* buffer, int* buf_index);
 // void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
-void	process_regular_text(char* input, int* i, char* buffer, int* buf_index);
+void	process_regular_text(char *input, size_t *i, char *buffer, int *buf_index);
 //build_lst_utils2.c
 bool	is_quoted(const char* input);
 void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token);
@@ -168,9 +168,9 @@ void	append_node(t_token** head, t_token** curr, t_token* new);
 void	nodes_init(t_token** head, t_token** cur, t_token** new);
 int		skip_whitespace(const char *input, int i, int len);
 /*handle_quotes_utils.c*/
-char	get_interpreted_escape_char(const char *input, int *i);
-void	process_character(const char *input, int *i, char *buffer, int *buf_index);
-void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+char	get_interpreted_escape_char(char *input, size_t *i);
+void	process_character(char *input, size_t *i, char *buffer, int *buf_index);
+void	process_env_variable(char* input, size_t* i, char* buffer, int* buf_index);
 
 t_token *split_into_words(char *input);
 

@@ -110,7 +110,7 @@ int	set_value_in_env_lst(t_env *env_lst, char *key, char *value)
 }
 
 // Function to update exit_code in t_env based on key
-void	update_env_exit_code(t_env *env_list, const char *key, t_cmd *cmd_lst)
+void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst)
 {
 	while (env_list != NULL)
 	{

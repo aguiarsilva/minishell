@@ -1,6 +1,6 @@
 #include "../lib/minishell.h"
 
-char	*handle_single_quotes(const char *input, int *i)
+char	*handle_single_quotes(char *input, size_t *i)
 {
 	int start;  
 	char *buffer;  
@@ -17,7 +17,7 @@ char	*handle_single_quotes(const char *input, int *i)
 	return buffer;  // Return the string inside single quotes
 }
 
-char *handle_double_quotes(const char *input, int *i)
+char *handle_double_quotes(char *input, size_t *i)
 {
     char *buffer;
     int buf_index;
@@ -101,7 +101,7 @@ char *handle_double_quotes(const char *input, int *i)
 #include <stdbool.h>
 
 // Updated handle_escape_sequence to handle printing of escape characters
-char handle_escape_sequence(const char *input, int *i, bool interpret)
+char handle_escape_sequence(char *input, size_t *i, bool interpret)
 {
     char current_char;
     

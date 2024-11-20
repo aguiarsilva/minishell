@@ -19,7 +19,7 @@
 // }
 //
 
-void process_character(const char* input, int* i, char* buffer, int* buf_index)
+void process_character(const char* input, size_t *i, char* buffer, int* buf_index)
 {
 	while (input[*i] == '\\')
 	{
