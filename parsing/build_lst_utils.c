@@ -28,7 +28,6 @@ void	process_quotes(char *input, int *i, char *buffer, int *buf_index)
 		fprintf(stderr, "double quote if \n");
 		quote_content = handle_double_quotes(input, i);
 	}
-
 	if (quote_content)
 	{
 		ft_strcpy(buffer + *buf_index, quote_content);
@@ -42,7 +41,6 @@ void	process_escape_sequence(char* input, int* i, char* buffer, int* buf_index)
 {
 	fprintf(stderr, "double slash if \n");
 	buffer[(*buf_index)++] = handle_escape_sequence(input, i, false);
-
 	while (*i < ft_strlen(input) && !ft_isspace(input[*i]) &&
 		  input[*i] != '|' && input[*i] != '\'' &&
 		  input[*i] != '"' && input[*i] != '\\' &&

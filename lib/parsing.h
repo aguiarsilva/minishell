@@ -90,6 +90,7 @@ t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
 void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 bool	is_skippable_token(t_token *prev, t_token *cur);
 size_t	count_arguments(t_token *token_list);
+bool	is_special_command(const char *cmd);
 //parsing_free.c
 void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);

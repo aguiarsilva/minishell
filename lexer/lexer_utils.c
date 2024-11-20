@@ -1,3 +1,4 @@
+
 #include "../lib/minishell.h"
 
 t_type	get_token_type(char *token)
@@ -13,8 +14,5 @@ t_type	get_token_type(char *token)
 	else if (ft_strcmp(token, "|") == 0)
 		return (PIPE);
 	else
-		return (WORD);  // Default type is WORD for commands/arguments
+		return (WORD); // Default type is WORD for commands/arguments
 }
-
-
-

@@ -346,26 +346,26 @@ t_token *build_lst(char *input, t_env *env_lst)
 
 
 
-bool handle_operator(char* input, size_t* i, t_token** head, t_token** tail)
-{
-	t_token* new_token = NULL;
+// bool handle_operator(char* input, size_t* i, t_token** head, t_token** tail)
+// {
+// 	t_token* new_token = NULL;
 
-	if (input[*i] == '|')
-		new_token = create_pipe_token(input, i);
-	else if (input[*i] == '>' && input[*i + 1] == '>')
-		new_token = create_append_token(input, i);
-	else if (input[*i] == '>')
-		new_token = create_redir_out_token(input, i);
-	else if (input[*i] == '<' && input[*i + 1] == '<')
-		new_token = create_heredoc_token(input, i);
-	else if (input[*i] == '<')
-		new_token = create_redir_in_token(input, i);
-	if (new_token)
-	{
-		add_new_token_to_lst(head, tail, new_token);
-		(*i)++; // Move to the next character after processing the operator
-		return (true); // Indicate that an operator was handled
-	}
-	return (false); // No operator was handled
-}
+// 	if (input[*i] == '|')
+// 		new_token = create_pipe_token(input, i);
+// 	else if (input[*i] == '>' && input[*i + 1] == '>')
+// 		new_token = create_append_token(input, i);
+// 	else if (input[*i] == '>')
+// 		new_token = create_redir_out_token(input, i);
+// 	else if (input[*i] == '<' && input[*i + 1] == '<')
+// 		new_token = create_heredoc_token(input, i);
+// 	else if (input[*i] == '<')
+// 		new_token = create_redir_in_token(input, i);
+// 	if (new_token)
+// 	{
+// 		add_new_token_to_lst(head, tail, new_token);
+// 		(*i)++; // Move to the next character after processing the operator
+// 		return (true); // Indicate that an operator was handled
+// 	}
+// 	return (false); // No operator was handled
+// }
 

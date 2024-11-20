@@ -1,10 +1,11 @@
+
 #include "../lib/minishell.h"
 
-void	free_prompt(t_prompt *prompt)
-{
-	free(prompt->symbols);
-	free(prompt->whitespace);
-}
+// void	free_prompt(t_prompt *prompt)
+// {
+// 	free(prompt->symbols);
+// 	free(prompt->whitespace);
+// }
 
 void	free_tk(t_token *tk_list)
 {
