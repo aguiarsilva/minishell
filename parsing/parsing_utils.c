@@ -76,6 +76,17 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 	return (true);
 }
 
+bool	is_special_command(const char *cmd)
+{
+	if (!cmd)
+		return false;
+	if (ft_strcmp(cmd, ":") == 0)  // null command
+		return true;
+	if (ft_strcmp(cmd, "!") == 0)  // history expansion marker
+		return true;
+	return false;
+}
+
 size_t	count_arguments(t_token *token_list)
 {
 	size_t		arg_count;

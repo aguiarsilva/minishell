@@ -84,6 +84,8 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 		printf("No commands to execute\n"); //debug print
 		return ;
 	}
+	if (cmd_lst->cmd && cmd_lst->cmd[0] && is_special_command(cmd_lst->cmd[0]))
+		return;
 	cmd_count = get_cmd_lst_size(cmd_lst);
 	// if (cmd_count == 1)
 	// 	run_builtin_or_execute(cmd_list, env, dup_env); // not sure if i should should differentiate between one or more cmds

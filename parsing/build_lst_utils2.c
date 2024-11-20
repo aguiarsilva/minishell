@@ -2,21 +2,21 @@
 
 #include "../lib/minishell.h"
 
-bool	is_quoted(const char* input)
-{
-	int	len;
+// bool	is_quoted(const char* input)
+// {
+// 	int	len;
 
-	len = strlen(input);
-	if (len < 2)
-		return (false);
+// 	len = strlen(input);
+// 	if (len < 2)
+// 		return (false);
 
-	// Check if first and last characters are matching quotes
-	if ((input[0] == '\'' && input[len - 1] == '\'') ||
-		(input[0] == '"' && input[len - 1] == '"'))
-		return (true);
+// 	// Check if first and last characters are matching quotes
+// 	if ((input[0] == '\'' && input[len - 1] == '\'') ||
+// 		(input[0] == '"' && input[len - 1] == '"'))
+// 		return (true);
 
-	return (false); // Not properly quoted
-}
+// 	return (false); // Not properly quoted
+// }
 
 void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token)
 {
@@ -53,9 +53,9 @@ void	nodes_init(t_token** head, t_token** cur, t_token** new)
 	*new = NULL;
 }
 
-int	skip_whitespace(const char *input, int i, int len)
-{
-	while (i < len && ft_isspace(input[i]))
-		i++;
-	return (i);
-}
+// int	skip_whitespace(const char *input, int i, int len)
+// {
+// 	while (i < len && ft_isspace(input[i]))
+// 		i++;
+// 	return (i);
+// }

@@ -1,10 +1,9 @@
 
-
 #include "../lib/minishell.h"
 
 static void	print_env_var(t_env *env)
 {
-	if (env->value) // Only print if the variable has a value
+	if (env->value)
 	{
 		ft_putstr_fd(env->key, 1);
 		ft_putchar_fd('=', 1);
@@ -13,11 +12,10 @@ static void	print_env_var(t_env *env)
 	}
 }
 
-static int	is_option(const char *arg)
-{
-	// Check if argument starts with '-'
-	return (arg && arg[0] == '-');
-}
+// static int	is_option(const char *arg)
+// {
+// 	return (arg && arg[0] == '-');
+// }
 
 int	env_builtin(t_cmd *cmd_data, t_env *env_lst)
 {

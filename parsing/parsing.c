@@ -84,6 +84,8 @@ t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list)
 	t_cmd	*tail;
 	t_token	*cur;
 
+	if (token_list && token_list->val && is_special_command(token_list->val))
+		return NULL;
 	head = NULL;
 	tail = NULL;
 	while (token_list != NULL)
