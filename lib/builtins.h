@@ -24,15 +24,13 @@ int		export_builtin(char **args, t_env **env_list);
 //export_builtin.c
 bool	is_valid_identifier(const char *key, bool check_first_char);
 char	*ft_strndup(const char *s1, size_t n);
-
 //env_utils.c
 void	add_or_update_env_var(t_env **env_list, char *key, char *value);
 //pwd.c
 int		pwd(void);
-
 //env.c
 int		env_builtin(t_cmd *cmd_data, t_env *env_lst);
-
+void	print_env_list(t_env *env_lst, bool export);
 //unset.c
 int		unset_builtin(char **args, t_env **env_lst);
 

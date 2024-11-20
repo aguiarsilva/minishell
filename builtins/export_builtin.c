@@ -106,7 +106,8 @@ int	export_builtin(char **args, t_env **env_list)
 	if (arg_count == 0)
 	{
 		printf("DEBUG export no arguments\n");
-		print_env_list_old(*env_list);
+		print_env_list(*env_list, EXPORT);
+		// print_env_list_old(*env_list);
 		return (0);
 	}
 	// Add format validation before processing arguments
@@ -123,6 +124,6 @@ int	export_builtin(char **args, t_env **env_list)
 		}
 		i++;
 	}
-	print_env_list_old(*env_list);
+	// print_env_list_old(*env_list);
 	return (0);
 }

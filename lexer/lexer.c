@@ -172,7 +172,7 @@ int	expand(char *str_to_expand, int *i, char **exp_word, t_env *env_lst)
 	}
 	else
 	{
-		printf("in expand if before create_exp_var\n");
+		// printf("in expand if before create_exp_var\n");
 		if (create_exp_var(str_to_expand, i, env_lst, &exp_var))
 			return (free(*exp_word), 1);
 	}
@@ -191,9 +191,9 @@ char **exp_word, t_env *env_lst)
 {
 	if (is_valid_var_char(str_to_expand[*i + 1]))
 	{
-		printf("string %s is valid_var \n", str_to_expand);
+		// printf("string %s is valid_var \n", str_to_expand);
 		(*i)++;
-		printf("moved after $ i = %d\n", *i);
+		// printf("moved after $ i = %d\n", *i);
 		if (expand(str_to_expand, i, exp_word, env_lst))
 			return (1);
 		(*i)--;
@@ -218,7 +218,7 @@ char	*check_expand(char *word, int i, t_env *env_lst)
 	{
 		if (word[0] != '\'' && word[i] == '$')  //edge case when $ is quoted string
 		{
-			printf("detected dollar symbol for word %s and i = %d\n", word, i);
+			// printf("detected dollar symbol for word %s and i = %d\n", word, i);
 			if (check_expand_helper(word, &i, &exp_word, env_lst))
 				return (NULL);
 		}

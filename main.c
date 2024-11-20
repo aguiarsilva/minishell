@@ -93,7 +93,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	}
 	// signal_setter(past_signal);
 	run_process(cmd_lst, &env_lst);
-	signal_restore(past_signal);
+	// signal_restore(past_signal);
 	// print_env_list(env_lst);
 	free(result);
 	}

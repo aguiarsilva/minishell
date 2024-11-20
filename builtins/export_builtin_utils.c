@@ -13,7 +13,6 @@ bool	is_valid_identifier(const char *key, bool check_first_char)
 	// If first character needs special validation
 	if (check_first_char && (!ft_isalpha(key[0]) && key[0] != '_'))
 		return (false);
-
 	// Check all characters (starting from the second if first is validated)
 	while (key[i])
 	{
@@ -23,21 +22,6 @@ bool	is_valid_identifier(const char *key, bool check_first_char)
 	}
 	return (true);
 }
-
-// int	is_alphanumeric_with_underscores(const char *str)
-// {
-// 	if (str == NULL || *str == '\0')
-// 		return (0);
-// 	while (*str)
-// 	{
-// 		if (!isalnum(*str) && *str != '_')
-// 		{
-// 			return (0);
-// 		}
-// 		str++;
-// 	}
-// 	return (1);
-// }
 
 char	*ft_strndup(const char *s1, size_t n)
 {

@@ -25,6 +25,8 @@
 # define APPEND_OUTPUT 5
 # define CMD_NO_ARGUMENTS 0
 # define PATH_VALID 0
+# define EXPORT 1
+# define NO_EXPORT 0
 # define ERR_NO_CUR_DIR "cd: error retrieving current directory: getcwd:"
 # define ERR_PARENT_DIR_ACCESS " cannot access parent directories: No such file or directory\n"
 # define ERR_NO_SUCH_DIR " No such file or directory\n"
@@ -67,6 +69,7 @@ void	free_env_node(t_env *node);
 void	free_env_list(t_env **env_lst);
 char	*get_key_in_env_lst(t_env *env_lst, char *key);
 int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
-void	update_env_exit_code(t_env *env_list, const char *key, t_cmd *cmd_lst);
+void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst);
+void	update_env_exit_code_for_builtins(t_env *env_list, int exit_code);
 #endif //MINISHELL_H
 
