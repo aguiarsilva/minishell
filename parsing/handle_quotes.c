@@ -135,27 +135,92 @@ char *handle_env_variable(const char *input, int *i)
 	return (var_value ? var_value : "");  // Return the value or an empty string if not found
 }
 
-void remove_quotes(char *str, int *was_quoted) {
-    int i, j;
+// void remove_quotes(char *str, int *was_quoted) {
+//     int i, j;
+//     int in_quotes = 0;
+//     char quote_type = 0;
+    
+//     if (!str) return;
+//     *was_quoted = 0;  // Initialize to not quoted
+    
+//     for (i = 0, j = 0; str[i] != '\0'; i++) {
+//         if ((str[i] == '"' || str[i] == '\'') && (!in_quotes || quote_type == str[i])) {
+//             *was_quoted = 1;  // Mark that this string was quoted
+//             if (!in_quotes) {
+//                 in_quotes = 1;
+//                 quote_type = str[i];
+//             } else {
+//                 in_quotes = 0;
+//                 quote_type = 0;
+//             }
+//             continue;
+//         }
+//         str[j++] = str[i];
+//     }
+//     str[j] = '\0';
+// }
+
+static void handle_escape_char(char *buffer, size_t *i, size_t *new_index)
+{
+    if (buffer[*i] == '\\')
+    {
+        if (buffer[*i + 1] == 'n')
+        {
+            buffer[*new_index] = 'n';
+            (*i)++;
+        }
+        else if (buffer[*i + 1] == 't')
+        {
+            buffer[*new_index] = 't';
+            (*i)++;
+        }
+        else if (buffer[*i + 1] == '\\')
+        {
+            buffer[*new_index] = '\\';
+            (*i)++;
+        }
+        else
+            buffer[*new_index] = buffer[*i];
+    }
+    else
+        buffer[*new_index] = buffer[*i];
+}
+
+void remove_quotes(char *buffer, int *was_quoted)
+{
+    size_t i = 0;
+    size_t new_index = 0;
     int in_quotes = 0;
     char quote_type = 0;
-    
-    if (!str) return;
-    *was_quoted = 0;  // Initialize to not quoted
-    
-    for (i = 0, j = 0; str[i] != '\0'; i++) {
-        if ((str[i] == '"' || str[i] == '\'') && (!in_quotes || quote_type == str[i])) {
-            *was_quoted = 1;  // Mark that this string was quoted
-            if (!in_quotes) {
-                in_quotes = 1;
-                quote_type = str[i];
-            } else {
-                in_quotes = 0;
-                quote_type = 0;
-            }
+
+    while (buffer[i])
+    {
+        if ((buffer[i] == '"' || buffer[i] == '\'') && !in_quotes)
+        {
+            in_quotes = 1;
+            quote_type = buffer[i];
+            *was_quoted = 1;
+            i++;
             continue;
         }
-        str[j++] = str[i];
+        else if (buffer[i] == quote_type && in_quotes)
+        {
+            in_quotes = 0;
+            quote_type = 0;
+            i++;
+            continue;
+        }
+        
+        // Handle escaped characters inside double quotes
+        if (in_quotes && quote_type == '"' && buffer[i] == '\\' && buffer[i + 1])
+        {
+            handle_escape_char(buffer, &i, &new_index);
+            i++;
+            new_index++;
+            continue;
+        }
+        
+        buffer[new_index++] = buffer[i++];
     }
-    str[j] = '\0';
+    buffer[new_index] = '\0';
 }
