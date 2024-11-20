@@ -242,9 +242,9 @@ t_token	*make_word_token(char *wd, t_type type, t_env *env_lst)
 	int		len;
 	char	*checked_word;
 
-	printf("debug buffer print pre check expand: %s\n", wd);
+	// printf("debug buffer print pre check expand: %s\n", wd);
 	checked_word = check_expand(wd, -1, env_lst);
-	printf("debug buffer print after check expand: %s\n", wd);
+	// printf("debug buffer print after check expand: %s\n", wd);
 	len = ft_strlen(checked_word);
 	new_tk = malloc(sizeof(t_token));
 	if (new_tk == NULL)
