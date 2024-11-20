@@ -1,7 +1,7 @@
 
 #include "lib/minishell.h"
 
-void	print_env_list(t_env *lst)
+void	print_env_list_old(t_env *lst)
 {
 	t_env	*current;
 
@@ -134,7 +134,7 @@ void	print_cmd(t_cmd* command)
 			printf("Arguments:\n");
 			while (command->args[i] != NULL)
 			{
-				if (command->args[i] == "")
+				if (ft_strcmp(command->args[i], "") == 0)
 					printf("empty arg in args[%d]", i);
 				printf("  Arg[%d]: %s\n", i, command->args[i]);
 				i++;

@@ -74,9 +74,11 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 		}
 	}
 	else
-		result = concat_argv(argc, argv); // just for faster debugging
+	{
+	result = concat_argv(argc, argv); // just for faster debugging
 	env_lst = create_env(env, argv);
-//	print_env_list(env_lst);
+	// free_env_list(&env_lst);
+	// print_env_list(env_lst);
 	token_list = build_lst(result, env_lst); // env_lst is not used in any function in build_list
 	assign_token_type(token_list);
 	print_token_lst(token_list);
@@ -89,11 +91,12 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 		free(result);
 		return (0);
 	}
-	signal_setter(past_signal);
+	// signal_setter(past_signal);
 	run_process(cmd_lst, &env_lst);
 	signal_restore(past_signal);
 	// print_env_list(env_lst);
 	free(result);
+	}
 }
 
 // // everything before will be moved out of main

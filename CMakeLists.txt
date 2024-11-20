@@ -56,6 +56,7 @@ add_executable(minishell
         executor/execute_heredoc.c
         builtins/env.c
         builtins/export_builtin_utils.c
+        parsing/signal_handling.c
 
 )
 

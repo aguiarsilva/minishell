@@ -53,7 +53,7 @@ void	ft_putstr_fd_mod(char *s, int fd);
 char	*ft_charjoin_mod(char *s1, char s2);
 
 // printer.c
-void	print_env_list(t_env *lst);
+void	print_env_list_old(t_env *lst);
 void	print_env_node(t_env *node);
 void	print_token_lst(t_token *token);
 void	print_redir_list(t_redir *redir_head);

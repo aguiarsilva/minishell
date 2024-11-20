@@ -1,7 +1,7 @@
 
 #include "../lib/minishell.h"
 
-static void	remove_env_var(t_env **env_lst, const char *key)
+static void	remove_env_var(t_env **env_lst, char *key)
 {
 	t_env	*current;
 	t_env	*prev;
