@@ -35,7 +35,6 @@ static bool	has_n_flag(t_cmd *cmd_data)
 // }
 
 static void	print_escaped_string(const char *str)
-static void	print_escaped_string(const char *str)
 {
 	int i;
 	int	i;
@@ -86,7 +85,6 @@ static void	print_escaped_string(const char *str)
 	}
 }
 
-int	echo(t_cmd *cmd_data)
 int	echo(t_cmd *cmd_data)
 {
 	int		i;
