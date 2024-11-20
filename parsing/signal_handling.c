@@ -4,7 +4,6 @@
 
 int	g_signal = 0;
 
-//handle ctrl+c
 void	interrupt_signal(int signal)
 {
 	signal = 130;
@@ -15,7 +14,6 @@ void	interrupt_signal(int signal)
 	rl_redisplay();
 }
 
-// Handle ctrl+'\' to quit
 void	quit_signal(int signal)
 {
 	signal = 131;
@@ -23,14 +21,14 @@ void	quit_signal(int signal)
 	printf("Quit (core dumped)\n");
 }
 
-void	signal_setter(void (**past_signal)(int))  // Note: passing pointer to pointer
+void	signal_setter(void (**past_signal)(int))
 {
-	past_signal[0] = signal(SIGINT, interrupt_signal);  // Set SIGINT handler
-	past_signal[1] = signal(SIGQUIT, quit_signal);  // Set SIGQUIT handler
+	past_signal[0] = signal(SIGINT, interrupt_signal);
+	past_signal[1] = signal(SIGQUIT, quit_signal);
 }
 
-void	signal_restore(void (**past_signal)(int))  // Note: passing pointer to pointer
+void	signal_restore(void (**past_signal)(int))
 {
-	signal(SIGINT, past_signal[0]);  // Restore previous SIGINT handler
-	signal(SIGQUIT, past_signal[1]);  // Restore previous SIGQUIT handler
+	signal(SIGINT, past_signal[0]);
+	signal(SIGQUIT, past_signal[1]);
 }
