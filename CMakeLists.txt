@@ -31,7 +31,6 @@ add_executable(minishell
         parsing/prompt_init.c
         parsing/token.c
         parsing/build_lst.c
-        parsing/check.c
         parsing/handle_quotes.c
         executor/child_process_handler.c
         executor/parent_process_handler.c
@@ -57,6 +56,8 @@ add_executable(minishell
         builtins/env.c
         builtins/export_builtin_utils.c
         parsing/signal_handling.c
+        parsing/check_syntax.c
+        parsing/check_syntax.c
 
 )
 

@@ -67,13 +67,18 @@ static int	create_heredoc(t_token *token_list)
 }
 
 void	handle_heredoc(t_token *cur_token, t_token **next_token,
-					   t_token **prev_token, int file_type)
+			t_token **prev_token, int file_type)
 {
 	t_token	*file_token;
 
 	file_token = NULL;
 	if (file_type == HEREDOC_INPUT)
 	{
+		if (*prev_token !=NULL)
+		{
+			printf("in handle doc prev_token = %s, cur_token = %s\n",
+				(*prev_token)->val, cur_token->val);
+		}
 		create_heredoc(cur_token);
 		file_token = make_token("temp0", WORD);
 		insert_token_between(cur_token, file_token);

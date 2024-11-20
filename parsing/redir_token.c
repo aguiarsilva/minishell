@@ -89,7 +89,11 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_lst)
 		if (get_token_type(cur_token->val) == REDIR_IN)
 			file_type = INPUT;
 		if (get_token_type(cur_token->val) == HEREDOC)
+		{
+			printf("set filetype heredoc\n");
 			file_type = HEREDOC_INPUT;
+		}
+
 		else if (get_token_type(cur_token->val) == APPEND)
 			file_type = APPEND_OUTPUT;
 		else if (get_token_type(cur_token->val) == REDIR_OUT)

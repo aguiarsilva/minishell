@@ -102,3 +102,8 @@ size_t	count_arguments(t_token *token_list)
 	}
 	return (arg_count);
 }
+
+bool is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}

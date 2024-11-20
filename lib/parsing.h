@@ -71,8 +71,8 @@ bool	is_redir_operator(const char *wd);
 
 /*cleanup.c*/
 void	free_prompt(t_prompt *prompt);
-void    free_mutil_cmd_arr(char **array);
-void    free_tk(t_token *tk_list);
+void	free_mutil_cmd_arr(char **array);
+void	free_tk(t_token *tk_list);
 
 //parsing.c
 t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list);

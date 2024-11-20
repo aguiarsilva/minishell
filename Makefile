@@ -32,6 +32,7 @@ parsing/handle_quotes_utils.c \
 parsing/handle_quotes.c \
 parsing/redir_token.c \
 parsing/redir_token_utils.c \
+parsing/token.c \
 parsing/signal_handling.c \
 parsing/check_syntax.c \
 lexer/lexer.c \
