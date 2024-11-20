@@ -38,7 +38,6 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	t_env	*env_lst;
 	void	(*past_signal[2])(int);
 
-
 	if (argc <= 1)
 	{
 		env_lst = create_env(env, argv);
@@ -86,8 +85,13 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	print_cmd(cmd_lst);
 	// free_tk(token_list);
 	if (cmd_lst == NULL)
-		return (-1);
+	{
+		free(result);
+		return (0);
+	}
+	signal_setter(past_signal);
 	run_process(cmd_lst, &env_lst);
+	signal_restore(past_signal);
 	// print_env_list(env_lst);
 	free(result);
 }
