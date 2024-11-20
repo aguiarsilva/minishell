@@ -36,13 +36,22 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	t_redir	*redir_lst;
 	char	*result;
 	t_env	*env_lst;
+	void	(*past_signal[2])(int);
 
 	env_lst = create_env(env, argv);
 	if (argc <= 1)
 	{
+		signal(SIGINT, interrupt_signal);
+		signal(SIGQUIT, SIG_IGN);
 		while (1)
 		{
+			g_signal = 0;
 			result = readline("\033[1;36mminishell\033[34m$ \033[0m");
+			if (result == NULL)
+			{
+				ft_printf("\nexit\n");
+				break;
+			}
 			add_history(result);
 			token_list = build_lst(result, env_lst);
 			assign_token_type(token_list);
@@ -51,9 +60,15 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 			cmd_lst = fill_cmd_lst(token_list, redir_lst);
 			print_cmd(cmd_lst);
 			if (cmd_lst == NULL)
-				return (-1);
+			{
+				free(result);
+				continue;
+			}
+			signal_setter(past_signal);
 //			print_env_list(env_lst);
 			run_process(cmd_lst, &env_lst);
+			signal_restore(past_signal);
+			free(result);
 		}
 	}
 // 	else
