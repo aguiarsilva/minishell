@@ -9,7 +9,7 @@ void	interrupt_signal(int signal)
 	g_signal = signal;
 	printf("\n");
 	rl_on_new_line();
-	rl_replace_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -25,7 +25,7 @@ void	quit_signal(int signal)
 {
 	signal = 131;
 	g_signal = signal;
-	printf("\n");
+	printf("Quit (core dumped)\n");
 }
 
 void	signal_setter(void (*past_signal[2])(int))
