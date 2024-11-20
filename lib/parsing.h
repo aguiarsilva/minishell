@@ -119,6 +119,9 @@ void	quit_signal(int signal);
 void	signal_setter(void (*past_signal[2])(int));
 void	signal_restore(void	(*past_signal[2])(int));
 
+//check_syntax.c
+bool	is_valid_redirection_syntax(t_token *token_list);
+
 /*token.c*/
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
@@ -152,21 +155,21 @@ void add_token_to_command(t_cmd *cmd, t_token *token);
 char	*handle_single_quotes(char *input, size_t *i);
 char	*handle_double_quotes(char *input, size_t *i);
 char	handle_escape_sequence(char *input, size_t *i, bool interpret);
-char	*handle_env_variable(const char *input, int *i);
+char	*handle_env_variable(char *input, size_t *i);
 void	remove_quotes(char *str, int *was_quoted);
 
 //build_lst_utils.c
 void	process_pipe(t_token** head, t_token** tail, int* i);
-void	process_quotes(char* input, int* i, char* buffer, int* buf_index);
+void	process_quotes(char* input, size_t* i, char* buffer, int* buf_index);
 void	process_escape_sequence(char* input, size_t *i, char* buffer, int* buf_index);
 // void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
 void	process_regular_text(char *input, size_t *i, char *buffer, int *buf_index);
 //build_lst_utils2.c
-bool	is_quoted(const char* input);
+bool	is_quoted(char* input);
 void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token);
 void	append_node(t_token** head, t_token** curr, t_token* new);
 void	nodes_init(t_token** head, t_token** cur, t_token** new);
-int		skip_whitespace(const char *input, int i, int len);
+int		skip_whitespace(char *input, int i, int len);
 /*handle_quotes_utils.c*/
 char	get_interpreted_escape_char(char *input, size_t *i);
 void	process_character(char *input, size_t *i, char *buffer, int *buf_index);

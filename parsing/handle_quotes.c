@@ -118,7 +118,7 @@ char handle_escape_sequence(char *input, size_t *i, bool interpret)
     return current_char;
 }
 
-char *handle_env_variable(const char *input, int *i)
+char *handle_env_variable(char *input, size_t *i)
 {
 	char var_name[100];
 	int var_index;

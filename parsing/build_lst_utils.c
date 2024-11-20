@@ -13,7 +13,7 @@
 //}
 
 // Helper function to process quoted strings
-void	process_quotes(char *input, int *i, char *buffer, int *buf_index)
+void	process_quotes(char *input, size_t *i, char *buffer, int *buf_index)
 {
 	char	quote_type = input[*i];
 	char*	quote_content;
@@ -52,7 +52,7 @@ void	process_escape_sequence(char *input, size_t *i, char *buffer, int *buf_inde
 	}
 }
 // Helper function to process environment variables
-void	process_env_variable(char* input, int* i, char* buffer, int* buf_index)
+void	process_env_variable(char* input, size_t *i, char* buffer, int* buf_index)
 {
 	fprintf(stderr, "$ if \n");
 	char* env_var;
