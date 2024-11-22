@@ -25,6 +25,9 @@ int	run_builtin(t_cmd *cmd_data, t_env **env_lst)
 	else if (!ft_strncmp(cmd_data->cmd, "unset", ft_strlen(cmd_data->cmd)) && \
 			ft_strlen(cmd_data->cmd) == 5)
 		exit_code = unset_builtin(cmd_data->args, env_lst);
+	else if (!ft_strncmp(cmd_data->cmd, "exit", ft_strlen(cmd_data->cmd)) && \
+			ft_strlen(cmd_data->cmd) == 4)
+		exit_code = unset_builtin(cmd_data->args, env_lst);
 	return (exit_code);
 }
 

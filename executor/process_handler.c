@@ -69,9 +69,10 @@ void handle_builtin_command(t_cmd *cmd_lst, t_env **env_lst)
 
 	if (cmd_lst->builtin)
 	{
+		if (ft_strcmp(cmd_lst->cmd, "exit") == 0)
+			builtin_exit(cmd_lst, *env_lst);
 		// Run the built-in command and retrieve its exit code
 		ec_for_builtin = run_builtin(cmd_lst, env_lst);
-
 		// Update the environment variable exit code
 		update_env_exit_code_for_builtins(*env_lst, ec_for_builtin);
 	}

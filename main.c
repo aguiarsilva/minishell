@@ -63,6 +63,8 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 			print_cmd(cmd_lst);
 			if (cmd_lst == NULL)
 			{
+				free_tk(token_list);
+				free_cmd_list(cmd_lst);
 				free(result);
 				continue;
 			}
@@ -70,6 +72,8 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 //			print_env_list(env_lst);
 			run_process(cmd_lst, &env_lst);
 			signal_restore(past_signal);
+			free_cmd_list(cmd_lst);
+			free_tk(token_list);
 			free(result);
 		}
 	}
@@ -88,6 +92,8 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	// free_tk(token_list);
 	if (cmd_lst == NULL)
 	{
+		free_tk(token_list);
+		free_cmd_list(cmd_lst);
 		free(result);
 		return (0);
 	}
@@ -95,6 +101,8 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	run_process(cmd_lst, &env_lst);
 	// signal_restore(past_signal);
 	// print_env_list(env_lst);
+	free_cmd_list(cmd_lst);
+	free_tk(token_list);
 	free(result);
 	}
 }

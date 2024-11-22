@@ -37,6 +37,8 @@
 # define ERR_FILE "Error during opening file"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
+# define EXIT_TOO_MANY_ARGS "exit: too many arguments\n"
+# define EXIT_NUMERIC_ARG_REQ "exit: numeric argument required\n"
 
 // error.c delete not needed fuction later
 int		print_error_msg(char *error);

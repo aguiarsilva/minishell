@@ -259,6 +259,7 @@ t_token	*make_word_token(char *wd, t_type type, t_env *env_lst)
 	new_tk->eof_flag = false;
 	new_tk->next = NULL;
 	new_tk->type = type;
+	free(checked_word);
 	return (new_tk);
 }
 
