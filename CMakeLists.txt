@@ -58,6 +58,7 @@ add_executable(minishell
         parsing/signal_handling.c
         parsing/check_syntax.c
         parsing/check_syntax.c
+        builtins/exit.c
 
 )
 

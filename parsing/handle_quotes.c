@@ -2,11 +2,11 @@
 
 char	*handle_single_quotes(char *input, size_t *i)
 {
-	int start;  
+//	int start;// not used only set
 	char *buffer;  
 	int buf_index;
 
-	start = ++(*i); // Skip the opening single quote
+//	start = ++(*i); // Skip the opening single quote
 	buffer = malloc(1024); // Buffer to store the result
 	buf_index = 0;
 	while (input[*i] != '\'' && input[*i] != '\0')

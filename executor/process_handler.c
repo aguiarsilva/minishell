@@ -69,11 +69,7 @@ void handle_builtin_command(t_cmd *cmd_lst, t_env **env_lst)
 
 	if (cmd_lst->builtin)
 	{
-		if (ft_strcmp(cmd_lst->cmd, "exit") == 0)
-			builtin_exit(cmd_lst, *env_lst);
-		// Run the built-in command and retrieve its exit code
 		ec_for_builtin = run_builtin(cmd_lst, env_lst);
-		// Update the environment variable exit code
 		update_env_exit_code_for_builtins(*env_lst, ec_for_builtin);
 	}
 }
@@ -95,23 +91,27 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 	size_t	cmd_count;
 
 	cmd_count = 0;
+//	printf("DEBUG: run_process called for command: %s\n", cmd_lst->cmd);
 	if (cmd_lst == NULL)
 	{
 		printf("No commands to execute\n"); //debug print
 		return ;
 	}
 	if (cmd_lst->cmd && cmd_lst->cmd[0] && is_special_command(&cmd_lst->cmd[0]))
-		return;
+		return ;
 	cmd_count = get_cmd_lst_size(cmd_lst);
 	if (cmd_count == 1 && cmd_lst->builtin)
 	{
 		printf("run builtin without pipeline\n");
+//		fprintf(stderr, "exit_code: %d before running straight builtin \n", (*env_lst)->exit_code);
 		handle_builtin_command(cmd_lst, env_lst);
 		// run_builtin(cmd_lst, env_lst);
 	}
 	else
 	{
+		printf("DEBUG: env exit_code before: %d\n", (*env_lst)->exit_code);
 		printf("DEBUG: run %ld cmds\n", cmd_count); //debug print
 		run_pipeline(cmd_lst, env_lst);
+		printf("DEBUG: env exit_code after: %d\n", (*env_lst)->exit_code);
 	}
 }

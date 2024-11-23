@@ -20,25 +20,27 @@ int	builtin_exit(t_cmd *cmd, t_env *env)
 {
 	int	exit_code;
 
-	printf("exit\n");
-	if (!cmd->args[1])
+	printf("builtin exit\n");
+	if (!cmd->args[0])
 	{
 		// If no arguments, use the last exit code from env
+		fprintf(stderr, "exit_code: %d when no argument when exiting \n", env->exit_code);
 		exit(env->exit_code);
 	}
-	if (!is_valid_number(cmd->args[1]))
+	if (!is_valid_number(cmd->args[0]))
 	{
 		fprintf(stderr, EXIT_NUMERIC_ARG_REQ);
 		exit(255);
 	}
-	if (cmd->args[2])
+	if (cmd->args[1])
 	{
 		fprintf(stderr, EXIT_TOO_MANY_ARGS);
 		return (1);
 	}
-	exit_code = (unsigned char)ft_atoll(cmd->args[1]);
+	exit_code = (unsigned char)ft_atoll(cmd->args[0]);
 	// Update the exit code in both cmd and env structures
 	cmd->exit_code = exit_code;
 	env->exit_code = exit_code;
+	fprintf(stderr, "exit_code: %d when using builtin exit \n", exit_code);
 	exit(exit_code);
 }

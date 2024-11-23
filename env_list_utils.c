@@ -118,7 +118,7 @@ void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst)
 		if (ft_strcmp(env_list->key, key) == 0)
 		{
 			env_list->exit_code = cmd_lst->exit_code; // Update the exit_code
-			printf("Updated exit_code for normal cmd : %s' to %d\n", cmd_lst->cmd, cmd_lst->exit_code);
+			printf("Updated exit_code for normal cmd : %s' to cmd_lst->exitcode:%d env_list->exitcode:%d\n", cmd_lst->cmd, cmd_lst->exit_code, env_list->exit_code);
 			return ;
 		}
 		env_list = env_list->next; // Move to the next node
