@@ -74,7 +74,7 @@ void	handle_heredoc(t_token *cur_token, t_token **next_token,
 	file_token = NULL;
 	if (file_type == HEREDOC_INPUT)
 	{
-		if (*prev_token !=NULL)
+		if (*prev_token != NULL)
 		{
 			printf("in handle doc prev_token = %s, cur_token = %s\n",
 				(*prev_token)->val, cur_token->val);

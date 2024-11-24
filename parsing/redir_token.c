@@ -86,28 +86,100 @@ t_redir	*extract_redirection_list_from_tokens(t_token *token_lst)
 	prev_token = NULL;
 	while (cur_token != NULL)
 	{
+		file_type = -1;
 		if (get_token_type(cur_token->val) == REDIR_IN)
 			file_type = INPUT;
-		if (get_token_type(cur_token->val) == HEREDOC)
+		else if (get_token_type(cur_token->val) == HEREDOC)
 		{
+			if (cur_token->next && get_token_type(cur_token->next->val) == HEREDOC)
+			{
+				cur_token = cur_token->next;
+				prev_token = cur_token;
+				cur_token = cur_token->next;
+				continue ;
+			}
 			printf("set filetype heredoc\n");
 			file_type = HEREDOC_INPUT;
 		}
-
 		else if (get_token_type(cur_token->val) == APPEND)
 			file_type = APPEND_OUTPUT;
 		else if (get_token_type(cur_token->val) == REDIR_OUT)
 			file_type = OUTPUT;
-		handle_heredoc(cur_token, &cur_token, &prev_token, file_type);
-		add_to_redirection_list(cur_token, &redir_lst, file_type, prev_token);
+		if (file_type != -1)
+		{
+			if (file_type == HEREDOC_INPUT)
+			{
+				handle_heredoc(cur_token, &cur_token, &prev_token, file_type);
+				// After handle_heredoc, cur_token should be pointing to the temp file
+				if (cur_token != NULL)
+					add_to_redirection_list(cur_token, &redir_lst, file_type, prev_token);
+			}
+			else if (cur_token->next && get_token_type(cur_token->next->val) == WORD)
+			{
+				add_to_redirection_list(cur_token->next, &redir_lst, file_type, cur_token);
+			}
+		}
 		prev_token = cur_token;
 		cur_token = cur_token->next;
 	}
-	if (redir_lst == NULL)
-		printf("redir_lst is NULL after creation\n"); // just debug will delete later
 //	print_redir_list(redir_lst);
 	return (redir_lst);
 }
+
+//t_redir	*extract_redirection_list_from_tokens(t_token *token_lst) working
+//{
+//	t_token	*cur_token;
+//	t_redir	*redir_lst;
+//	int		file_type;
+//	t_token	*prev_token;
+//
+//	cur_token = token_lst;
+//	if (cur_token == NULL || get_token_type(cur_token->val) != WORD)
+//		return (NULL);
+//	redir_lst = NULL;
+//	prev_token = NULL;
+//	while (cur_token != NULL)
+//	{
+//		file_type = -1;
+//		if (get_token_type(cur_token->val) == REDIR_IN)
+//			file_type = INPUT;
+//		else if (get_token_type(cur_token->val) == HEREDOC)
+//		{
+//			if (cur_token->next && get_token_type(cur_token->next->val) == HEREDOC)
+//			{
+//				cur_token = cur_token->next;
+//				prev_token = cur_token;
+//				cur_token = cur_token->next;
+//				continue;
+//			}
+//			printf("set filetype heredoc\n");
+//			file_type = HEREDOC_INPUT;
+//		}
+//		else if (get_token_type(cur_token->val) == APPEND)
+//			file_type = APPEND_OUTPUT;
+//		else if (get_token_type(cur_token->val) == REDIR_OUT)
+//			file_type = OUTPUT;
+//
+//		if (file_type != -1)
+//		{
+//			// Only handle heredoc for HEREDOC_INPUT
+//			if (file_type == HEREDOC_INPUT)
+//			{
+//				handle_heredoc(cur_token, &cur_token, &prev_token, file_type);
+//				add_to_redirection_list(cur_token, &redir_lst, file_type, prev_token);
+//			}
+//				// For other redirections, look at the next token as the filename
+//			else if (cur_token->next && get_token_type(cur_token->next->val) == WORD)
+//			{
+//				create_redir_struct(&redir_lst, cur_token->next, file_type);
+//			}
+//		}
+//		prev_token = cur_token;
+//		cur_token = cur_token->next;
+//	}
+////	print_redir_list(redir_lst);
+//	return (redir_lst);
+//}
 
 // int flag_heredoc(t_token** tk_lst, t_cmd* new_cmd)
 // {
