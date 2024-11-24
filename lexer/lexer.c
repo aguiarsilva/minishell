@@ -56,6 +56,8 @@ char	*find_exit_code(char *temp, t_env *env_lst)
 			tmp = env_lst;
 		env_lst = env_lst->next;
 	}
+	if (!tmp || !tmp->value) // Handle case where no "EC" variable is found or value is NULL
+		return (NULL);
 	temp2 = ft_strdup(tmp->value);
 	if (!temp2)
 		return (NULL);
