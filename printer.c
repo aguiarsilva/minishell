@@ -1,25 +1,25 @@
 
 #include "lib/minishell.h"
 
-void	print_env_list_old(t_env *lst)
-{
-	t_env	*current;
-
-	current = lst;
-	while (current)
-	{
-		printf("Key: %s, Value: %s, EC: %d\n",
-			   current->key ? current->key : "(null)",
-			   current->value ? current->value : "(null)",
-			   current->exit_code);
-		current = current->next;
-	}
-}
+//void	print_env_list_old(t_env *lst)
+//{
+//	t_env	*current;
+//
+//	current = lst;
+//	while (current)
+//	{
+//		printf("Key: %s, Value: %s, EC: %d\n",
+//			   current->key ? current->key : "(null)",
+//			   current->value ? current->value : "(null)"
+////			   current->exit_code);
+//		current = current->next;
+//	}
+//}
 
 void debug_env_list(t_env *env_lst, const char *location)
 {
 	printf("\n=== DEBUG ENV LIST [%s] ===\n", location);
-	printf("Main env_lst exit_code: %d\n", env_lst->exit_code);
+//	printf("Main env_lst exit_code: %d\n", env_lst->exit_code);
 
 	t_env *current = env_lst;
 	while (current)
@@ -70,7 +70,7 @@ void	print_env_node(t_env *node) // debug only
 			printf("%s", current->value);
 		else
 			printf("(null)");
-		printf(", EC: %d\n", current->exit_code);
+//		printf(", EC: %d\n", current->exit_code);
 		current = current->next;
 	}
 }

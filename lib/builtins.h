@@ -8,7 +8,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	int				exit_code;
+//	int				exit_code;
 	struct s_env	*next;
 }		t_env;
 

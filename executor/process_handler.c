@@ -40,7 +40,7 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 	if (!current->next && cmd_position == 0)
 	{
 		update_exit_code(*env_lst, current->exit_code);
-		printf("DEBUG: Single command - updated env exit code: %d\n", (*env_lst)->exit_code);
+//		fprintf(stderr, "DEBUG: Single command - updated env exit code: %d\n", (*env_lst)->exit_code);
 	}
 }
 

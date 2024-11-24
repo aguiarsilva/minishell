@@ -166,8 +166,7 @@ void	update_exit_code(t_env *env_lst, int exit_code)
 
 	if (!env_lst)
 		return ;
-
-	env_lst->exit_code = exit_code;
+//	env_lst->exit_code = exit_code;
 	ec_node = env_lst;
 	while (ec_node)
 	{

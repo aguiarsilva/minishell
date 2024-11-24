@@ -56,7 +56,7 @@ char	*find_exit_code(char *temp, t_env *env_lst)
 			tmp = env_lst;
 		env_lst = env_lst->next;
 	}
-	temp2 = ft_itoa(tmp->exit_code);
+	temp2 = ft_strdup(tmp->value);
 	if (!temp2)
 		return (NULL);
 	if (temp[1])
@@ -218,7 +218,7 @@ char	*check_expand(char *word, int i, t_env *env_lst)
 	{
 		if (word[0] != '\'' && word[i] == '$')  //edge case when $ is quoted string
 		{
-			// printf("detected dollar symbol for word %s and i = %d\n", word, i);
+//			printf("detected dollar symbol for word %s and i = %d\n", word, i);
 			if (check_expand_helper(word, &i, &exp_word, env_lst))
 				return (NULL);
 		}
@@ -406,7 +406,7 @@ t_token	*create_word_list(char *input, t_env **env_lst)
             if (buf_index > 0)
             {
                 remove_quotes(buffer, &was_quoted);
-                t_token *new_token = make_word_token(buffer, WORD, env_lst);
+                t_token *new_token = make_word_token(buffer, WORD, *env_lst);
                 add_new_token_to_lst(&head, &tail, new_token);
                 ft_memset(buffer, 0, 1024);
                 buf_index = 0;
@@ -421,14 +421,14 @@ t_token	*create_word_list(char *input, t_env **env_lst)
             if (buf_index > 0)
             {
                 remove_quotes(buffer, &was_quoted);
-                t_token *new_token = make_word_token(buffer, WORD, env_lst);
+                t_token *new_token = make_word_token(buffer, WORD, *env_lst);
                 add_new_token_to_lst(&head, &tail, new_token);
                 ft_memset(buffer, 0, 1024);
                 buf_index = 0;
             }
             char special_char[2] = {input[i], '\0'};
             t_token *special_token = make_word_token(special_char,
-                input[i] == '=' ? WORD : get_token_type(special_char), env_lst);
+                input[i] == '=' ? WORD : get_token_type(special_char), *env_lst);
             add_new_token_to_lst(&head, &tail, special_token);
         }
         else if (!in_quotes && input[i] == '<' && i + 1 < len && input[i + 1] == '<')
@@ -467,7 +467,7 @@ t_token	*create_word_list(char *input, t_env **env_lst)
     if (buf_index > 0)
     {
         remove_quotes(buffer, &was_quoted);
-        t_token *new_token = make_word_token(buffer, WORD, env_lst);
+        t_token *new_token = make_word_token(buffer, WORD, *env_lst);
         add_new_token_to_lst(&head, &tail, new_token);
     }
     return head;

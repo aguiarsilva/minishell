@@ -11,7 +11,6 @@ static t_env	*create_env_node(char *key, char *value)
 		return (NULL);
 	ft_bzero(node, sizeof(*node));
 	node->key = ft_strdup(key);
-	node->exit_code = 0; // maybe can be removed because never really used
 	if (ft_strncmp(node->key, "SHLVL", ft_strlen(node->key)) == 0)
 	{
 		shell_level = ft_atoi(value);
