@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:17:39 by tbui-quo          #+#    #+#             */
-/*   Updated: 2023/02/23 18:14:02 by tbui-quo         ###   ########.fr       */
+/*   Updated: 2024/11/24 23:35:52 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 1024
 # endif
 
 # include <unistd.h>

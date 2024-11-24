@@ -4,8 +4,7 @@
 # include "minishell.h"
 # include <stdbool.h>
 
-# define RED "\x1b[31m"
-# define RESET "\x1b[0m"
+# define BUFFER_SIZE 1024
 
 extern	int		g_signal;
 
@@ -62,6 +61,30 @@ typedef struct s_lexer
 	bool	quoted;
 }	t_lexer;
 
+typedef struct s_buffer_state {
+    char buffer[BUFFER_SIZE];
+    size_t buf_index;
+    int was_quoted;
+    int in_quotes;
+} t_buffer_state;
+
+typedef struct s_token_list {
+    t_token *head;
+    t_token *tail;
+} t_token_list;
+
+typedef struct s_parser_context {
+    t_buffer_state *state;
+    t_token_list *tokens;
+    t_env **env_lst;
+} t_parser_context;
+
+typedef struct s_char_context {
+    const char *input;
+    size_t current_index;
+    size_t input_length;
+} t_char_context;
+
 /*check.c*/
 bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
@@ -116,8 +139,8 @@ char	*put_begin_space(char *str, int i);
 void	interrupt_signal(int signal);
 void	interruption_signal_process(int signal);
 void	quit_signal(int signal);
-void	signal_setter(void (*past_signal[2])(int));
-void	signal_restore(void	(*past_signal[2])(int));
+void	signal_setter(void (**past_signal)(int));
+void	signal_restore(void	(**past_signal)(int));
 
 //check_syntax.c
 bool	is_valid_redirection_syntax(t_token *token_list);
