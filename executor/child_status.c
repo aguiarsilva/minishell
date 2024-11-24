@@ -16,7 +16,7 @@ void	check_child_status(pid_t child_pid, t_cmd *cmd_lst)
 	{
 		exit_code = WEXITSTATUS(status);
 		cmd_lst->exit_code = exit_code;
-		fprintf(stderr, "DEBUG: exitcode of cmd %s =, %d\n", cmd_lst->cmd, cmd_lst->exit_code);
+		fprintf(stderr, "DEBUG: exitcode of cmd %s = %d\n", cmd_lst->cmd, cmd_lst->exit_code);
 		printf("Child process (PID %d) exited with code %d\n", child_pid, exit_code);
 	}
 	else if (WIFSIGNALED(status)) //Check if the Child Process Was Terminated by a Signal

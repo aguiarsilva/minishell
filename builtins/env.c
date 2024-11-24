@@ -4,9 +4,7 @@
 
 static void	print_env_var(t_env *env, bool export)
 {
-	if (ft_strncmp(env->key, "EC", 2) == 0)
-		return ;  // Skip printing EC variable
-	if (env->value) // Only print if the variable has a value
+	if (env->value)
 	{
 		if (export) // If export is true, print in the "declare -x" format
 		{
@@ -30,26 +28,10 @@ static void	print_env_var(t_env *env, bool export)
 
 void	print_env_list(t_env *env_lst, bool export)
 {
-	bool	printed_ec;
-	int		exit_code;
-
-	printed_ec = false;
-	exit_code = 0;
 	while (env_lst)
 	{
 		print_env_var(env_lst, export);
-		if (ft_strncmp(env_lst->key, "EC", 2) == 0)
-		{
-			printed_ec = true;
-			exit_code = env_lst->exit_code;
-		}
 		env_lst = env_lst->next;
-	}
-	if (printed_ec)
-	{
-		ft_putstr_fd("EC=", STDOUT_FILENO);
-		ft_putnbr_fd(exit_code, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
 	}
 }
 

@@ -26,20 +26,22 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	if (current->next != NULL)
 		create_pipe(pipe_fd);
-
 	process_id = create_process();
 
 	if (process_id == 0)
 	{
 		handle_child_process(current, env_lst, prev_pipe_fd, pipe_fd, cmd_position);
-		exit(EXIT_FAILURE); // Should not reach here
+		exit(EXIT_FAILURE);
 	}
-
-	// Parent process handling
 	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
-//	printf("DEBUG after handled parent exit check exitcode of cmd %s, %d\n", current->cmd, current->exit_code);
-	update_env_exit_code(*env_lst, "EC", current);
-//	print_env_list(*env_lst);
+//	printf("DEBUG: After wait, cmd %s exit code: %d\n", current->cmd, current->exit_code);
+
+	// Only update exit code immediately if it's a single command
+	if (!current->next && cmd_position == 0)
+	{
+		update_exit_code(*env_lst, current->exit_code);
+		printf("DEBUG: Single command - updated env exit code: %d\n", (*env_lst)->exit_code);
+	}
 }
 
 static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
@@ -48,37 +50,38 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 	int		prev_pipe_fd[2]; // maybe combine this into a struct
 	size_t	cmd_position;
 	t_cmd	*current;
+	int		last_exit_code;
 
 	cmd_position = 0;
 	init_pipe_fds(pipe_fd, prev_pipe_fd);
 	current = cmd_list;
-
 	while (current != NULL)
 	{
 		fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n",
 			current->cmd, cmd_position);
 		execute_command(current, env_lst, prev_pipe_fd, pipe_fd, cmd_position);
+		if (current->next == NULL)
+			last_exit_code = current->exit_code;
 		current = current->next;
 		cmd_position++;
 	}
+	update_exit_code(*env_lst, last_exit_code);
+//	debug_env_list(*env_lst, "After pipeline completion");  // Add debug print
 }
 
-void handle_builtin_command(t_cmd *cmd_lst, t_env **env_lst)
+void	handle_builtin_command(t_cmd *cmd, t_env **env_lst)
 {
-	int	ec_for_builtin;
+	int	builtin_result;
 
-	if (cmd_lst->builtin)
-	{
-		ec_for_builtin = run_builtin(cmd_lst, env_lst);
-		update_env_exit_code_for_builtins(*env_lst, ec_for_builtin);
-	}
+	builtin_result = run_builtin(cmd, env_lst);
+	cmd->exit_code = builtin_result;
+	update_exit_code(*env_lst, builtin_result);
 }
 
 void	run_builtin_or_execute(t_cmd *cmd_lst, t_env **env_lst)
 {
 	if (cmd_lst->builtin)
 		handle_builtin_command(cmd_lst, env_lst);
-		// exit(run_builtin(cmd_lst, env_lst)); // should probably not exit here and just update the ec
 	else
 	{
 		run_cmd(cmd_lst, env_lst);
@@ -90,11 +93,9 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 {
 	size_t	cmd_count;
 
-	cmd_count = 0;
-//	printf("DEBUG: run_process called for command: %s\n", cmd_lst->cmd);
 	if (cmd_lst == NULL)
 	{
-		printf("No commands to execute\n"); //debug print
+		printf("No commands to execute\n");
 		return ;
 	}
 	if (cmd_lst->cmd && cmd_lst->cmd[0] && is_special_command(&cmd_lst->cmd[0]))
@@ -103,15 +104,11 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 	if (cmd_count == 1 && cmd_lst->builtin)
 	{
 		printf("run builtin without pipeline\n");
-//		fprintf(stderr, "exit_code: %d before running straight builtin \n", (*env_lst)->exit_code);
 		handle_builtin_command(cmd_lst, env_lst);
-		// run_builtin(cmd_lst, env_lst);
 	}
 	else
 	{
-		printf("DEBUG: env exit_code before: %d\n", (*env_lst)->exit_code);
-		printf("DEBUG: run %ld cmds\n", cmd_count); //debug print
+		printf("DEBUG: run %ld cmds\n", cmd_count);
 		run_pipeline(cmd_lst, env_lst);
-		printf("DEBUG: env exit_code after: %d\n", (*env_lst)->exit_code);
 	}
 }

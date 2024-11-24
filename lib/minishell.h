@@ -62,6 +62,7 @@ void	print_env_node(t_env *node);
 void	print_token_lst(t_token *token);
 void	print_redir_list(t_redir *redir_head);
 void	print_cmd(t_cmd *command);
+void	debug_env_list(t_env *env_lst, const char *location);
 
 //env_list.c
 t_env	*create_env(char **ori_env, char **argv);
@@ -73,5 +74,6 @@ char	*get_key_in_env_lst(t_env *env_lst, char *key);
 int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
 void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst);
 void	update_env_exit_code_for_builtins(t_env *env_list, int exit_code);
+void    update_exit_code(t_env *env_lst, int exit_code);
 #endif //MINISHELL_H
 

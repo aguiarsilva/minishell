@@ -43,6 +43,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 		env_lst = create_env(env, argv);
 		if (!env_lst)
 			return (1);
+//		debug_env_list(env_lst, "After env creation");
 		signal(SIGINT, interrupt_signal);
 		signal(SIGQUIT, SIG_IGN);
 		while (1)
@@ -52,10 +53,10 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 			if (result == NULL)
 			{
 				ft_printf("\nexit\n");
-				break;
+				break ;
 			}
 			add_history(result);
-			token_list = build_lst(result, env_lst);
+			token_list = build_lst(result, &env_lst);
 			assign_token_type(token_list);
 			print_token_lst(token_list);
 			redir_lst = extract_redirection_list_from_tokens(token_list);
@@ -66,7 +67,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 				free_tk(token_list);
 				free_cmd_list(cmd_lst);
 				free(result);
-				continue;
+				continue ;
 			}
 			signal_setter(past_signal);
 //			print_env_list(env_lst);
@@ -83,7 +84,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	env_lst = create_env(env, argv);
 	// free_env_list(&env_lst);
 	// print_env_list(env_lst);
-	token_list = build_lst(result, env_lst); // env_lst is not used in any function in build_list
+	token_list = build_lst(result, &env_lst); // env_lst is not used in any function in build_list
 	assign_token_type(token_list);
 	print_token_lst(token_list);
 	redir_lst = extract_redirection_list_from_tokens(token_list);

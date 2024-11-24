@@ -16,6 +16,23 @@ void	print_env_list_old(t_env *lst)
 	}
 }
 
+void debug_env_list(t_env *env_lst, const char *location)
+{
+	printf("\n=== DEBUG ENV LIST [%s] ===\n", location);
+	printf("Main env_lst exit_code: %d\n", env_lst->exit_code);
+
+	t_env *current = env_lst;
+	while (current)
+	{
+		if (ft_strcmp(current->key, "EC") == 0)
+		{
+			printf("EC variable value: %s\n", current->value);
+		}
+		current = current->next;
+	}
+	printf("============================\n\n");
+}
+
 void	print_token_lst(t_token* token)
 {
 	int	index; // Index to keep track of the position in the list

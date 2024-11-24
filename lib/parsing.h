@@ -134,7 +134,7 @@ void	add_new_token_to_lst(t_token **head, t_token **tail,
 			t_token *new_token);
 //build_lst_utils.c
 // t_token *build_list(t_prompt *prompt, char *msg);
-t_token	*build_lst(char *input, t_env *lst);
+t_token	*build_lst(char *input, t_env **lst);
 
 //handle_operator_utils.c
 t_token	*create_append_token(size_t *i);

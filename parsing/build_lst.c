@@ -44,12 +44,11 @@
 //	create_token_if_needed(&lexer_data->head, &lexer_data->tail, lexer_data->buffer, lexer_data->buf_index);
 //}
 
-t_token	*build_lst(char *input, t_env *env_lst)
+t_token	*build_lst(char *input, t_env **env_lst)
 {
 	t_token	*word_list;
 
 	word_list = create_word_list(input, env_lst);
-//	printf("env_lst->exitcode = %d\n", env_lst->exit_code);
 	assign_token_type(word_list);
 	return (word_list);
 }

@@ -383,7 +383,7 @@ void	assign_token_type(t_token *token_list)
 //     return head;
 // }
 
-t_token *create_word_list(char *input, t_env *env_lst)
+t_token	*create_word_list(char *input, t_env **env_lst)
 {
     t_token *head = NULL, *tail = NULL;
     size_t i, len = ft_strlen(input);

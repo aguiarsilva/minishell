@@ -109,39 +109,75 @@ int	set_value_in_env_lst(t_env *env_lst, char *key, char *value)
 	return (0);
 }
 
-// Function to update exit_code for normal cmds
-void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst)
+//// Function to update exit_code for normal cmds
+//void update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst)
+//{
+//	t_env *current = env_list;
+//	char exit_code_str[12];
+//
+//	printf("DEBUG: Entering update_env_exit_code - Initial env_list address: %p\n", (void*)env_list);
+//
+//	snprintf(exit_code_str, sizeof(exit_code_str), "%d", cmd_lst->exit_code);
+//
+//	while (current != NULL)
+//	{
+//		printf("DEBUG: Checking key '%s' against '%s'\n", current->key, key);
+//		if (ft_strcmp(current->key, key) == 0)
+//		{
+//			printf("DEBUG: Before update - current->exit_code: %d\n", current->exit_code);
+//
+//			// Update both the exit_code and value
+//			current->exit_code = cmd_lst->exit_code;
+//			if (current->value)
+//				free(current->value);
+//			current->value = ft_strdup(exit_code_str);
+//
+//			printf("DEBUG: After update - current->exit_code: %d\n", current->exit_code);
+//			printf("DEBUG: After update - current->value: %s\n", current->value);
+//			return;
+//		}
+//		current = current->next;
+//	}
+//	fprintf(stderr, "Key '%s' not found in environment list.\n", key);
+//}
+//
+//
+//void	update_env_exit_code_for_builtins(t_env *env_list, int exit_code)
+//{
+//	char *target_key;
+//
+//	target_key = "EC";
+//	while (env_list != NULL)
+//	{
+//		if (ft_strcmp(env_list->key, target_key) == 0)
+//		{
+//			env_list->exit_code = exit_code;
+//			printf("Updated exit_code for builtins to %d\n", exit_code);
+//			return ;
+//		}
+//		env_list = env_list->next;
+//	}
+//	fprintf(stderr, "Key '%s' not found in environment list.\n", target_key);
+//}
+
+void	update_exit_code(t_env *env_lst, int exit_code)
 {
-	while (env_list != NULL)
+	t_env	*ec_node;
+
+	if (!env_lst)
+		return ;
+
+	env_lst->exit_code = exit_code;
+	ec_node = env_lst;
+	while (ec_node)
 	{
-		// Check if the current key matches the input key
-		if (ft_strcmp(env_list->key, key) == 0)
+		if (ft_strcmp(ec_node->key, "EC") == 0)
 		{
-			env_list->exit_code = cmd_lst->exit_code; // Update the exit_code
-			printf("Updated exit_code for normal cmd : %s' to cmd_lst->exitcode:%d env_list->exitcode:%d\n", cmd_lst->cmd, cmd_lst->exit_code, env_list->exit_code);
-			return ;
+			free(ec_node->value);
+			ec_node->value = ft_itoa(exit_code);
+			break ;
 		}
-		env_list = env_list->next; // Move to the next node
+		ec_node = ec_node->next;
 	}
-	// If key is not found, print a message
-	fprintf(stderr, "Key '%s' not found in environment list.\n", key);
-}
-
-
-void	update_env_exit_code_for_builtins(t_env *env_list, int exit_code)
-{
-	char *target_key;
-
-	target_key = "EC";
-	while (env_list != NULL)
-	{
-		if (ft_strcmp(env_list->key, target_key) == 0)
-		{
-			env_list->exit_code = exit_code;
-			printf("Updated exit_code for builtins to %d\n", exit_code);
-			return ;
-		}
-		env_list = env_list->next;
-	}
-	fprintf(stderr, "Key '%s' not found in environment list.\n", target_key);
+//	print_env_list(env_lst, false); debug only
 }

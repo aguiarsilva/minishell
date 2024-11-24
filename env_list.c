@@ -11,12 +11,15 @@ static t_env	*create_env_node(char *key, char *value)
 		return (NULL);
 	ft_bzero(node, sizeof(*node));
 	node->key = ft_strdup(key);
+	node->exit_code = 0; // maybe can be removed because never really used
 	if (ft_strncmp(node->key, "SHLVL", ft_strlen(node->key)) == 0)
 	{
 		shell_level = ft_atoi(value);
 		shell_level += 1;
 		node->value = ft_itoa(shell_level);
 	}
+	else if (ft_strncmp(node->key, "EC", ft_strlen(node->key)) == 0)
+		node->value = ft_strdup("0");
 	else
 	{
 		if (value == NULL)
@@ -96,7 +99,7 @@ t_env	*create_env(char **ori_env, char **argv)
 	{
 		split_env_variable(ori_env[i], &key, &value);
 		new_node = create_env_node(key, value);
-		// print_env_node(new_node); // for debug only
+//		print_env_node(new_node); // for debug only
 		env_lst_addback(&env_lst, new_node);
 		free(key);
 		free(value);
