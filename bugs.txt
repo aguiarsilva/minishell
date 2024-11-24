@@ -1,3 +1,3 @@
 echo "<< EOF" gets detected as Heredoc
 
-cat <<<< EOF gets detected as heredoc aswell and is not escapable
+cat<input does not behave like bash not broken
