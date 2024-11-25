@@ -1,115 +1,74 @@
+
+
 #include "../lib/minishell.h"
 
-void	add_file_to_list(t_redir **lst, t_redir *file_name)
+t_redir	*get_last_redirection_node(t_redir *redir_head)
 {
-	t_redir	*nptr;
+	t_redir	*last_redir_node;
 
-	nptr = lst;
-	while (*lst)
-		nptr = &(*nptr)->next;
-	*nptr = file_name;
+	last_redir_node = redir_head;
+	while (last_redir_node && last_redir_node->next != NULL)
+		last_redir_node = last_redir_node->next;
+	return (last_redir_node);
 }
 
-t_redir	*create_file(char *delimiter, t_type type, char *file_name)
+bool	is_filename(const char *str)
 {
-	t_redir	*node;
+	const char	*dot_position;
+	const char	*file_extension;
 
-	node = (t_redir *)malloc(sizeof(*node));
-	if (!node)
-		return (NULL);
-	ft_bzero(node, sizeof(*node));
-	if (file_name)
-	{
-		node->file_name = ft_strdup(file_name);
-		if (!node->file_name)
-			return (NULL);
-	}
-	if (delimiter)
-	{
-		node->delim = ft_strdup(delimiter);
-		if (!node->delim)
-			return (NULL);
-	}
-	node->type = type;
-	node->next = NULL;
-	return (node);
-}
+	dot_position = ft_strrchr(str, '.');
 
-char	*put_begin_space(char *str, int i)
-{
-	int		j;
-	char	*input;
-	int		no_space;
-
-	j = -1;
-	no_space = check_no_space_redir_excl_special(str);
-	input = ft_calloc((ft_strlen(str) + no_space + 1), sizeof(char));
-	if (!input)
-		return (NULL);
-	while (str[++j])
+	if (dot_position && dot_position != str && *(dot_position + 1) != '\0')
 	{
-		copy_and_skip_quotes(str, &j, &input, &i);
-		if(j > 0 && (str[j] == '<' || str[j] == '>' || str[j] == '|')
-			&& str[j - 1] != 26)
+		file_extension = dot_position + 1;
+		while (*file_extension != '\0')
 		{
-			input[i++] = 26;
-			if ((str[j] == '<' && str[j + 1] == '>')
-			|| (str[j] == '>' && str[j + 1] == '<')
-			|| (str[j - 1] == '<' || str[j - 1] == '>'))
-			j--;
+			if (!ft_isalnum(*file_extension))
+				return (false);
+			file_extension++;
 		}
-		input[i++] = str[j];
+		return (true);
 	}
-	return (input);
+	return (false);
 }
 
-char	*put_end_space(char *str, int i)
+bool	is_file_without_extension(t_token *prev_token, t_token *cur_token)
 {
-	int		j;
-	char	*input;
-	int		no_space;
-
-	j = -1;
-	no_space = check_no_space_redir_next(str);
-	input = ft_calloc((ft_strlen(str) + no_space + 1), sizeof(char));
-	if (!input)
-		return (NULL);
-	while (str[++j])
-	{
-		copy_and_skip_quotes(str, &j, &input, &i);
-		if(j > 0 && (str[j] == '<' || str[j] == '>' || str[j] == '|')
-			&& str[j - 1] != 26)
-		{
-			input[i++] = 26;
-			if ((str[j] == '<' && str[j + 1] == '>')
-			|| (str[j] == '>' && str[j + 1] == '<')
-			|| (str[j - 1] == '<' || str[j - 1] == '>'))
-			j--;
-		}
-		input[i++] = str[j];
-	}
-	return (input);
+	if (!prev_token || !cur_token)
+		return (false);
+	if ((prev_token->type == REDIR_OUT
+			|| prev_token->type == REDIR_IN
+			|| prev_token->type == APPEND)
+		&& cur_token->type == WORD)
+		return (true);
+	return (false);
 }
 
-int	check_no_space_redir_next(char *input)
+int	determine_redirection_type(int filetype)
 {
-	int	no_space;
-	int	i;
+	if (filetype == INPUT || filetype == HEREDOC_INPUT)
+		return (REDIR_IN);
+	else if (filetype == OUTPUT)
+		return (REDIR_OUT);
+	else if (filetype == APPEND_OUTPUT)
+		return (APPEND);
+	else
+		return (WORD);
+}
 
-	no_space = 0;
-	i = -1;
-	while (input[++i])
-	{
-		skip_quotes_without_copy(input, &i);
-		if ((input[i] == '<' || input[i] == '>' || input[i] == '|')
-			&& (input[i + 1] != '<' && input[i + 1] != '>'
-			&& input [i + 1] != 26 && input[i + 1]))
-		{
-			no_space++;
-			if (i > 0 && ((input[i] == '<' && input[i - 1] == '>')
-				|| (input[i] == '>' && input[i - 1] == '<')))
-				no_space--;
-		}
-	}
-	return (no_space);
+int	determine_file_type(t_token *cur_token)
+{
+	int	file_type;
+
+	file_type = -1;
+	if (get_token_type(cur_token->val) == REDIR_IN)
+		file_type = INPUT;
+	else if (get_token_type(cur_token->val) == HEREDOC)
+		file_type = HEREDOC_INPUT;
+	else if (get_token_type(cur_token->val) == APPEND)
+		file_type = APPEND_OUTPUT;
+	else if (get_token_type(cur_token->val) == REDIR_OUT)
+		file_type = OUTPUT;
+	return (file_type);
 }

@@ -29,7 +29,6 @@ typedef struct s_redir
 {
 	char			*file_name;
 	t_type			type;
-	// char			*delim;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -38,7 +37,6 @@ typedef struct s_token
 	char				*val;
 	t_type				type;
 	bool				eof_flag;
-	//int					idx;
 	struct s_token		*next;
 }	t_token;
 
@@ -91,7 +89,6 @@ void	add_new_token_to_lst(t_token **head, t_token **tail,
 			t_token *new_token);
 
 /*check.c*/
-bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
 char	*verify_syntax(char *str);
 int		str_spaces(const char *str);
@@ -104,10 +101,6 @@ void	free_tk(t_token *tk_list);
 
 //parsing.c
 t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list);
-t_token	*make_token(char *wd, t_type type);
-t_token	*make_word_token(char *wd, t_type type, t_env *env_lst);
-t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype);
-t_redir	*extract_redirection_list_from_tokens(t_token *token_lst);
 
 //parsing_utils.c
 t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
@@ -122,18 +115,21 @@ t_cmd	*cleanup_cmd_list(t_cmd *head);
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
 
-//redir_token_utils.c
+//redir_struct.c
+void	add_to_redir_lst(t_token *cur_token, t_redir **redir_lst,
+			int file_type, t_token *prev_token);
+//redir_process.c
+t_redir	*create_redir_lst_from_tokens(t_token *token_lst);
+//redir_utils.c
+t_redir	*get_last_redirection_node(t_redir *redir_head);
 bool	is_filename(const char *str);
-int		determine_redirection_type(int filetype);
 bool	is_file_without_extension(t_token *prev_token, t_token *cur_token);
-/*redir_utils*/
-void	add_file_to_list(t_redir **lst, t_redir *file_name);
-t_redir	*create_file(char *delimiter, t_type type, char *file_name);
-char	*put_begin_space(char *str, int i);
+int		determine_redirection_type(int filetype);
+int		determine_file_type(t_token *cur_token);
 
 /*signal_handling.c*/
 void	interrupt_signal(int signal);
-void	interruption_signal_process(int signal);
+//void	interruption_signal_process(int signal);
 void	quit_signal(int signal);
 void	signal_setter(void (**past_signal)(int));
 void	signal_restore(void	(**past_signal)(int));
@@ -146,6 +142,7 @@ char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
+bool	is_quote(char c);
 
 ////build_lst_utils.c nothing used
 //void	process_pipe(t_token** head, t_token** tail, int* i);
@@ -159,12 +156,12 @@ char	*ft_strtok_rm_quotes(char *str, const char *delim);
 //void	nodes_init(t_token** head, t_token** cur, t_token** new);
 //int		skip_whitespace(char *input, int i, int len);
 
-//handle_operator_utils.c
-t_token	*create_append_token(size_t *i);
-t_token	*create_redir_out_token(void);
-t_token	*create_heredoc_token(size_t *i);
-t_token	*create_redir_in_token(void);
-t_token	*create_pipe_token(void);
+////handle_operator_utils.c
+//t_token	*create_append_token(size_t *i);
+//t_token	*create_redir_out_token(void);
+//t_token	*create_heredoc_token(size_t *i);
+//t_token	*create_redir_in_token(void);
+//t_token	*create_pipe_token(void);
 
 /*handle_quotes.c*/
 char	*handle_single_quotes(char *input, size_t *i);

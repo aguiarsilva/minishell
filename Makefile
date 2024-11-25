@@ -24,7 +24,6 @@ builtins/exit.c \
 parsing/check_expand.c \
 parsing/expand_utils.c \
 parsing/expander.c \
-parsing/handle_operator_utils.c \
 parsing/parsing.c \
 parsing/parsing_free.c \
 parsing/parsing_utils.c \
@@ -34,8 +33,9 @@ parsing/build_lst_utils2.c \
 parsing/cleanup.c \
 parsing/handle_quotes_utils.c \
 parsing/handle_quotes.c \
-parsing/redir_token.c \
-parsing/redir_token_utils.c \
+parsing/redir_process.c \
+parsing/redir_struct.c \
+parsing/redir_utils.c \
 parsing/token.c \
 parsing/signal_handling.c \
 parsing/check_syntax.c \

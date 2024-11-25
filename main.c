@@ -59,7 +59,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 			token_list = build_lst(result, &env_lst);
 			assign_token_type(token_list);
 			print_token_lst(token_list);
-			redir_lst = extract_redirection_list_from_tokens(token_list);
+			redir_lst = create_redir_lst_from_tokens(token_list);
 			cmd_lst = fill_cmd_lst(token_list, redir_lst);
 			print_cmd(cmd_lst);
 			if (cmd_lst == NULL)
@@ -87,7 +87,7 @@ int	main(const int argc, char *argv[], char *env[]) //added while true to test c
 	token_list = build_lst(result, &env_lst); // env_lst is not used in any function in build_list
 	assign_token_type(token_list);
 	print_token_lst(token_list);
-	redir_lst = extract_redirection_list_from_tokens(token_list);
+	redir_lst = create_redir_lst_from_tokens(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 	print_cmd(cmd_lst);
 	// free_tk(token_list);

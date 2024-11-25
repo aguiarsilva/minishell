@@ -36,7 +36,7 @@ void process_character(char* input, size_t *i, char* buffer, int* buf_index)
 	}
 }
 
-char get_interpreted_escape_char(char* input, size_t* i)
+char	get_interpreted_escape_char(char *input, size_t *i)
 {
 	char escape_char;
 

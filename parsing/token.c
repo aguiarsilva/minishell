@@ -78,6 +78,11 @@ char	*quoted_str(char *str, const char *delim)
 	return (tk_end);
 }
 
+bool	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
+
 //void	remove_quotes(char **str)
 //{
 //	char	*src;

@@ -38,7 +38,7 @@ add_executable(minishell
         executor/pipe_utils.c
         executor/process_handler.c
         env_list.c
-        parsing/redir_token.c
+        parsing/redir_struct.c
         lexer/lexer.c
         printer.c
         env_list_utils.c
@@ -48,9 +48,8 @@ add_executable(minishell
         parsing/parsing_free.c
         parsing/handle_quotes_utils.c
         parsing/build_lst_utils.c
-        parsing/handle_operator_utils.c
         parsing/build_lst_utils2.c
-        parsing/redir_token_utils.c
+        parsing/redir_utils.c
         parsing/signal_handling.c
         executor/execute_heredoc.c
         builtins/env.c
@@ -64,6 +63,7 @@ add_executable(minishell
         parsing/check_expand.c
         lexer/lexer_init.c
         lexer/lexer_utils2.c
+        parsing/redir_process.c
 
 )
 

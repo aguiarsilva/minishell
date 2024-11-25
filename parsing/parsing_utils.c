@@ -36,42 +36,30 @@ void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd)
 	}
 }
 
-// Check if token should be skipped
 bool	is_skippable_token(t_token *prev, t_token *cur)
 {
-	// Check for a valid previous token; required for redirection
 	if (prev == NULL)
 		return (false);
 	// Debugging output to track values
 //	printf("prev val = %s, prev type = %d; cur val = %s, cur type = %d\n",
 //		   prev->val, prev->type, cur->val, cur->type);
-
-// Check for specific redirection types that make the token skippable
 	if ((prev->type == APPEND || prev->type == HEREDOC) && cur->type == WORD)
 	{
-		printf("Skipping due to %s; cur val = %s\n",
+		fprintf(stderr, "DEBUGSkipping due to %s; cur val = %s\n",
 			prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
 		return (true);
 	}
-	// if (prev->type == REDIR_IN && cur->type == WORD)
-	// {
-	// 	printf("Skipping due to redir detected; cur val = %s\n", cur->val); // Debug print
-	// 	return (true);
-	// }
-	// Check if the current token has EOF flag set
 	if (cur->eof_flag == true)
 	{
-		printf("Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
+		fprintf(stderr, "DEBUG Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
 		return (true);
 	}
 	// Check if the previous token is a redirection operator
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
 		return (false);
-
 	// Check if the current token is a word (possible filename)
 	if (get_token_type(cur->val) != WORD)
 		return (false);
-
 	// All checks passed; it is a skippable redirection file token
 	return (true);
 }
@@ -79,12 +67,12 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 bool	is_special_command(char *cmd)
 {
 	if (!cmd)
-		return false;
+		return (false);
 	if (ft_strcmp(cmd, ":") == 0)  // null command
-		return true;
+		return (true);
 	if (ft_strcmp(cmd, "!") == 0)  // history expansion marker
-		return true;
-	return false;
+		return (true);
+	return (false);
 }
 
 size_t	count_arguments(t_token *token_list)
@@ -103,7 +91,3 @@ size_t	count_arguments(t_token *token_list)
 	return (arg_count);
 }
 
-bool is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}

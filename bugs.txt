@@ -2,3 +2,4 @@ echo "<< EOF" gets detected as Heredoc
 
 cat<input does not behave like bash not broken
 export my_var="test" broken
+cat = "input.txt" has '=' as argument for cat but proceeds otherwise normaly
