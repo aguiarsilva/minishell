@@ -38,6 +38,8 @@ parsing/signal_handling.c \
 parsing/check_syntax.c \
 lexer/lexer.c \
 lexer/lexer_utils.c \
+lexer/lexer_utils2.c \
+lexer/lexer_init.c \
 env_list.c \
 env_list_utils.c \
 env_utils.c \

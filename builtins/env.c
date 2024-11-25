@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.de  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/25 11:12:09 by baguiar-          #+#    #+#             */
+/*   Updated: 2024/11/25 11:14:55 by baguiar-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -6,17 +16,17 @@ static void	print_env_var(t_env *env, bool export)
 {
 	if (env->value)
 	{
-		if (export) // If export is true, print in the "declare -x" format
+		if (export)
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(env->key, 1);
 			ft_putchar_fd('=', 1);
 			ft_putchar_fd('\"', 1);
-			ft_putstr_fd(env->value, 1); // Print the value
+			ft_putstr_fd(env->value, 1);
 			ft_putchar_fd('\"', 1);
 			ft_putchar_fd('\n', 1);
 		}
-		else // If export is false, print in the normal "env" format
+		else
 		{
 			ft_putstr_fd(env->key, 1);
 			ft_putchar_fd('=', 1);

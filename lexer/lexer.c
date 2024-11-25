@@ -394,38 +394,7 @@ void	assign_token_type(t_token *token_list)
 //     return head;
 // }
 
-static void init_buffer_state(t_buffer_state *state)
-{
-    ft_memset(state->buffer, 0, BUFFER_SIZE);
-    state->buf_index = 0;
-    state->was_quoted = 0;
-    state->in_quotes = 0;
-}
 
-static void init_token_list(t_token_list *list)
-{
-    list->head = NULL;
-    list->tail = NULL;
-}
-
-static void flush_buffer(t_parser_context *ctx)
-{
-    if (ctx->state->buf_index > 0)
-    {
-        remove_quotes(ctx->state->buffer, &ctx->state->was_quoted);
-        t_token *new_token = make_word_token(ctx->state->buffer, WORD, *ctx->env_lst);
-        add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, new_token);
-        ft_memset(ctx->state->buffer, 0, BUFFER_SIZE);
-        ctx->state->buf_index = 0;
-        ctx->state->was_quoted = 0;
-    }
-}
-
-static void treat_quotes(char c, t_buffer_state *state)
-{
-    state->in_quotes = !(state->in_quotes);
-    state->buffer[state->buf_index++] = c;
-}
 
 // static void add_special_token(t_parser_context *ctx, char c, int token_type)
 // {
@@ -434,79 +403,7 @@ static void treat_quotes(char c, t_buffer_state *state)
 //     add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, special_token);
 // }
 
-static void process_special_char(char c, t_parser_context *ctx)
-{
-    flush_buffer(ctx);
-    int token_type = (c == '=') ? WORD : get_token_type((char[2]){c, '\0'});
-    char special_char[2] = {c, '\0'};
-    t_token *special_token = make_word_token(special_char, token_type, *ctx->env_lst);
-    add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, special_token);
-}
 
-static int is_equals_special(char c, t_char_context *char_ctx, t_buffer_state *state)
-{
-    if (c != '=')
-        return (0);
-    return (state->buf_index == 0 || 
-            char_ctx->current_index == char_ctx->input_length - 1 || 
-            ft_isspace(char_ctx->input[char_ctx->current_index + 1]));
-}
-
-static int should_process_double_char(t_char_context *char_ctx)
-{
-    if (char_ctx->current_index + 1 >= char_ctx->input_length)
-        return (0);
-        
-    char current = char_ctx->input[char_ctx->current_index];
-    char next = char_ctx->input[char_ctx->current_index + 1];
-    
-    if (current == '<' && next == '<')
-        return ('<');
-    if (current == '>' && next == '>')
-        return ('>');
-    return (0);
-}
-
-static void process_double_char(t_parser_context *ctx, char c, size_t *i)
-{
-    flush_buffer(ctx);
-    char double_char[3] = {c, c, '\0'};
-    t_token *double_token = make_token(double_char, get_token_type(double_char));
-    add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, double_token);
-    (*i)++;
-}
-
-static void handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx)
-{
-    char c = char_ctx->input[char_ctx->current_index];
-    int double_char;
-    
-    if (c == '"' && (char_ctx->current_index == 0 || 
-                     char_ctx->input[char_ctx->current_index - 1] != '\\'))
-    {
-        treat_quotes(c, ctx->state);
-        return;
-    }
-    
-    if (!(ctx->state->in_quotes))
-    {
-        if (ft_isspace(c))
-            flush_buffer(ctx);
-        else if (!ctx->state->was_quoted && 
-                 (c == '|' || is_equals_special(c, char_ctx, ctx->state)))
-            process_special_char(c, ctx);
-        else
-        {
-            double_char = should_process_double_char(char_ctx);
-            if (double_char)
-                process_double_char(ctx, double_char, &char_ctx->current_index);
-            else
-                ctx->state->buffer[ctx->state->buf_index++] = c;
-        }
-    }
-    else
-        ctx->state->buffer[ctx->state->buf_index++] = c;
-}
 
 // static void handle_character(const char *input, size_t *i, t_token **head,
 //     t_token **tail, t_buffer_state *state, t_env **env_lst)
