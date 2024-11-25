@@ -1,3 +1,4 @@
 echo "<< EOF" gets detected as Heredoc
 
 cat<input does not behave like bash not broken
+export my_var="test" broken

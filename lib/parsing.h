@@ -6,7 +6,7 @@
 
 # define BUFFER_SIZE 1024
 
-extern	int		g_signal;
+extern int		g_signal;
 
 typedef enum s_type
 {
@@ -85,6 +85,11 @@ typedef struct s_char_context {
     size_t input_length;
 } t_char_context;
 
+//build_lst.c
+t_token	*build_lst(char *input, t_env **lst);
+void	add_new_token_to_lst(t_token **head, t_token **tail,
+			t_token *new_token);
+
 /*check.c*/
 bool	is_quote(char c);
 bool	is_redirection_symbol(char c);
@@ -142,11 +147,17 @@ size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
-//build_lst.c
-void	add_new_token_to_lst(t_token **head, t_token **tail,
-			t_token *new_token);
-//build_lst_utils.c
-t_token	*build_lst(char *input, t_env **lst);
+////build_lst_utils.c nothing used
+//void	process_pipe(t_token** head, t_token** tail, int* i);
+//void	process_quotes(char* input, size_t* i, char* buffer, int* buf_index);
+//void	process_escape_sequence(char* input, size_t *i, char* buffer, int* buf_index);
+//// void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
+//void	process_regular_text(char *input, size_t *i, char *buffer, int *buf_index);
+////build_lst_utils2.c
+//bool	is_quoted(char* input);
+//void	append_node(t_token** head, t_token** curr, t_token* new);
+//void	nodes_init(t_token** head, t_token** cur, t_token** new);
+//int		skip_whitespace(char *input, int i, int len);
 
 //handle_operator_utils.c
 t_token	*create_append_token(size_t *i);
@@ -155,14 +166,6 @@ t_token	*create_heredoc_token(size_t *i);
 t_token	*create_redir_in_token(void);
 t_token	*create_pipe_token(void);
 
-
-bool handle_operator(char *input, size_t *i, t_token **head, t_token **tail);
-t_token *get_next_token(char *input, size_t *i, bool expect_command);
-size_t get_next_token_len(char *input, size_t start);
-t_cmd *build_command_list(char *input);
-void add_command_to_list(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
-void add_token_to_command(t_cmd *cmd, t_token *token);
-
 /*handle_quotes.c*/
 char	*handle_single_quotes(char *input, size_t *i);
 char	*handle_double_quotes(char *input, size_t *i);
@@ -170,23 +173,21 @@ char	handle_escape_sequence(char *input, size_t *i, bool interpret);
 char	*handle_env_variable(char *input, size_t *i);
 void	remove_quotes(char *str, int *was_quoted);
 
-//build_lst_utils.c
-void	process_pipe(t_token** head, t_token** tail, int* i);
-void	process_quotes(char* input, size_t* i, char* buffer, int* buf_index);
-void	process_escape_sequence(char* input, size_t *i, char* buffer, int* buf_index);
-// void	process_env_variable(char* input, int* i, char* buffer, int* buf_index);
-void	process_regular_text(char *input, size_t *i, char *buffer, int *buf_index);
-//build_lst_utils2.c
-bool	is_quoted(char* input);
-void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token);
-void	append_node(t_token** head, t_token** curr, t_token* new);
-void	nodes_init(t_token** head, t_token** cur, t_token** new);
-int		skip_whitespace(char *input, int i, int len);
 /*handle_quotes_utils.c*/
 char	get_interpreted_escape_char(char *input, size_t *i);
 void	process_character(char *input, size_t *i, char *buffer, int *buf_index);
 void	process_env_variable(char* input, size_t* i, char* buffer, int* buf_index);
-
-t_token *split_into_words(char *input);
+//expand_utils.c
+char	*get_exit_code_value(t_env *env_lst);
+char	*append_remainder(char *base, char *remainder);
+bool	is_valid_env_char(char next_char);
+bool	is_var_delimiter(char c);
+int		calculate_brace_offset(char *split, int start, int *i);
+//check_expand.c
+char	*expand_word(char *word, int i, t_env *env_lst);
+char	*create_fake_pid(int *i);
+//expander.c
+int		expand_to_str(char *str_to_expand, int *i, char **exp_word, t_env *env_lst);
+//t_token *split_into_words(char *input);
 
 #endif

@@ -21,6 +21,9 @@ builtins/pwd.c \
 builtins/env.c \
 builtins/unset.c \
 builtins/exit.c \
+parsing/check_expand.c \
+parsing/expand_utils.c \
+parsing/expander.c \
 parsing/handle_operator_utils.c \
 parsing/parsing.c \
 parsing/parsing_free.c \

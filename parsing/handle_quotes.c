@@ -1,48 +1,48 @@
 #include "../lib/minishell.h"
 
-char	*handle_single_quotes(char *input, size_t *i)
-{
-//	int start;// not used only set
-	char *buffer;  
-	int buf_index;
+//char	*handle_single_quotes(char *input, size_t *i)
+//{
+////	int start;// not used only set
+//	char *buffer;
+//	int buf_index;
+//
+////	start = ++(*i); // Skip the opening single quote
+//	buffer = malloc(1024); // Buffer to store the result
+//	buf_index = 0;
+//	while (input[*i] != '\'' && input[*i] != '\0')
+//		buffer[buf_index++] = input[(*i)++]; // Loop until the closing single quote
+//	if (input[*i] == '\'')
+//		(*i)++;	// If a closing quote was found, skip it
+//	buffer[buf_index] = '\0';  // Null-terminate the buffer
+//	return buffer;  // Return the string inside single quotes
+//}
 
-//	start = ++(*i); // Skip the opening single quote
-	buffer = malloc(1024); // Buffer to store the result
-	buf_index = 0;
-	while (input[*i] != '\'' && input[*i] != '\0')
-		buffer[buf_index++] = input[(*i)++]; // Loop until the closing single quote
-	if (input[*i] == '\'')
-		(*i)++;	// If a closing quote was found, skip it
-	buffer[buf_index] = '\0';  // Null-terminate the buffer
-	return buffer;  // Return the string inside single quotes
-}
-
-char *handle_double_quotes(char *input, size_t *i)
-{
-    char *buffer;
-    int buf_index;
-    
-    (*i)++;  // Skip opening quote
-    buffer = malloc(1024);
-    buf_index = 0;
-    while (input[*i] != '"' && input[*i] != '\0')
-    {
-        while (input[*i] == '$')
-        {
-            process_env_variable(input, i, buffer, &buf_index);
-            break;
-        }
-        while (input[*i] != '$')
-        {
-            process_character(input, i, buffer, &buf_index);
-            break;
-        }
-    }
-    while (input[*i] == '"')
-        (*i)++;
-    buffer[buf_index] = '\0';
-    return buffer;
-}
+//char *handle_double_quotes(char *input, size_t *i)
+//{
+//    char *buffer;
+//    int buf_index;
+//
+//    (*i)++;  // Skip opening quote
+//    buffer = malloc(1024);
+//    buf_index = 0;
+//    while (input[*i] != '"' && input[*i] != '\0')
+//    {
+//        while (input[*i] == '$')
+//        {
+//            process_env_variable(input, i, buffer, &buf_index);
+//            break;
+//        }
+//        while (input[*i] != '$')
+//        {
+//            process_character(input, i, buffer, &buf_index);
+//            break;
+//        }
+//    }
+//    while (input[*i] == '"')
+//        (*i)++;
+//    buffer[buf_index] = '\0';
+//    return buffer;
+//}
 
 /*char	*handle_double_quotes(const char *input, int *i)
 {

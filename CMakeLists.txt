@@ -59,6 +59,11 @@ add_executable(minishell
         parsing/check_syntax.c
         parsing/check_syntax.c
         builtins/exit.c
+        parsing/expander.c
+        parsing/expand_utils.c
+        parsing/check_expand.c
+        lexer/lexer_init.c
+        lexer/lexer_utils2.c
 
 )
 
