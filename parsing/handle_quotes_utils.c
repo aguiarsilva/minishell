@@ -53,4 +53,3 @@ char get_interpreted_escape_char(char* input, size_t* i)
 	}
 	return '\\';
 }
-

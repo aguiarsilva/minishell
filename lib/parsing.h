@@ -101,12 +101,8 @@ void	free_tk(t_token *tk_list);
 t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list);
 t_token	*make_token(char *wd, t_type type);
 t_token	*make_word_token(char *wd, t_type type, t_env *env_lst);
-//t_token	*multi_cmd_init(t_token *new, t_prompt *prompt);
-//bool	multi_cmd_arr_init(t_token *new, char *cp_val);
-//const char	*get_type_name(t_type type);
 t_redir	*create_redir_struct(t_redir **redir_head, t_token *token_node, int filetype);
 t_redir	*extract_redirection_list_from_tokens(t_token *token_lst);
-
 
 //parsing_utils.c
 t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
@@ -120,11 +116,6 @@ void	cleanup_args(char **args, int count);
 t_cmd	*cleanup_cmd_list(t_cmd *head);
 /*prompt_init.c*/
 void	init_prompt(t_prompt *prompt);
-
-/*redir_token.c*/
-//int	flag_heredoc(t_token **tk_lst, t_cmd *new_cmd);
-//int	flag_redir(t_token **tk_lst, t_cmd *new_cmd);
-//char	*redir_handling(char *input);
 
 //redir_token_utils.c
 bool	is_filename(const char *str);
@@ -149,14 +140,12 @@ bool	is_valid_redirection_syntax(t_token *token_list);
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *accept);
 char	*quoted_str(char *str, const char *delim);
-//void	remove_quotes(char **str);
 char	*ft_strtok_rm_quotes(char *str, const char *delim);
 
 //build_lst.c
 void	add_new_token_to_lst(t_token **head, t_token **tail,
 			t_token *new_token);
 //build_lst_utils.c
-// t_token *build_list(t_prompt *prompt, char *msg);
 t_token	*build_lst(char *input, t_env **lst);
 
 //handle_operator_utils.c

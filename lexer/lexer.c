@@ -304,140 +304,26 @@ void	assign_token_type(t_token *token_list)
 	}
 }
 
-// t_token	*create_word_list(char *input, t_env **env_lst)
-// {
-//     t_token *head = NULL, *tail = NULL;
-//     size_t i, len = ft_strlen(input);
-//     char buffer[1024] = {0};
-//     size_t buf_index = 0;
-//     int was_quoted = 0;
-//     int in_quotes = 0;
-
-//     for (i = 0; i < len; i++)
-//     {
-//         if (input[i] == '"' && (i == 0 || input[i - 1] != '\\'))
-//         {
-//             in_quotes = !in_quotes;
-//             buffer[buf_index++] = input[i];
-//             continue;
-//         }
-
-//         if (ft_isspace(input[i]) && !in_quotes)
-//         {
-//             if (buf_index > 0)
-//             {
-//                 remove_quotes(buffer, &was_quoted);
-//                 t_token *new_token = make_word_token(buffer, WORD, *env_lst);
-//                 add_new_token_to_lst(&head, &tail, new_token);
-//                 ft_memset(buffer, 0, 1024);
-//                 buf_index = 0;
-//                 was_quoted = 0;
-//             }
-//             continue;
-//         }
-//         // Check for special characters only if not inside quotes
-//         if (!in_quotes && !was_quoted && (input[i] == '|' ||
-//             (input[i] == '=' && (buf_index == 0 || i == len - 1 || ft_isspace(input[i + 1])))))
-//         {
-//             if (buf_index > 0)
-//             {
-//                 remove_quotes(buffer, &was_quoted);
-//                 t_token *new_token = make_word_token(buffer, WORD, *env_lst);
-//                 add_new_token_to_lst(&head, &tail, new_token);
-//                 ft_memset(buffer, 0, 1024);
-//                 buf_index = 0;
-//             }
-//             char special_char[2] = {input[i], '\0'};
-//             t_token *special_token = make_word_token(special_char,
-//                 input[i] == '=' ? WORD : get_token_type(special_char), *env_lst);
-//             add_new_token_to_lst(&head, &tail, special_token);
-//         }
-//         else if (!in_quotes && input[i] == '<' && i + 1 < len && input[i + 1] == '<')
-//         {
-//             if (buf_index > 0)
-//             {
-//                 t_token *new_token = make_token(buffer, WORD);
-//                 add_new_token_to_lst(&head, &tail, new_token);
-//                 memset(buffer, 0, 1024);
-//                 buf_index = 0;
-//             }
-//             char double_left[3] = {'<', '<', '\0'};
-//             t_token *double_left_token = make_token(double_left, get_token_type(double_left));
-//             add_new_token_to_lst(&head, &tail, double_left_token);
-//             i++; // Skip the second '<'
-//         }
-//         else if (!in_quotes && input[i] == '>' && i + 1 < len && input[i + 1] == '>')
-//         {
-//             if (buf_index > 0)
-//             {
-//                 t_token *new_token = make_token(buffer, WORD);
-//                 add_new_token_to_lst(&head, &tail, new_token);
-//                 memset(buffer, 0, 1024);
-//                 buf_index = 0;
-//             }
-//             char double_right[3] = {'>', '>', '\0'};
-//             t_token *double_right_token = make_token(double_right, get_token_type(double_right));
-//             add_new_token_to_lst(&head, &tail, double_right_token);
-//             i++; // Skip the second '>'
-//         }
-//         else
-//         {
-//             buffer[buf_index++] = input[i];
-//         }
-//     }
-//     if (buf_index > 0)
-//     {
-//         remove_quotes(buffer, &was_quoted);
-//         t_token *new_token = make_word_token(buffer, WORD, *env_lst);
-//         add_new_token_to_lst(&head, &tail, new_token);
-//     }
-//     return head;
-// }
-
-
-
-// static void add_special_token(t_parser_context *ctx, char c, int token_type)
-// {
-//     char special_char[2] = {c, '\0'};
-//     t_token *special_token = make_word_token(special_char, token_type, *ctx->env_lst);
-//     add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, special_token);
-// }
-
-
-
-// static void handle_character(const char *input, size_t *i, t_token **head,
-//     t_token **tail, t_buffer_state *state, t_env **env_lst)
-// {
-//     char c;
-
-//     c = input[*i];
-//     handle_special_cases(c, input, i, head, tail, state, env_lst);
-// }
-
-t_token *create_word_list(char *input, t_env **env_lst)
+t_token	*create_word_list(char *input, t_env **env_lst)
 {
-    t_buffer_state state;
-    t_token_list tokens;
-    t_parser_context ctx;
-    t_char_context char_ctx;
-    
-    init_buffer_state(&state);
-    init_token_list(&tokens);
-    
-    ctx.state = &state;
-    ctx.tokens = &tokens;
-    ctx.env_lst = env_lst;
-    
-    char_ctx.input = input;
-    char_ctx.input_length = ft_strlen(input);
-    char_ctx.current_index = 0;
-    
-    while (char_ctx.current_index < char_ctx.input_length)
-    {
-        handle_special_cases(&ctx, &char_ctx);
-        char_ctx.current_index++;
-    }
-    
-    flush_buffer(&ctx);
-    return tokens.head;
+	t_buffer_state		state;
+	t_token_list		tokens;
+	t_parser_context	ctx;
+	t_char_context		char_ctx;
+	
+	init_buffer_state(&state);
+	init_token_list(&tokens);
+	ctx.state = &state;
+	ctx.tokens = &tokens;
+	ctx.env_lst = env_lst;
+	char_ctx.input = input;
+	char_ctx.input_length = ft_strlen(input);
+	char_ctx.current_index = 0;
+	while (char_ctx.current_index < char_ctx.input_length)
+	{
+		handle_special_cases(&ctx, &char_ctx);
+		char_ctx.current_index++;
+	}
+	flush_buffer(&ctx);
+	return tokens.head;
 }
