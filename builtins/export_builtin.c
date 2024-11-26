@@ -113,7 +113,7 @@ int	export_builtin(char **args, t_env **env_list)
 	value = NULL;
 	if (args == NULL)
 		return (1);
-	count_arg_from_args(args);
+	arg_count = count_arg_from_args(args);
 	if (handle_no_arguments(env_list, arg_count))
 		return (0);
 	if (!is_valid_export_format(args, arg_count))

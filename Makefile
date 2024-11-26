@@ -28,11 +28,11 @@ parsing/parsing.c \
 parsing/parsing_free.c \
 parsing/parsing_utils.c \
 parsing/build_lst.c \
-parsing/cleanup.c \
 parsing/redir_process.c \
 parsing/redir_struct.c \
 parsing/redir_utils.c \
 parsing/signal_handling.c \
+parsing/signal_handling_utils.c \
 parsing/check_syntax.c \
 lexer/lexer.c \
 lexer/lexer_utils.c \
@@ -45,8 +45,6 @@ env_list/free_env_lst.c \
 error.c \
 utils.c \
 printer.c \
-
-
 
 OBJ = $(SRC:.c=.o)
 

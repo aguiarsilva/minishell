@@ -59,6 +59,7 @@ add_executable(minishell
         lexer/lexer_utils2.c
         parsing/redir_process.c
         env_list/free_env_lst.c
+        parsing/signal_handling_utils.c
 
 )
 
