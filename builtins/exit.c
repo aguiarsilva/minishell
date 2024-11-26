@@ -32,23 +32,22 @@ int	builtin_exit(t_cmd *cmd, t_env *env) // maybe limit exit code between 0 255 
 	char	*exitcode_str;
 	int		exit_code;
 
-	printf("builtin exit\n");
 	if (!cmd->args[0])
 	{
 		exitcode_str = get_key_in_env_lst(env, "EC");
 		exit_code = ft_atoi(exitcode_str);
-		printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
+		// printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
 		free(exitcode_str);
 		exit(exit_code);
 	}
 	if (!is_valid_number(cmd->args[0]))
 	{
-		fprintf(stderr, EXIT_NUMERIC_ARG_REQ);
-		exit(255);
+		// fprintf(stderr, EXIT_NUMERIC_ARG_REQ);
+		exit(2);
 	}
 	if (cmd->args[1])
 	{
-		fprintf(stderr, EXIT_TOO_MANY_ARGS);
+		// fprintf(stderr, EXIT_TOO_MANY_ARGS);
 		return (1);
 	}
 	exit_code = (unsigned char)ft_atoll(cmd->args[0]);

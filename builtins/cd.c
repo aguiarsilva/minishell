@@ -46,7 +46,7 @@ int	change_directory(t_cmd *cmd_lst, t_env *env_lst)
 {
 	char	*current_work_directory;
 
-	if (chdir(cmd_lst->args[0]) == PATH_VALID)
+	if (chdir(cmd_lst->args[0]) == PATH_VALID && cmd_lst->args[1] == NULL)
 	{
 		current_work_directory = getcwd(NULL, 0);
 		if (current_work_directory == NULL)

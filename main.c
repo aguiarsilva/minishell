@@ -35,11 +35,21 @@ char	*ft_get_prompt(t_env **env_lst)
 	result = readline("\033[1;36mminishell\033[34m$ \033[0m");
 	if (!result)
 	{
-		fprintf(stderr, "exit needs to be handled with builtin\n");
+		// fprintf(stderr, "exit needs to be handled with builtin\n");
 		exit(1); // temp maybe add new exit function with cmd_lst
 	}
 	add_history(result);
 	return (result);
+}
+
+bool check_if_token_list_right(t_token *token_lst)
+{
+	if (!is_valid_redirection_syntax(token_lst))
+	{
+		printf("minishell: syntax error near unexpected token\n");
+		return false; // Return false if syntax is invalid
+	}
+	return true; // Return true if everything is fine
 }
 
 void	run_minishell(t_env **env_lst, char *input)
@@ -49,16 +59,20 @@ void	run_minishell(t_env **env_lst, char *input)
 	t_redir *redir_lst;
 
 	token_list = build_lst(input, env_lst);
-	assign_token_type(token_list);
+	// assign_token_type(token_list);
 	print_token_lst(token_list);
+	if (check_if_token_list_right(token_list) == false)
+	{
+		// should free tokenlst
+		return ;
+	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
+	print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 	print_cmd(cmd_lst);
 	if (cmd_lst == NULL)
 	{
 		free_tk(token_list);
-		free_cmd_list(cmd_lst);
-		free(input);
 	}
 	run_process(cmd_lst, env_lst);
 	free_cmd_list(cmd_lst);

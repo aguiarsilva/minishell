@@ -58,7 +58,7 @@ char	*get_exec_path(char *cmd, char **env)
 		free(exec_path);
 	}
 	ft_free_array(path_list);
-	print_error_cmd_not_found_and_exit(cmd);
+	// print_error_cmd_not_found_and_exit(cmd);
 	return (NULL);
 }
 

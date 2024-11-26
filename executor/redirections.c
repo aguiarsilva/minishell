@@ -17,12 +17,12 @@ void	handle_input_redirections(t_cmd *cmd)
 	t_redir	*cur_redir;
 	int		fd;
 
-	fprintf(stderr, "DEBUG: Handling input redirections for command: %s\n", cmd->cmd);
+	// fprintf(stderr, "DEBUG: Handling input redirections for command: %s\n", cmd->cmd);
 	cur_redir = cmd->redir;
 	while (cur_redir != NULL)
 	{
-		fprintf(stderr, "DEBUG: Redirection type: %d, File: %s\n",
-			cur_redir->type, cur_redir->file_name);
+		// fprintf(stderr, "DEBUG: Redirection type: %d, File: %s\n",
+		// 	cur_redir->type, cur_redir->file_name);
 
 		if (cur_redir->type == REDIR_IN)
 		{
@@ -46,12 +46,12 @@ void	handle_output_redirections(t_cmd *cmd)
 	t_redir	*cur_redir;
 	int		fd;
 
-	fprintf(stderr, "DEBUG: Handling output redirections for command: %s\n", cmd->cmd);
+	// fprintf(stderr, "DEBUG: Handling output redirections for command: %s\n", cmd->cmd);
 	cur_redir = cmd->redir;
 	while (cur_redir != NULL)
 	{
-		fprintf(stderr, "DEBUG: Redirection type: %d, File: %s\n",
-			cur_redir->type, cur_redir->file_name);
+		// fprintf(stderr, "DEBUG: Redirection type: %d, File: %s\n",
+			// cur_redir->type, cur_redir->file_name);
 		if (cur_redir->type == REDIR_OUT)
 		{
 			fd = open(cur_redir->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -77,12 +77,12 @@ void	handle_output_redirections(t_cmd *cmd)
 void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
 								int pipe_fd[2], size_t cmd_count)
 {
-	fprintf(stderr, "DEBUG: Handling pipe redirections for command %zu\n", cmd_count);
-	fprintf(stderr, "DEBUG: Command: %s\n", cmd->cmd);
+	// fprintf(stderr, "DEBUG: Handling pipe redirections for command %zu\n", cmd_count);
+	// fprintf(stderr, "DEBUG: Command: %s\n", cmd->cmd);
 
 	if (cmd_count > 0)
 	{
-		fprintf(stderr, "DEBUG: Setting up input from previous pipe\n");
+		// fprintf(stderr, "DEBUG: Setting up input from previous pipe\n");
 		dup2(prev_pipe_fd[0], STDIN_FILENO);
 		close(prev_pipe_fd[0]);
 		if (prev_pipe_fd[1] != -1)
@@ -90,7 +90,7 @@ void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
 	}
 	if (cmd->next != NULL)
 	{
-		fprintf(stderr, "DEBUG: Setting up output to next pipe\n");
+		// fprintf(stderr, "DEBUG: Setting up output to next pipe\n");
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);

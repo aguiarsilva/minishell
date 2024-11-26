@@ -25,7 +25,7 @@ static bool	parse_export_arg(const char *arg, char **key_out,
 	{
 		if (ft_strchr_duplicate(sign + 1, '='))
 		{
-			printf("Error: Invalid argument: '%s' (too many '=' signs)\n", arg);
+			// printf("Error: Invalid argument: '%s' (too many '=' signs)\n", arg);
 			return (false);
 		}
 		key_len = (size_t)(sign - arg);
@@ -46,14 +46,14 @@ static bool	check_export_argument(char *arg, char **key_out, char **value_out)
 		return (false);
 	if (!is_valid_identifier(*key_out, true))
 	{
-		printf("Error: '%s' is not a valid identifier for export.\n", *key_out);
+		// printf("Error: '%s' is not a valid identifier for export.\n", *key_out);
 		free(*key_out);
 		free(*value_out);
 		return (false);
 	}
-	printf("DEBUG Valid export argument.\n");
-	printf("DEBUG Key: %s\n", *key_out);
-	printf("DEBUG Value: %s\n", *value_out && **value_out ? *value_out : "(empty)");
+	// printf("DEBUG Valid export argument.\n");
+	// printf("DEBUG Key: %s\n", *key_out);
+	// printf("DEBUG Value: %s\n", *value_out && **value_out ? *value_out : "(empty)");
 	return (true);
 }
 

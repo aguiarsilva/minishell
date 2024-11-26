@@ -34,8 +34,6 @@ static int	create_heredoc(t_token *token_list)
 
 	if (token_list->next != NULL)
 		delimit = token_list->next;
-	else
-		fprintf(stderr, "next node is NULL\n");
 	fd_temp = open("temp0", O_RDWR | O_CREAT | O_TRUNC, 00644);
 	if (fd_temp == -1)
 		return (1);
