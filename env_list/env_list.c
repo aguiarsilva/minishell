@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_list.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 10:16:01 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/26 12:34:36 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 
 static t_env	*create_env_node(char *key, char *value)
 {
@@ -98,7 +109,6 @@ t_env	*create_env(char **ori_env, char **argv)
 	{
 		split_env_variable(ori_env[i], &key, &value);
 		new_node = create_env_node(key, value);
-//		print_env_node(new_node); // for debug only
 		env_lst_addback(&env_lst, new_node);
 		free(key);
 		free(value);

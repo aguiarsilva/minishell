@@ -30,18 +30,14 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	if (process_id == 0)
 	{
-		handle_child_process(current, env_lst, prev_pipe_fd, pipe_fd, cmd_position);
+		handle_child_process(current, env_lst, prev_pipe_fd,
+			pipe_fd, cmd_position);
 		exit(EXIT_FAILURE);
 	}
 	handle_parent_pipes_and_process(process_id, current, prev_pipe_fd, pipe_fd);
-//	printf("DEBUG: After wait, cmd %s exit code: %d\n", current->cmd, current->exit_code);
 
-	// Only update exit code immediately if it's a single command
 	if (!current->next && cmd_position == 0)
-	{
 		update_exit_code(*env_lst, current->exit_code);
-//		fprintf(stderr, "DEBUG: Single command - updated env exit code: %d\n", (*env_lst)->exit_code);
-	}
 }
 
 static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
@@ -66,7 +62,6 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 		cmd_position++;
 	}
 	update_exit_code(*env_lst, last_exit_code);
-//	debug_env_list(*env_lst, "After pipeline completion");  // Add debug print
 }
 
 void	handle_builtin_command(t_cmd *cmd, t_env **env_lst)

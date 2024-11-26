@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 12:51:13 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/20 12:51:14 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -48,8 +59,6 @@ int	change_directory(t_cmd *cmd_lst, t_env *env_lst)
 		}
 		set_pwd_env(env_lst, current_work_directory);
 		free(current_work_directory);
-//		char *pwd = get_key_in_env_lst(env_lst, "PWD"); // debug only
-//		fprintf(stderr, "pwd is %s\n", pwd); // debug only
 	}
 	else
 		return (ft_putstr_fd(ERR_NO_SUCH_DIR, STDERR_FILENO), 1);
@@ -59,10 +68,6 @@ int	change_directory(t_cmd *cmd_lst, t_env *env_lst)
 int	cd_dir(t_cmd *cmd_lst, t_env *env_lst)
 {
 	if (cd_home(cmd_lst, env_lst) == CMD_NO_ARGUMENTS)
-	{
-		char *pwd = get_key_in_env_lst(env_lst, "PWD"); // debug only
-		fprintf(stderr, "pwd is %s\n", pwd); //debug only
 		return (1);
-	}
 	return (change_directory(cmd_lst, env_lst));
 }

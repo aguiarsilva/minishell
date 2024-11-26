@@ -35,7 +35,7 @@ void	process_double_char(t_parser_context *ctx, char c, size_t *i)
 
 	double_char[0] = c;
 	double_char[1] = c;
-	double_char[3] = '\0';
+	double_char[2] = '\0';
 	flush_buffer(ctx);
 	double_token = make_token(double_char, get_token_type(double_char));
 	add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, double_token);
@@ -81,4 +81,29 @@ void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx)
 		return ;
 	}
 	ctx->state->buffer[ctx->state->buf_index++] = c;
+}
+
+void remove_quotes(char *str, int *was_quoted) {
+	int i, j;
+	int in_quotes = 0;
+	char quote_type = 0;
+
+	if (!str) return;
+	*was_quoted = 0;  // Initialize to not quoted
+
+	for (i = 0, j = 0; str[i] != '\0'; i++) {
+		if ((str[i] == '"' || str[i] == '\'') && (!in_quotes || quote_type == str[i])) {
+			*was_quoted = 1;  // Mark that this string was quoted
+			if (!in_quotes) {
+				in_quotes = 1;
+				quote_type = str[i];
+			} else {
+				in_quotes = 0;
+				quote_type = 0;
+			}
+			continue;
+		}
+		str[j++] = str[i];
+	}
+	str[j] = '\0';
 }

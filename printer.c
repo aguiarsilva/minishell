@@ -1,20 +1,6 @@
 
 #include "lib/minishell.h"
 
-//void	print_env_list_old(t_env *lst)
-//{
-//	t_env	*current;
-//
-//	current = lst;
-//	while (current)
-//	{
-//		printf("Key: %s, Value: %s, EC: %d\n",
-//			   current->key ? current->key : "(null)",
-//			   current->value ? current->value : "(null)"
-////			   current->exit_code);
-//		current = current->next;
-//	}
-//}
 
 void debug_env_list(t_env *env_lst, const char *location)
 {

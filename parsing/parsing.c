@@ -2,7 +2,6 @@
 
 #include "../lib/minishell.h"
 
-// Process a single token into args array
 static int	process_token_to_args(t_cmd *cmd_data, t_token *cur, int *arg_index)
 {
 	if (get_token_type(cur->val) != WORD)

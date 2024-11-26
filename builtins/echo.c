@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 12:51:13 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/26 11:05:31 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../lib/minishell.h"
 
 static bool	has_n_flag(t_cmd *cmd_data)
@@ -15,25 +27,6 @@ static bool	has_n_flag(t_cmd *cmd_data)
 	return (false);
 }
 
-// int	echo(t_cmd *cmd_data)
-// {
-// 	int		i;
-// 	bool	n_flag;
-
-// 	i = has_n_flag(cmd_data);
-// 	n_flag = i;
-// 	while (cmd_data->args[i])
-// 	{
-// 		ft_putstr_fd(cmd_data->args[i], STDOUT_FILENO);
-// 		if (cmd_data->args[i + i])
-// 			ft_putchar_fd(' ', 1);
-// 		i++;
-// 	}
-// 	if (!n_flag)
-// 		ft_putchar_fd('\n', 1);
-// 	return (0);
-// }
-
 static void	print_escaped_string(const char *str)
 {
 	int	i;
@@ -44,10 +37,10 @@ static void	print_escaped_string(const char *str)
 		if (str[i] == '\\')
 		{
 			i++;
-			if (!str[i]) // if backslash is the last character
+			if (!str[i])
 			{
 				ft_putchar_fd('\\', STDOUT_FILENO);
-				break;
+				break ;
 			}
 			if (str[i] == 'n')
 				ft_putchar_fd('n', STDOUT_FILENO);
@@ -64,7 +57,6 @@ static void	print_escaped_string(const char *str)
 
 int	echo(t_cmd *cmd_data)
 {
-
 	int		i;
 	bool	n_flag;
 

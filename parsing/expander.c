@@ -100,7 +100,7 @@ int	expand_to_str(char *str_to_expand, int *i, char **exp_word, t_env *env_lst)
 	char	*exp_var;
 
 	exp_var = NULL;
-	if (str_to_expand[*i] && str_to_expand[*i] == '$') // edge case $$ returns process ID but we are not allowed to use get pid to get a real number
+	if (str_to_expand[*i] && str_to_expand[*i] == '$')
 	{
 		exp_var = create_fake_pid(i);
 		if (!exp_var)
