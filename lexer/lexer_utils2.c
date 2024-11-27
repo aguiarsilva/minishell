@@ -85,26 +85,29 @@ void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx)
 
 void	remove_quotes(char *str, int *was_quoted)
 {
-	int i, j;
-	int in_quotes = 0;
-	char quote_type = 0;
+	int		i;
+	int		j;
+	int		in_quotes;
+	char	quote_type;
 
-	if (!str) return;
-	*was_quoted = 0;  // Initialize to not quoted
-
-	for (i = 0, j = 0; str[i] != '\0'; i++) {
-		if ((str[i] == '"' || str[i] == '\'') && (!in_quotes || quote_type == str[i])) {
-			*was_quoted = 1;  // Mark that this string was quoted
-			if (!in_quotes) {
-				in_quotes = 1;
-				quote_type = str[i];
-			} else {
-				in_quotes = 0;
-				quote_type = 0;
-			}
-			continue;
+	i = 0;
+	j = 0;
+	in_quotes = 0;
+	quote_type = 0;
+	if (!str)
+		return ;
+	*was_quoted = 0;
+	while (str[i] != '\0')
+	{
+		if ((str[i] == '"' || str[i] == '\'')
+			&& (!in_quotes || quote_type == str[i]))
+		{
+			*was_quoted = 1;
+			handle_quote(&in_quotes, &quote_type, str[i]);
 		}
-		str[j++] = str[i];
+		else
+			str[j++] = str[i];
+		i++;
 	}
 	str[j] = '\0';
 }
