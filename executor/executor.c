@@ -51,8 +51,9 @@ void	run_cmd(t_cmd *cmd_data, t_env **env_lst)
 	full_cmd = combine_command_and_args(cmd_data->cmd, cmd_data->args);
 	env = env_list_to_array(*env_lst);
 	exec_path = get_exec_path(cmd_data->cmd, env);
+	if (exec_path == NULL)
+		print_cmd_not_found_and_exit(cmd_data->cmd, exec_path, env);
 	split_cmd = parse_command_with_quotes(full_cmd);
-
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
 		free(exec_path);

@@ -64,6 +64,7 @@ add_executable(minishell
         env_lst/env_lst_utils2.c
         lib/env_lst.h
         env_lst/env_lst_free.c
+        lexer/lexer_utils3.c
 )
 
 target_link_libraries(minishell PRIVATE libft ft_printf readline)

@@ -7,6 +7,21 @@ int	print_error_msg(char *error)
 	return (1);
 }
 
+void	print_error_open_file_and_exit(char *filename, int err_code)
+{
+	perror(filename);
+	exit (err_code);
+}
+
+void	print_cmd_not_found_and_exit(char *cmd, char *exec_path, char **env)
+{
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found: \n", STDERR_FILENO);
+	free(exec_path);
+	ft_free_array(env);
+	exit(127);
+}
+
 //void	print_error_cmd_not_found_and_exit(char *split_cmd)
 //{
 //	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -15,12 +30,6 @@ int	print_error_msg(char *error)
 //	ft_putstr_fd("\n", STDERR_FILENO);
 //	exit(127);
 //}
-
-void	print_error_open_file_and_exit(char *filename, int err_code)
-{
-	perror(filename);
-	exit (err_code);
-}
 
 void	print_custom_msg_and_exit(char *error, int exit_code)
 {
