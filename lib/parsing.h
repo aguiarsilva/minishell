@@ -130,6 +130,8 @@ t_redir	*create_redir_lst_from_tokens(t_token *token_lst);
 //redir_struct.c
 void	add_to_redir_lst(t_token *cur_token, t_redir **redir_lst,
 			int file_type, t_token *prev_token);
+void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
+			t_redir *new_redir);
 //redir_utils.c
 t_redir	*get_last_redirection_node(t_redir *redir_head);
 bool	is_filename(const char *str);

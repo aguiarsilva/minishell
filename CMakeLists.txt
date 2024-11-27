@@ -50,13 +50,13 @@ add_executable(minishell
         builtins/export_builtin_utils.c
         parsing/signal_handling.c
         parsing/check_syntax.c
-        parsing/check_syntax.c
         builtins/exit.c
         parsing/expander.c
         parsing/expand_utils.c
         parsing/check_expand.c
         lexer/lexer_init.c
         lexer/lexer_utils2.c
+        lexer/lexer_utils3.c
         parsing/redir_process.c
         parsing/signal_handling_utils.c
         env_lst/env_lst.c

@@ -76,13 +76,23 @@ t_redir	*create_redir_lst_from_tokens(t_token *token_lst)
 	t_token	*cur_token;
 	t_token	*prev_token;
 	t_redir	*redir_lst;
+	t_redir	*last_redir;
+	t_redir	*new_redir;
 
 	cur_token = token_lst;
 	prev_token = NULL;
 	redir_lst = NULL;
+	last_redir = NULL;
+
 	if (!is_valid_starting_token(token_lst))
 		return (NULL);
 	while (cur_token != NULL)
-		process_token_and_add_redir(&cur_token, &prev_token, &redir_lst);
+	{
+		new_redir = process_redirection_token(cur_token, &prev_token);
+		append_redir_node(&redir_lst, &last_redir, new_redir);
+		prev_token = cur_token;
+		cur_token = cur_token->next;
+	}
+//	print_redir_list(redir_lst); // DEBUG
 	return (redir_lst);
 }

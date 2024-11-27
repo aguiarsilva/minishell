@@ -61,3 +61,20 @@ void	add_to_redir_lst(t_token *cur_token, t_redir **redir_lst,
 	}
 }
 
+void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
+						t_redir *new_redir)
+{
+	if (new_redir)
+	{
+		if (*redir_lst == NULL)
+		{
+			*redir_lst = new_redir;
+			*last_redir = *redir_lst;
+		}
+		else
+		{
+			(*last_redir)->next = new_redir;
+			*last_redir = new_redir;
+		}
+	}
+}

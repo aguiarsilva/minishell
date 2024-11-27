@@ -47,7 +47,6 @@ void	run_minishell(t_env **env_lst, char *input)
 
 	token_list = build_lst(input, env_lst);
 	// assign_token_type(token_list);
-	print_token_lst(token_list);
 	if (check_if_token_list_right(token_list) == false)
 	{
 		free_tk(token_list);
