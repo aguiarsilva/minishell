@@ -37,6 +37,7 @@ parsing/check_syntax.c \
 lexer/lexer.c \
 lexer/lexer_utils.c \
 lexer/lexer_utils2.c \
+lexer/lexer_utils3.c \
 lexer/lexer_init.c \
 env_lst/env_lst.c \
 env_lst/env_lst_free.c \

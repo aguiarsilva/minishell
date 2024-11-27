@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/26 10:16:01 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:40:35 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,8 @@ void	handle_non_quoted_special_cases(t_parser_context *ctx,
 			t_char_context *char_ctx, char c);
 void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx);
 void	remove_quotes(char *str, int *was_quoted);
+
+//lexer_utils3.c
+void	handle_quote(int *in_quotes, char *quote_type, char current_char);
 
 #endif //LEXER_H
