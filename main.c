@@ -71,21 +71,19 @@ void	run_minishell(t_env **env_lst, char *input)
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 	print_cmd(cmd_lst);
 	if (cmd_lst == NULL)
-	{
 		free_tk(token_list);
-	}
 	run_process(cmd_lst, env_lst);
 	free_cmd_list(cmd_lst);
 	free_tk(token_list);
 }
 
-int main(const int argc, char* argv[], char* env[]) //added while true to test cmds interacting with each other
+int main(const int argc, char* argv[], char* env[])
 {
 	char *input;
 	t_env *env_lst;
 	void (*past_signal[2])(int);
 
-	env_lst = create_env(env, argv);
+	env_lst = create_env_lst(env, argv);
 	if (!env_lst)
 		return (1);
 	while (1)

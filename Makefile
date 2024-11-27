@@ -38,10 +38,10 @@ lexer/lexer.c \
 lexer/lexer_utils.c \
 lexer/lexer_utils2.c \
 lexer/lexer_init.c \
-env_list/env_list.c \
-env_list/env_list_utils.c \
-env_list/env_utils.c \
-env_list/free_env_lst.c \
+env_lst/env_lst.c \
+env_lst/env_lst_free.c \
+env_lst/env_lst_utils.c \
+env_lst/env_lst_utils2.c \
 error.c \
 utils.c \
 printer.c \

@@ -34,13 +34,13 @@ add_executable(minishell
         executor/redirections.c
         executor/pipe_utils.c
         executor/process_handler.c
-        env_list/env_list.c
+        env_lst/env_lst.c
         parsing/redir_struct.c
         lexer/lexer.c
         printer.c
-        env_list/env_list_utils.c
+        env_lst/env_lst_utils.c
         builtins/export_builtin.c
-        env_list/env_utils.c
+        env_lst/env_lst_utils2.c
         parsing/parsing_utils.c
         parsing/parsing_free.c
         parsing/redir_utils.c
@@ -58,9 +58,12 @@ add_executable(minishell
         lexer/lexer_init.c
         lexer/lexer_utils2.c
         parsing/redir_process.c
-        env_list/free_env_lst.c
         parsing/signal_handling_utils.c
-
+        env_lst/env_lst.c
+        env_lst/env_lst_utils.c
+        env_lst/env_lst_utils2.c
+        lib/env_lst.h
+        env_lst/env_lst_free.c
 )
 
 target_link_libraries(minishell PRIVATE libft ft_printf readline)

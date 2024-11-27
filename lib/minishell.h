@@ -20,6 +20,7 @@
 # include "parsing.h"
 # include "builtins.h"
 # include "lexer.h"
+# include "env_lst.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -32,7 +33,6 @@
 
 # define INPUT 1
 # define OUTPUT 2
-# define NOFILE 3
 # define HEREDOC_INPUT 4
 # define APPEND_OUTPUT 5
 # define CMD_NO_ARGUMENTS 0
@@ -76,14 +76,4 @@ void	print_redir_list(t_redir *redir_head);
 void	print_cmd(t_cmd *command);
 void	debug_env_list(t_env *env_lst, const char *location);
 
-//env_list.c
-t_env	*create_env(char **ori_env, char **argv);
-// env_list_utils.c
-char	**env_list_to_array(t_env *env_list);
-char	*get_key_in_env_lst(t_env *env_lst, char *key);
-int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
-void	update_exit_code(t_env *env_lst, int exit_code);
-// env_list_free.c
-void	free_env_node(t_env *node);
-void	free_env_list(t_env **env_lst);
 #endif //MINISHELL_H

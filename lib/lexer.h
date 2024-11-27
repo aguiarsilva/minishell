@@ -19,6 +19,7 @@ typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
 typedef struct s_redir	t_redir;
 typedef struct s_lexer	t_lexer;
+
 //lexer.c
 t_token	*make_token(char *wd, t_type type);
 t_token	*make_word_token(char *wd, t_type type, t_env *env_lst);

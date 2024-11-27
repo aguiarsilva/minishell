@@ -12,7 +12,7 @@
 
 #include "../lib/minishell.h"
 
-void add_or_update_env_var(t_env **env_list, char *key, char *value) // i have function which updates an env_var and i have a function which adds a new env_var , maybe use my version
+void	add_or_update_env_var(t_env **env_list, char *key, char *value)
 {
 	t_env	*curr;
 	t_env	*new_var;

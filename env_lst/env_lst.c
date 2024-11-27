@@ -93,7 +93,7 @@ static t_env	*initialize_base_env(char **argv)
 	return (lst);
 }
 
-t_env	*create_env(char **ori_env, char **argv)
+t_env	*create_env_lst(char **ori_env, char **argv)
 {
 	t_env	*env_lst;
 	t_env	*new_node;
