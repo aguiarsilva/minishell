@@ -50,8 +50,6 @@ error.c \
 utils.c \
 printer.c \
 
-
-
 OBJ = $(SRC:.c=.o)
 
 # Libraries and their paths
@@ -94,6 +92,17 @@ test: $(OBJ)
 	@make -C lib/ft_printf
 	@echo "$(BLUE)$(CC) -o $(NAME) $(OBJ) $(LIBS)$(RESET)"
 	@$(CC) -o $(NAME) $(OBJ) $(LIBS)
+
+# Valgrind test target: build with -g and run with valgrind
+val: CFLAGS := -g
+val: $(OBJ)
+	@make -C lib/libft
+	@make -C lib/ft_printf
+	@echo "$(BLUE)$(CC) -o $(NAME) $(OBJ) $(LIBS)$(RESET)"
+	@$(CC) -o $(NAME) $(OBJ) $(LIBS)
+	@echo "$(BLUE)Running $(NAME) with valgrind...$(RESET)"
+	@valgrind --suppressions=readline.supp --leak-check=full -s ./$(NAME)
+
 
 # Clean target: remove object files
 clean:
