@@ -27,14 +27,20 @@ int	is_valid_number(char *str)
 	return (1);
 }
 
-int	builtin_exit(t_cmd *cmd, t_env *env) // maybe limit exit code between 0 255 use modulo i guess
+int	builtin_exit(t_cmd *cmd, t_env **env_lst) // maybe limit exit code between 0 255 use modulo i guess
 {
 	char	*exitcode_str;
 	int		exit_code;
 
+	if (cmd == NULL)
+	{
+		printf("DEBUG: exited because cmd NULL in ft prompt\n");
+		free_env_lst(env_lst);
+		exit(0);
+	}
 	if (!cmd->args[0])
 	{
-		exitcode_str = get_key_in_env_lst(env, "EC");
+		exitcode_str = get_key_in_env_lst(*env_lst, "EC");
 		exit_code = ft_atoi(exitcode_str);
 		// printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
 		free(exitcode_str);
@@ -54,3 +60,4 @@ int	builtin_exit(t_cmd *cmd, t_env *env) // maybe limit exit code between 0 255 
 	fprintf(stderr, "exit_code: %d when using builtin exit \n", exit_code);
 	exit(exit_code);
 }
+

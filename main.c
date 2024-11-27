@@ -34,22 +34,19 @@ char	*ft_get_prompt(t_env **env_lst)
 
 	result = readline("\033[1;36mminishell\033[34m$ \033[0m");
 	if (!result)
-	{
-		// fprintf(stderr, "exit needs to be handled with builtin\n");
-		exit(1); // temp maybe add new exit function with cmd_lst
-	}
+		builtin_exit(NULL, env_lst);
 	add_history(result);
 	return (result);
 }
 
-bool check_if_token_list_right(t_token *token_lst)
+bool	check_if_token_list_right(t_token *token_lst) // should be somewhere else
 {
 	if (!is_valid_redirection_syntax(token_lst))
 	{
 		printf("minishell: syntax error near unexpected token\n");
-		return false; // Return false if syntax is invalid
+		return (false); // Return false if syntax is invalid
 	}
-	return true; // Return true if everything is fine
+	return (true); // Return true if everything is fine
 }
 
 void	run_minishell(t_env **env_lst, char *input)
@@ -77,15 +74,17 @@ void	run_minishell(t_env **env_lst, char *input)
 	free_tk(token_list);
 }
 
-int main(const int argc, char* argv[], char* env[])
+int	main(int argc, char *argv[], char *env[])
 {
-	char *input;
-	t_env *env_lst;
-	void (*past_signal[2])(int);
+	char	*input;
+	t_env	*env_lst;
+	void	(*past_signal[2])(int);
 
 	env_lst = create_env_lst(env, argv);
 	if (!env_lst)
 		return (1);
+	if (argc > 1)
+		exit (1);
 	while (1)
 	{
 		setup_signals();

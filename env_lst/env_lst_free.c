@@ -24,7 +24,7 @@ void	free_env_node(t_env *node)
 	free(node);
 }
 
-void	free_env_list(t_env **head)
+void	free_env_lst(t_env **head)
 {
 	t_env	*tmp;
 

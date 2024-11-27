@@ -42,6 +42,6 @@ void	print_env_list(t_env *env_lst, bool export);
 int		unset_builtin(char **args, t_env **env_lst);
 //exit.c
 int		is_valid_number(char *str);
-int		builtin_exit(t_cmd *cmd, t_env *env);
+int		builtin_exit(t_cmd *cmd, t_env **env_lst);
 
 #endif
