@@ -61,10 +61,7 @@ static t_cmd	*create_cmd_from_tokens(t_token *token_list,
 	size_t	arg_count;
 
 	if (token_list->type != WORD)
-	{
-		// fprintf(stderr, "DEBUG: First token is not a command (WORD)\n");
 		return (cleanup_cmd_list(*head));
-	}
 	cmd_data = create_new_cmd_node(token_list->val, redir_list);
 	if (!cmd_data)
 		return (cleanup_cmd_list(*head));

@@ -31,12 +31,6 @@ typedef enum s_type
 	EQUAL = '=',
 }	t_type;
 
-typedef struct s_prompt
-{
-	char	*symbols;
-	char	*whitespace;
-}	t_prompt;
-
 typedef struct s_redir
 {
 	char			*file_name;
@@ -124,6 +118,7 @@ void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);
 t_cmd	*cleanup_cmd_list(t_cmd *head);
 void	free_tk(t_token *tk_list);
+void	free_all(t_cmd *cmd_head, t_env **env_head);
 //parsing_utils.c
 t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
 void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);

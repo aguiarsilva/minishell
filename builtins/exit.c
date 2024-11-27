@@ -42,20 +42,15 @@ int	builtin_exit(t_cmd *cmd, t_env **env_lst) // maybe limit exit code between 0
 	{
 		exitcode_str = get_key_in_env_lst(*env_lst, "EC");
 		exit_code = ft_atoi(exitcode_str);
-		// printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
+		printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
 		free(exitcode_str);
+//		free_all(cmd, env_lst);
 		exit(exit_code);
 	}
 	if (!is_valid_number(cmd->args[0]))
-	{
-		// fprintf(stderr, EXIT_NUMERIC_ARG_REQ);
-		exit(2);
-	}
+		print_custom_msg_and_exit(EXIT_NUMERIC_ARG_REQ, 2);
 	if (cmd->args[1])
-	{
-		// fprintf(stderr, EXIT_TOO_MANY_ARGS);
-		return (1);
-	}
+		return (print_error_msg(EXIT_TOO_MANY_ARGS));
 	exit_code = (unsigned char)ft_atoll(cmd->args[0]);
 	fprintf(stderr, "exit_code: %d when using builtin exit \n", exit_code);
 	exit(exit_code);

@@ -83,7 +83,8 @@ void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx)
 	ctx->state->buffer[ctx->state->buf_index++] = c;
 }
 
-void remove_quotes(char *str, int *was_quoted) {
+void	remove_quotes(char *str, int *was_quoted)
+{
 	int i, j;
 	int in_quotes = 0;
 	char quote_type = 0;

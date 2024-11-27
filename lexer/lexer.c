@@ -99,3 +99,13 @@ t_token	*create_word_list(char *input, t_env **env_lst)
 	flush_buffer(&ctx);
 	return (tokens.head);
 }
+
+bool	check_if_token_list_right(t_token *token_lst)
+{
+	if (!is_valid_redirection_syntax(token_lst))
+	{
+		printf("minishell: syntax error near unexpected token\n");
+		return (false);
+	}
+	return (true);
+}

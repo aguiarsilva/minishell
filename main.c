@@ -39,28 +39,18 @@ char	*ft_get_prompt(t_env **env_lst)
 	return (result);
 }
 
-bool	check_if_token_list_right(t_token *token_lst) // should be somewhere else
-{
-	if (!is_valid_redirection_syntax(token_lst))
-	{
-		printf("minishell: syntax error near unexpected token\n");
-		return (false); // Return false if syntax is invalid
-	}
-	return (true); // Return true if everything is fine
-}
-
 void	run_minishell(t_env **env_lst, char *input)
 {
-	t_cmd *cmd_lst;
-	t_token *token_list;
-	t_redir *redir_lst;
+	t_cmd	*cmd_lst;
+	t_token	*token_list;
+	t_redir	*redir_lst;
 
 	token_list = build_lst(input, env_lst);
 	// assign_token_type(token_list);
 	print_token_lst(token_list);
 	if (check_if_token_list_right(token_list) == false)
 	{
-		// should free tokenlst
+		free_tk(token_list);
 		return ;
 	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
@@ -70,7 +60,7 @@ void	run_minishell(t_env **env_lst, char *input)
 	if (cmd_lst == NULL)
 		free_tk(token_list);
 	run_process(cmd_lst, env_lst);
-	free_cmd_list(cmd_lst);
+//	free_cmd_list(cmd_lst);
 	free_tk(token_list);
 }
 

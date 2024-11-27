@@ -8,3 +8,4 @@ echo '$USER' still expands
 echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<' heredoc opens and everzthing breaks
 export =       with no input, should give error msg
 echo is bugged when print to a file
+cat < input.txt | wc -l > output.txt is broken now
