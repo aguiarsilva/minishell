@@ -56,7 +56,8 @@
 void	print_custom_msg_and_exit(char *error, int exit_code);
 void	print_error_msg_and_exit(char *error);
 int		print_error_msg(char *error);
-void	print_error_cmd_not_found_and_exit(char *split_cmd);
+void	print_cmd_not_found_and_exit(char *cmd, char *exec_path, char **env);
+//void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_open_file_and_exit(char *filename, int err_code);
 void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
 void	print_fd_debug(const char *message);
