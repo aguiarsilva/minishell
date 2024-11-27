@@ -1,33 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 11:26:20 by baguiar-          #+#    #+#             */
+/*   Updated: 2024/11/26 11:26:20 by baguiar-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
-// static void	remove_env_var(t_env **env_lst, char *key)
-// {
-// 	t_env	*current;
-// 	t_env	*prev;
-//
-// 	prev = NULL;
-// 	current = NULL;
-// 	while (env_lst && *env_lst && key)
-// 	{
-// 		current = *env_lst;
-// 		while (current)
-// 		{
-// 			if (current->key && ft_strcmp(current->key, key) == 0)
-// 			{
-// 				if (current == *env_lst)
-// 					*env_lst = current->next;
-// 				else
-// 					prev->next = current->next;
-// 				free_env_node(current);
-// 				return ;
-// 			}
-// 			prev = current;
-// 			current = current->next;
-// 		}
-// 		return ;
-// 	}
-// }
 
 static void	remove_env_var(t_env **env_lst, char *key)
 {
@@ -64,12 +47,11 @@ static bool	is_valid_env_identifier(char *str)
 	while (str[i])
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (false);  // Invalid character in the identifier
+			return (false);
 		i++;
 	}
 	return (true);
 }
-
 
 int	unset_builtin(char **args, t_env **env_lst)
 {

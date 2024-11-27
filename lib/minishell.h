@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 12:50:27 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/26 12:52:09 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -28,7 +40,7 @@
 # define EXPORT 1
 # define NO_EXPORT 0
 # define ERR_NO_CUR_DIR "cd: error retrieving current directory: getcwd:"
-# define ERR_PARENT_DIR_ACCESS " cannot access parent directories: No such file or directory\n"
+# define ERR_PARENT_DIR_ACCESS "cannot access directories \n"
 # define ERR_NO_SUCH_DIR " No such file or directory\n"
 # define ERR_CMD "minishell: "
 # define ERR_DUP2 "Dup2 failed "
@@ -36,7 +48,7 @@
 # define ERR_PIPE "Pipe Error"
 # define ERR_FILE "Error during opening file"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
-# define ERR_UNKNOWN "Unexpected error: execve succeeded but reached the end of executor function"
+# define ERR_UNKNOWN " Unexpected error "
 # define EXIT_TOO_MANY_ARGS "exit: too many arguments\n"
 # define EXIT_NUMERIC_ARG_REQ "exit: numeric argument required\n"
 
@@ -68,12 +80,10 @@ void	debug_env_list(t_env *env_lst, const char *location);
 t_env	*create_env(char **ori_env, char **argv);
 // env_list_utils.c
 char	**env_list_to_array(t_env *env_list);
-void	free_env_node(t_env *node);
-void	free_env_list(t_env **env_lst);
 char	*get_key_in_env_lst(t_env *env_lst, char *key);
 int		set_value_in_env_lst(t_env *env_lst, char *key, char *value);
-void	update_env_exit_code(t_env *env_list, char *key, t_cmd *cmd_lst);
-void	update_env_exit_code_for_builtins(t_env *env_list, int exit_code);
-void    update_exit_code(t_env *env_lst, int exit_code);
+void	update_exit_code(t_env *env_lst, int exit_code);
+// env_list_free.c
+void	free_env_node(t_env *node);
+void	free_env_list(t_env **env_lst);
 #endif //MINISHELL_H
-

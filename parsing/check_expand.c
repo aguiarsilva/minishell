@@ -30,12 +30,12 @@ char	*expand_word(char *word, int i, t_env *env_lst)
 		return (NULL);
 	while (word[++i])
 	{
-		if (word[0] != '\'' && word[i] == '$')  //edge case when $ is quoted string
+		if (word[0] != '\'' && word[i] == '$')
 		{
 			if (process_dollar_sign(word, &i, &exp_word, env_lst))
 				return (NULL);
 		}
-		else // loop character by character and just creates the whole string again if no $ symbol
+		else
 		{
 			exp_word = ft_charjoin_mod(exp_word, word[i]);
 			if (!exp_word)

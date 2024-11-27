@@ -17,13 +17,13 @@ void	create_pipe_if_needed(t_cmd *cmd, int pipe_fd[2])
 	{
 		if (pipe(pipe_fd) == -1)
 			print_error_msg_and_exit(ERR_PIPE);
-		fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
+		// fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
 	}
 	else
 	{
 		pipe_fd[0] = -1;
 		pipe_fd[1] = -1;
-		fprintf(stderr, "DEBUG: Last command, no new pipe created\n");
+		// fprintf(stderr, "DEBUG: Last command, no new pipe created\n");
 	}
 }
 
@@ -32,12 +32,12 @@ void	close_pipe_fds(int pipe_fd[2])
 {
 	if (pipe_fd[0] != -1)
 	{
-		fprintf(stderr, "DEBUG: Closing pipe_fd[0]: %d\n", pipe_fd[0]);
+		// fprintf(stderr, "DEBUG: Closing pipe_fd[0]: %d\n", pipe_fd[0]);
 		close(pipe_fd[0]);
 	}
 	if (pipe_fd[1] != -1)
 	{
-		fprintf(stderr, "DEBUG: Closing pipe_fd[1]: %d\n", pipe_fd[1]);
+		// fprintf(stderr, "DEBUG: Closing pipe_fd[1]: %d\n", pipe_fd[1]);
 		close(pipe_fd[1]);
 	}
 }

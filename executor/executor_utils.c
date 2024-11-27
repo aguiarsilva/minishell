@@ -52,18 +52,13 @@ char	*get_exec_path(char *cmd, char **env)
 	{
 		current_path = ft_strjoin(path_list[i], "/");
 		exec_path = ft_strjoin(current_path, cmd);
-//		fprintf(stderr, "current_path: %s\n", current_path);
-//		fprintf(stderr, "exec_path: %s\n", exec_path);
 		free(current_path);
 		if (access(exec_path, X_OK) == 0)
-		{
-//			fprintf(stderr, "exec_path: %s\n", exec_path);
 			return (exec_path);
-		}
 		free(exec_path);
 	}
 	ft_free_array(path_list);
-	print_error_cmd_not_found_and_exit(cmd);
+	// print_error_cmd_not_found_and_exit(cmd);
 	return (NULL);
 }
 
@@ -91,27 +86,6 @@ char	**parse_command_with_quotes(char *cmd)
 	return (split_cmd);
 }
 
-void	free_cmd_data(t_cmd *cmd_lst)
-{
-	int	i;
-
-	i = 0;
-	if (cmd_lst)
-	{
-		free(cmd_lst->cmd);
-		if (cmd_lst->args)
-		{
-			while (cmd_lst->args[i])
-			{
-				free(cmd_lst->args[i]);
-				i++;
-			}
-			free(cmd_lst->args);
-		}
-		free(cmd_lst);
-	}
-}
-
 size_t	get_cmd_lst_size(t_cmd *cmd_data)
 {
 	size_t	lst_size;
@@ -128,3 +102,26 @@ size_t	get_cmd_lst_size(t_cmd *cmd_data)
 	}
 	return (lst_size);
 }
+
+// void	free_cmd_data(t_cmd *cmd_lst)
+// {
+// 	int	i;
+//
+// 	i = 0;
+// 	if (cmd_lst)
+// 	{
+// 		free(cmd_lst->cmd);
+// 		if (cmd_lst->args)
+// 		{
+// 			while (cmd_lst->args[i])
+// 			{
+// 				free(cmd_lst->args[i]);
+// 				i++;
+// 			}
+// 			free(cmd_lst->args);
+// 		}
+// 		free(cmd_lst);
+// 	}
+// }
+
+

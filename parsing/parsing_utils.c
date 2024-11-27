@@ -40,27 +40,22 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 {
 	if (prev == NULL)
 		return (false);
-	// Debugging output to track values
-//	printf("prev val = %s, prev type = %d; cur val = %s, cur type = %d\n",
-//		   prev->val, prev->type, cur->val, cur->type);
+
 	if ((prev->type == APPEND || prev->type == HEREDOC) && cur->type == WORD)
 	{
-		fprintf(stderr, "DEBUGSkipping due to %s; cur val = %s\n",
-			prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
+		// fprintf(stderr, "DEBUGSkipping due to %s; cur val = %s\n",
+		// 	prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
 		return (true);
 	}
 	if (cur->eof_flag == true)
 	{
-		fprintf(stderr, "DEBUG Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
+		// fprintf(stderr, "DEBUG Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
 		return (true);
 	}
-	// Check if the previous token is a redirection operator
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
 		return (false);
-	// Check if the current token is a word (possible filename)
 	if (get_token_type(cur->val) != WORD)
 		return (false);
-	// All checks passed; it is a skippable redirection file token
 	return (true);
 }
 
@@ -68,9 +63,9 @@ bool	is_special_command(char *cmd)
 {
 	if (!cmd)
 		return (false);
-	if (ft_strcmp(cmd, ":") == 0)  // null command
+	if (ft_strcmp(cmd, ":") == 0)
 		return (true);
-	if (ft_strcmp(cmd, "!") == 0)  // history expansion marker
+	if (ft_strcmp(cmd, "!") == 0)
 		return (true);
 	return (false);
 }

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 10:16:01 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/26 11:48:32 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
@@ -8,7 +19,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-//	int				exit_code;
 	struct s_env	*next;
 }		t_env;
 
@@ -21,9 +31,11 @@ int		echo(t_cmd *cmd_data);
 //export_builtin.c
 int		export_builtin(char **args, t_env **env_list);
 
-//export_builtin.c
+//export_builtin_utils.c
+bool	handle_no_arguments(t_env **env_list, int arg_count);
 bool	is_valid_identifier(const char *key, bool check_first_char);
 char	*ft_strndup(const char *s1, size_t n);
+int		count_arg_from_args(char **args);
 //env_utils.c
 void	add_or_update_env_var(t_env **env_list, char *key, char *value);
 //pwd.c
