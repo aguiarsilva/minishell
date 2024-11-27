@@ -76,12 +76,15 @@ void	assign_token_type(t_token *token_list)
 	}
 }
 
-t_token	*create_word_list(char *input, t_env **env_lst)
+// Modify create_word_list to pass and track escape/quote state
+t_token *create_word_list(char *input, t_env **env_lst)
 {
 	t_buffer_state		state;
 	t_token_list		tokens;
 	t_parser_context	ctx;
 	t_char_context		char_ctx;
+	int is_escaped = 0;
+	char current_quote = 0;
 
 	init_buffer_state(&state);
 	init_token_list(&tokens);
@@ -91,14 +94,39 @@ t_token	*create_word_list(char *input, t_env **env_lst)
 	char_ctx.input = input;
 	char_ctx.input_length = ft_strlen(input);
 	char_ctx.current_index = 0;
+
 	while (char_ctx.current_index < char_ctx.input_length)
 	{
-		handle_special_cases(&ctx, &char_ctx);
+		handle_special_cases(&ctx, &char_ctx, &is_escaped, &current_quote);
 		char_ctx.current_index++;
 	}
 	flush_buffer(&ctx);
 	return (tokens.head);
 }
+
+//t_token	*create_word_list(char *input, t_env **env_lst) // old version before big change
+//{
+//	t_buffer_state		state;
+//	t_token_list		tokens;
+//	t_parser_context	ctx;
+//	t_char_context		char_ctx;
+//
+//	init_buffer_state(&state);
+//	init_token_list(&tokens);
+//	ctx.state = &state;
+//	ctx.tokens = &tokens;
+//	ctx.env_lst = env_lst;
+//	char_ctx.input = input;
+//	char_ctx.input_length = ft_strlen(input);
+//	char_ctx.current_index = 0;
+//	while (char_ctx.current_index < char_ctx.input_length)
+//	{
+//		handle_special_cases(&ctx, &char_ctx);
+//		char_ctx.current_index++;
+//	}
+//	flush_buffer(&ctx);
+//	return (tokens.head);
+//}
 
 bool	check_if_token_list_right(t_token *token_lst)
 {

@@ -18,6 +18,7 @@ void	init_buffer_state(t_buffer_state *state)
 	state->buf_index = 0;
 	state->was_quoted = 0;
 	state->in_quotes = 0;
+	state->quote_type = 0;  // Add this to track quote type
 }
 
 void	init_token_list(t_token_list *list)

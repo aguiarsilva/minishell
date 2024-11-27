@@ -11,7 +11,7 @@ t_token	*build_lst(char *input, t_env **env_lst)
 	return (word_list);
 }
 
-void	add_new_token_to_lst(t_token** head, t_token** tail, t_token* new_token)
+void	add_new_token_to_lst(t_token **head, t_token **tail, t_token *new_token)
 {
 	if (*head == NULL)
 	{

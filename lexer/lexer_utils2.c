@@ -62,52 +62,188 @@ void	handle_non_quoted_special_cases(t_parser_context *ctx,
 	}
 }
 
-void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx)
+//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx) // before big quote change
+//{
+//	char	c;
+//	int		is_escaped_quote;
+//
+//	c = char_ctx->input[char_ctx->current_index];
+//	is_escaped_quote = char_ctx->current_index == 0
+//		|| char_ctx->input[char_ctx->current_index - 1] != '\\';
+//	if (c == '"' && is_escaped_quote)
+//	{
+//		treat_quotes(c, ctx->state);
+//		return ;
+//	}
+//	if (!ctx->state->in_quotes)
+//	{
+//		handle_non_quoted_special_cases(ctx, char_ctx, c);
+//		return ;
+//	}
+//	ctx->state->buffer[ctx->state->buf_index++] = c;
+//}
+
+//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx) working but static variable is forbidden
+//{
+//	char		c;
+//	static int	is_escaped = 0;
+//
+//	c = char_ctx->input[char_ctx->current_index];
+//
+//	// Handle quote switching logic with more robust tracking
+//	if ((c == '"' || c == '\'') && !is_escaped)
+//	{
+//		if (!ctx->state->in_quotes)
+//		{
+//			ctx->state->in_quotes = 1;
+//			ctx->state->quote_type = c;
+//			ctx->state->was_quoted = 1;
+//		}
+//		else if (ctx->state->quote_type == c)
+//		{
+//			ctx->state->in_quotes = 0;
+//			ctx->state->quote_type = 0;
+//		}
+//
+//		ctx->state->buffer[ctx->state->buf_index++] = c;
+//		return;
+//	}
+//
+//	// Escape character handling
+//	if (c == '\\' && !is_escaped)
+//	{
+//		is_escaped = 1;
+//		return;
+//	}
+//
+//	// Reset escape flag
+//	is_escaped = 0;
+//
+//	// If not in quotes, handle special characters and spaces
+//	if (!ctx->state->in_quotes)
+//	{
+//		handle_non_quoted_special_cases(ctx, char_ctx, c);
+//		return;
+//	}
+//
+//	// Within quotes, always add the character
+//	ctx->state->buffer[ctx->state->buf_index++] = c;
+//}
+
+void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote)
 {
-	char	c;
-	int		is_escaped_quote;
+	char c;
 
 	c = char_ctx->input[char_ctx->current_index];
-	is_escaped_quote = char_ctx->current_index == 0
-		|| char_ctx->input[char_ctx->current_index - 1] != '\\';
-	if (c == '"' && is_escaped_quote)
+
+	// Handle escape character
+	if (c == '\\')
 	{
-		treat_quotes(c, ctx->state);
-		return ;
+		*is_escaped = !(*is_escaped);
+		if (*is_escaped)
+			return;
 	}
+	else
+	{
+		*is_escaped = 0;
+	}
+
+	// Handle quote switching logic
+	if ((c == '"' || c == '\'') && !(*is_escaped))
+	{
+		if (!ctx->state->in_quotes)
+		{
+			ctx->state->in_quotes = 1;
+			ctx->state->quote_type = c;
+			ctx->state->was_quoted = 1;
+			*current_quote = c;
+		}
+		else if (ctx->state->quote_type == c)
+		{
+			ctx->state->in_quotes = 0;
+			ctx->state->quote_type = 0;
+			*current_quote = 0;
+		}
+
+		ctx->state->buffer[ctx->state->buf_index++] = c;
+		return;
+	}
+
+	// If not in quotes, handle special characters and spaces
 	if (!ctx->state->in_quotes)
 	{
 		handle_non_quoted_special_cases(ctx, char_ctx, c);
-		return ;
+		return;
 	}
+
+	// Within quotes, always add the character
 	ctx->state->buffer[ctx->state->buf_index++] = c;
 }
 
 void	remove_quotes(char *str, int *was_quoted)
 {
-	int		i;
-	int		j;
-	int		in_quotes;
-	char	quote_type;
+	int i = 0;
+	int j = 0;
+	int in_quotes = 0;
+	char quote_type = 0;
 
-	i = 0;
-	j = 0;
-	in_quotes = 0;
-	quote_type = 0;
 	if (!str)
-		return ;
+		return;
+
 	*was_quoted = 0;
+
 	while (str[i] != '\0')
 	{
-		if ((str[i] == '"' || str[i] == '\'')
-			&& (!in_quotes || quote_type == str[i]))
+		// Only remove the outer quotes
+		if ((str[i] == '"' || str[i] == '\'') &&
+			(!in_quotes || quote_type == str[i]))
 		{
 			*was_quoted = 1;
-			handle_quote(&in_quotes, &quote_type, str[i]);
+			if (!in_quotes)
+			{
+				in_quotes = 1;
+				quote_type = str[i];
+			}
+			else
+			{
+				in_quotes = 0;
+				quote_type = 0;
+			}
 		}
 		else
+		{
 			str[j++] = str[i];
+		}
 		i++;
 	}
 	str[j] = '\0';
 }
+
+//void	remove_quotes(char *str, int *was_quoted) // before big change to handle quotes to keep them together for example echo 'test test2' would split in 3 token
+//{
+//	int		i;
+//	int		j;
+//	int		in_quotes;
+//	char	quote_type;
+//
+//	i = 0;
+//	j = 0;
+//	in_quotes = 0;
+//	quote_type = 0;
+//	if (!str)
+//		return ;
+//	*was_quoted = 0;
+//	while (str[i] != '\0')
+//	{
+//		if ((str[i] == '"' || str[i] == '\'')
+//			&& (!in_quotes || quote_type == str[i]))
+//		{
+//			*was_quoted = 1;
+//			handle_quote(&in_quotes, &quote_type, str[i]);
+//		}
+//		else
+//			str[j++] = str[i];
+//		i++;
+//	}
+//	str[j] = '\0';
+//}

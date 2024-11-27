@@ -44,7 +44,8 @@ int		should_process_double_char(t_char_context *char_ctx);
 void	process_double_char(t_parser_context *ctx, char c, size_t *i);
 void	handle_non_quoted_special_cases(t_parser_context *ctx,
 			t_char_context *char_ctx, char c);
-void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx);
+//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx); // old version
+void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote);
 void	remove_quotes(char *str, int *was_quoted);
 
 //lexer_utils3.c
