@@ -30,6 +30,7 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	if (process_id == 0)
 	{
+		setup_child_signals();
 		handle_child_process(current, env_lst, prev_pipe_fd,
 			pipe_fd, cmd_position);
 		exit(EXIT_FAILURE);
@@ -90,6 +91,7 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 
 	if (cmd_lst == NULL)
 	{
+		free_cmd_list(cmd_lst);
 		// printf("No commands to execute\n");
 		return ;
 	}

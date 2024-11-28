@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:49:22 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/11/26 12:49:23 by tbui-quo         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:13:54 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,4 +148,5 @@ void	signal_restore(void (**past_signal)(int));
 //signal_handling_utils.c
 void	setup_signals(void);
 void	reset_signals(void (*past_signal[2])(int));
+void	setup_child_signals(void);
 #endif

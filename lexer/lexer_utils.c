@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baguiar- <baguiar-@student.42wolfsburg.de  +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:12:16 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/25 13:12:25 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:49:26 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	flush_buffer(t_parser_context *ctx)
 	bool	should_expand;
 
 	should_expand = false;
-	if (ctx->state->buf_index > 0)
+	if (ctx->state->buf_index > 0 && ft_strlen(ctx->state->buffer) > 0)
 	{
 		should_expand = analyze_buffer_for_expansion(ctx);
 		remove_quotes(ctx->state->buffer, &ctx->state->was_quoted);
