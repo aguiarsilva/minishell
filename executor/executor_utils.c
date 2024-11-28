@@ -47,6 +47,12 @@ char	*get_exec_path(char *cmd, char **env)
 	char	*current_path;
 
 	i = -1;
+	if (cmd[0] == '/' || cmd[0] == '.')
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
+	}
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
 	while (path_list[++i])
 	{
@@ -54,7 +60,7 @@ char	*get_exec_path(char *cmd, char **env)
 		exec_path = ft_strjoin(current_path, cmd);
 		free(current_path);
 		if (access(exec_path, X_OK) == 0)
-			return (exec_path);
+			return (ft_strdup(exec_path));
 		free(exec_path);
 	}
 	ft_free_array(path_list);

@@ -135,20 +135,14 @@ void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *
 	char c;
 
 	c = char_ctx->input[char_ctx->current_index];
-
-	// Handle escape character
 	if (c == '\\')
 	{
 		*is_escaped = !(*is_escaped);
 		if (*is_escaped)
-			return;
+			return ;
 	}
 	else
-	{
 		*is_escaped = 0;
-	}
-
-	// Handle quote switching logic
 	if ((c == '"' || c == '\'') && !(*is_escaped))
 	{
 		if (!ctx->state->in_quotes)
@@ -164,37 +158,33 @@ void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *
 			ctx->state->quote_type = 0;
 			*current_quote = 0;
 		}
-
 		ctx->state->buffer[ctx->state->buf_index++] = c;
-		return;
+		return ;
 	}
-
-	// If not in quotes, handle special characters and spaces
 	if (!ctx->state->in_quotes)
 	{
 		handle_non_quoted_special_cases(ctx, char_ctx, c);
-		return;
+		return ;
 	}
-
-	// Within quotes, always add the character
 	ctx->state->buffer[ctx->state->buf_index++] = c;
 }
 
 void	remove_quotes(char *str, int *was_quoted)
 {
-	int i = 0;
-	int j = 0;
-	int in_quotes = 0;
-	char quote_type = 0;
+	int		i;
+	int		j;
+	int		in_quotes;
+	char	quote_type;
 
+	i = 0;
+	j = 0;
+	in_quotes = 0;
+	quote_type = 0;
 	if (!str)
-		return;
-
+		return ;
 	*was_quoted = 0;
-
 	while (str[i] != '\0')
 	{
-		// Only remove the outer quotes
 		if ((str[i] == '"' || str[i] == '\'') &&
 			(!in_quotes || quote_type == str[i]))
 		{
@@ -211,9 +201,7 @@ void	remove_quotes(char *str, int *was_quoted)
 			}
 		}
 		else
-		{
 			str[j++] = str[i];
-		}
 		i++;
 	}
 	str[j] = '\0';

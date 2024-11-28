@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/26 10:16:01 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:27:09 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	assign_token_type(t_token *token_list)
 }
 
 // Modify create_word_list to pass and track escape/quote state
-t_token *create_word_list(char *input, t_env **env_lst)
+t_token	*create_word_list(char *input, t_env **env_lst)
 {
 	t_buffer_state		state;
 	t_token_list		tokens;
@@ -94,7 +94,6 @@ t_token *create_word_list(char *input, t_env **env_lst)
 	char_ctx.input = input;
 	char_ctx.input_length = ft_strlen(input);
 	char_ctx.current_index = 0;
-
 	while (char_ctx.current_index < char_ctx.input_length)
 	{
 		handle_special_cases(&ctx, &char_ctx, &is_escaped, &current_quote);
