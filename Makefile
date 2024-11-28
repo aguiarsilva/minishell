@@ -6,12 +6,14 @@ executor/process_handler.c \
 executor/child_process_handler.c \
 executor/parent_process_handler.c \
 executor/child_status.c \
+executor/file_handler.c \
 executor/exebuiltins.c \
 executor/pipe_utils.c \
 executor/executor.c \
 executor/execute_heredoc.c \
 executor/executor_utils.c \
 executor/redirections.c \
+executor/redirections_utils.c \
 builtins/builtins_utils.c \
 builtins/cd.c \
 builtins/echo.c \

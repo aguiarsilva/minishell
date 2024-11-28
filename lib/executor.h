@@ -21,6 +21,9 @@ void	handle_child_process(t_cmd *cmd, t_env **env_lst, int prev_pipe_fd[2], int 
 //execute_heredoc.c
 void	handle_heredoc(t_token *cur_token, t_token **next_token,
 			t_token **prev_token, int file_type);
+//file_handler.c
+int		open_input_file(const char *filename);
+int		open_output_file(const char *filename, int mode);
 //pipe_utils.c
 void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2]);
 void	create_pipe_if_needed(t_cmd *cmd, int pipe_fd[2]);
@@ -29,10 +32,12 @@ void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2]);
 
 //redirections.c
 void	handle_file_redirections(t_cmd *cmd);
-void	handle_output_redirections(t_cmd *cmd);
 void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
-void	handle_input_redirections(t_cmd *cmd);
-
+//redirections_utils.
+void	apply_input_redirection(int input_fd);
+void	apply_output_redirection(int output_fd);
+void	handle_input_redirection(t_redir *cur_redir, int *input_fd);
+void	handle_output_redirection(t_redir *cur_redir, int *output_fd);
 //exebuildin.c
 int		run_builtin(t_cmd *cmd_data, t_env **env_lst);
 

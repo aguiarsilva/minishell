@@ -14,7 +14,7 @@
 void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd,
 										int prev_pipe_fd[2], int pipe_fd[2])
 {
-	// fprintf(stderr, "DEBUG: Parent process later\n");
+	// fprintf(stderr, "DEBUG: Parent process\n");
 	close_pipe_fds(prev_pipe_fd);
 	update_prev_pipe_fds(prev_pipe_fd, pipe_fd);
 	check_child_status(process_id, cmd);

@@ -60,7 +60,7 @@ void	print_cmd_not_found_and_exit(char *cmd, char *exec_path, char **env);
 //void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_open_file_and_exit(char *filename, int err_code);
 void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
-void	print_fd_debug(const char *message);
+
 // utils.c
 void	*safe_malloc(size_t size);
 char	*ft_strncpy(char *dest, const char *src, int n);
@@ -77,5 +77,6 @@ void	print_token_lst(t_token *token);
 void	print_redir_list(t_redir *redir_head);
 void	print_cmd(t_cmd *command);
 void	debug_env_list(t_env *env_lst, const char *location);
+void	print_fd_debug(const char *message);
 
 #endif //MINISHELL_H

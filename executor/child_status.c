@@ -5,7 +5,6 @@ void	check_child_status(pid_t child_pid, t_cmd *cmd_lst)
 {
 	int	status;
 	int	exit_code;
-	int	term_signal;
 
 	if (waitpid(child_pid, &status, 0) == -1)
 	{
