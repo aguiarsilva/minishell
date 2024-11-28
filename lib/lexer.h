@@ -50,5 +50,5 @@ void	remove_quotes(char *str, int *was_quoted);
 
 //lexer_utils3.c
 void	handle_quote(int *in_quotes, char *quote_type, char current_char);
-
+bool	analyze_buffer_for_expansion(t_parser_context *ctx);
 #endif //LEXER_H

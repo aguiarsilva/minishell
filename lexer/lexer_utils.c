@@ -31,11 +31,17 @@ t_type	get_token_type(char *token)
 void	flush_buffer(t_parser_context *ctx)
 {
 	t_token	*new_token;
+	bool	should_expand;
 
+	should_expand = false;
 	if (ctx->state->buf_index > 0)
 	{
+		should_expand = analyze_buffer_for_expansion(ctx);
 		remove_quotes(ctx->state->buffer, &ctx->state->was_quoted);
-		new_token = make_word_token(ctx->state->buffer, WORD, *ctx->env_lst);
+		if (should_expand == true)
+			new_token = make_word_token(ctx->state->buffer, WORD, *ctx->env_lst);
+		else
+			new_token = make_token(ctx->state->buffer, WORD);
 		add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, new_token);
 		ft_memset(ctx->state->buffer, 0, BUFFER_SIZE);
 		ctx->state->buf_index = 0;

@@ -71,7 +71,8 @@ typedef struct s_buffer_state
 	size_t	buf_index;
 	int		was_quoted;
 	int		in_quotes;
-	char    quote_type;  // New field
+	char	quote_type;
+	bool	should_expand;
 }	t_buffer_state;
 
 typedef struct s_token_list

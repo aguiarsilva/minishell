@@ -46,14 +46,13 @@ void	run_minishell(t_env **env_lst, char *input)
 	t_redir	*redir_lst;
 
 	token_list = build_lst(input, env_lst);
-	// assign_token_type(token_list);
 	if (check_if_token_list_right(token_list) == false)
 	{
 		free_tk(token_list);
 		return ;
 	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
-//	print_token_lst(token_list);
+	print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 //	print_cmd(cmd_lst);
 	if (cmd_lst == NULL)
@@ -61,9 +60,9 @@ void	run_minishell(t_env **env_lst, char *input)
 		free_tk(token_list);
 		return ;
 	}
-	run_process(cmd_lst, env_lst);
-//	free_cmd_list(cmd_lst);
 	free_tk(token_list);
+	run_process(cmd_lst, env_lst);
+	free_cmd_list(cmd_lst);
 }
 
 int	main(int argc, char *argv[], char *env[])
