@@ -4,3 +4,16 @@ cat = "input.txt" has '=' as argument for cat but proceeds otherwise normaly
 echo '$USER' still expands
 export =       with no input, should give error msg
 if you unset EC and then exit program crashes
+prompt can be full with character no new line added?
+echo << EOF crashes the program
+
+echo hola""""""""""""echo hola""""""""""""
+
+$> causes memory leak
+exit $HOME causes meme leak
+after cat ctrl \ should quit
+cat << EOF ctrl d should do nothing
+cat execute then ctrl \ should exit
+env should not printf  keys with an empty value
+if cmd fails and then try redirect it prints to stdout example ls non_existent_file 2> errorfile
+| grep "text" has no error message or antthing?

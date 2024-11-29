@@ -48,13 +48,14 @@ void	run_minishell(t_env **env_lst, char *input)
 	token_list = build_lst(input, env_lst);
 	if (check_if_token_list_right(token_list) == false)
 	{
+		//set maybe exitcode to 2
 		free_tk(token_list);
 		return ;
 	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
 	print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
-//	print_cmd(cmd_lst);
+	print_cmd(cmd_lst);
 	if (cmd_lst == NULL)
 	{
 		free_tk(token_list);
