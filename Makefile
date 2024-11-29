@@ -38,6 +38,7 @@ parsing/signal_handling.c \
 parsing/signal_handling_utils.c \
 parsing/check_syntax.c \
 lexer/lexer.c \
+lexer/lexer_error.c \
 lexer/lexer_utils.c \
 lexer/lexer_utils2.c \
 lexer/lexer_utils3.c \

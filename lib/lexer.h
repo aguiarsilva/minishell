@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/30 00:01:06 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:35:01 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ t_token	*make_token(char *wd, t_type type);
 void	assign_token_type(t_token *token_list);
 t_token	*create_word_list(char *input, t_env **env_lst);
 bool	check_if_token_list_right(t_token *token_lst);
+
+//lexer_error.c
+void	handle_unmatched_quote_error();
+t_token	*check_for_unmatched_quotes_and_handle_error(char *input);
 
 //lexer_init.c
 void	init_buffer_state(t_buffer_state *state);
@@ -65,5 +69,6 @@ void	update_quote_state(int *in_quotes, char *quote_type,
 			char current_char, int *was_quoted);
 int		should_keep_char(char c, int in_quotes, char quote_type);
 void	remove_quotes(char *str, int *was_quoted);
+int		check_for_unmatched_quotes(char *input, int input_length);
 
 #endif //LEXER_H
