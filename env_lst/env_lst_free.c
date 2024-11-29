@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_lst_free.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 14:16:57 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/11/27 14:16:57 by tbui-quo         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:07:06 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	free_env_node(t_env *node)
 {
 	if (node == NULL)
 		return ;
-
 	if (node->key)
 		free(node->key);
 	if (node->value)
@@ -30,7 +29,6 @@ void	free_env_lst(t_env **head)
 
 	if (head == NULL || *head == NULL)
 		return ;
-
 	while (*head != NULL)
 	{
 		tmp = (*head)->next;
@@ -39,4 +37,3 @@ void	free_env_lst(t_env **head)
 	}
 	*head = NULL;
 }
-

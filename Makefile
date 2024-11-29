@@ -28,6 +28,7 @@ parsing/expand_utils.c \
 parsing/expander.c \
 parsing/parsing.c \
 parsing/parsing_free.c \
+parsing/parsing_free2.c \
 parsing/parsing_utils.c \
 parsing/build_lst.c \
 parsing/redir_process.c \
@@ -41,6 +42,7 @@ lexer/lexer_utils.c \
 lexer/lexer_utils2.c \
 lexer/lexer_utils3.c \
 lexer/lexer_init.c \
+lexer/remove_quotes.c \
 env_lst/env_lst.c \
 env_lst/env_lst_free.c \
 env_lst/env_lst_utils.c \

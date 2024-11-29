@@ -55,4 +55,3 @@ int	builtin_exit(t_cmd *cmd, t_env **env_lst) // maybe limit exit code between 0
 	fprintf(stderr, "exit_code: %d when using builtin exit \n", exit_code);
 	exit(exit_code);
 }
-

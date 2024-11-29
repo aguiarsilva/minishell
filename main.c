@@ -85,6 +85,7 @@ int	main(int argc, char *argv[], char *env[])
 		run_minishell(&env_lst, input);
 		reset_signals(past_signal);
 		free(input);
+		clear_history();
 	}
 }
 

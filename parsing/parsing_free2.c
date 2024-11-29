@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_init.c                                       :+:      :+:    :+:   */
+/*   parsing_free2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: baguiar- <baguiar-@student.42wolfsburg.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 13:10:07 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/25 13:10:23 by baguiar-         ###   ########.fr       */
+/*   Created: 2024/11/29 01:02:34 by baguiar-          #+#    #+#             */
+/*   Updated: 2024/11/29 01:02:38 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void	init_buffer_state(t_buffer_state *state)
+void	free_tk(t_token *tk_list)
 {
-	ft_memset(state->buffer, 0, BUFFER_SIZE);
-	state->buf_index = 0;
-	state->was_quoted = 0;
-	state->in_quotes = 0;
-	state->quote_type = 0;
-}
+	t_token	*tk_list_placeholder;
 
-void	init_token_list(t_token_list *list)
-{
-	list->head = NULL;
-	list->tail = NULL;
+	if (!tk_list)
+		return ;
+	while (tk_list)
+	{
+		free(tk_list->val);
+		tk_list_placeholder = tk_list;
+		tk_list = tk_list->next;
+		free(tk_list_placeholder);
+	}
 }

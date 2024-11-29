@@ -24,7 +24,6 @@ void	free_redir_list(t_redir *redir)
 	{
 		redir_temp = redir;
 		next_redir = redir->next;
-
 		if (redir_temp->file_name != NULL)
 		{
 //			printf("Freeing file name: %p\n", redir_temp->file_name);
@@ -44,7 +43,6 @@ void	free_cmd_list(t_cmd *head)
 	while (head != NULL)
 	{
 		temp = head;
-
 		if (temp->args)
 		{
 			i = 0;
@@ -59,9 +57,6 @@ void	free_cmd_list(t_cmd *head)
 	// After freeing all commands, free the redirections causes segfault
 //	free_redir_list(head->redir);
 }
-
-
-
 
 void	free_all(t_cmd *cmd_head, t_env **env_head)
 {
@@ -95,19 +90,3 @@ t_cmd	*cleanup_cmd_list(t_cmd *head) // should combine them
 	free_cmd_list(head);
 	return (NULL);
 }
-
-void	free_tk(t_token *tk_list)
-{
-	t_token	*tk_list_placeholder;
-
-	if (!tk_list)
-		return ;
-	while (tk_list)
-	{
-		free(tk_list->val);
-		tk_list_placeholder = tk_list;
-		tk_list = tk_list->next;
-		free(tk_list_placeholder);
-	}
-}
-

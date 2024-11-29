@@ -130,108 +130,69 @@ void	handle_non_quoted_special_cases(t_parser_context *ctx,
 //	ctx->state->buffer[ctx->state->buf_index++] = c;
 //}
 
-void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote)
-{
-	char c;
+// void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx,
+// 		int *is_escaped, char *current_quote)
+// {
+// 	char	c;
 
-	c = char_ctx->input[char_ctx->current_index];
-	if (c == '\\')
+// 	c = char_ctx->input[char_ctx->current_index];
+// 	if (c == '\\')
+// 	{
+// 		*is_escaped = !(*is_escaped);
+// 		if (*is_escaped)
+// 			return ;
+// 	}
+// 	else
+// 		*is_escaped = 0;
+// 	if ((c == '"' || c == '\'') && !(*is_escaped))
+// 	{
+// 		if (!ctx->state->in_quotes)
+// 		{
+// 			ctx->state->in_quotes = 1;
+// 			ctx->state->quote_type = c;
+// 			ctx->state->was_quoted = 1;
+// 			*current_quote = c;
+// 		}
+// 		else if (ctx->state->quote_type == c)
+// 		{
+// 			ctx->state->in_quotes = 0;
+// 			ctx->state->quote_type = 0;
+// 			*current_quote = 0;
+// 		}
+// 		ctx->state->buffer[ctx->state->buf_index++] = c;
+// 		return ;
+// 	}
+// 	if (!ctx->state->in_quotes)
+// 	{
+// 		handle_non_quoted_special_cases(ctx, char_ctx, c);
+// 		return ;
+// 	}
+// 	ctx->state->buffer[ctx->state->buf_index++] = c;
+// }
+
+void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx,
+		int *is_escaped, char *current_quote)
+{
+	char	current_char;
+
+	current_char = char_ctx->input[char_ctx->current_index];
+	if (is_escape_character(current_char))
 	{
-		*is_escaped = !(*is_escaped);
+		toggle_escape_state(is_escaped);
 		if (*is_escaped)
 			return ;
 	}
 	else
 		*is_escaped = 0;
-	if ((c == '"' || c == '\'') && !(*is_escaped))
+	if ((current_char == '"' || current_char == '\'') && !(*is_escaped))
 	{
-		if (!ctx->state->in_quotes)
-		{
-			ctx->state->in_quotes = 1;
-			ctx->state->quote_type = c;
-			ctx->state->was_quoted = 1;
-			*current_quote = c;
-		}
-		else if (ctx->state->quote_type == c)
-		{
-			ctx->state->in_quotes = 0;
-			ctx->state->quote_type = 0;
-			*current_quote = 0;
-		}
-		ctx->state->buffer[ctx->state->buf_index++] = c;
+		handle_quote_state(ctx, current_char, current_quote);
 		return ;
 	}
 	if (!ctx->state->in_quotes)
 	{
-		handle_non_quoted_special_cases(ctx, char_ctx, c);
+		handle_non_quoted_special_cases(ctx, char_ctx, current_char);
 		return ;
 	}
-	ctx->state->buffer[ctx->state->buf_index++] = c;
+	ctx->state->buffer[ctx->state->buf_index++] = current_char;
 }
-
-void	remove_quotes(char *str, int *was_quoted)
-{
-	int		i;
-	int		j;
-	int		in_quotes;
-	char	quote_type;
-
-	i = 0;
-	j = 0;
-	in_quotes = 0;
-	quote_type = 0;
-	if (!str)
-		return ;
-	*was_quoted = 0;
-	while (str[i] != '\0')
-	{
-		if ((str[i] == '"' || str[i] == '\'') &&
-			(!in_quotes || quote_type == str[i]))
-		{
-			*was_quoted = 1;
-			if (!in_quotes)
-			{
-				in_quotes = 1;
-				quote_type = str[i];
-			}
-			else
-			{
-				in_quotes = 0;
-				quote_type = 0;
-			}
-		}
-		else
-			str[j++] = str[i];
-		i++;
-	}
-	str[j] = '\0';
-}
-
-//void	remove_quotes(char *str, int *was_quoted) // before big change to handle quotes to keep them together for example echo 'test test2' would split in 3 token
-//{
-//	int		i;
-//	int		j;
-//	int		in_quotes;
-//	char	quote_type;
-//
-//	i = 0;
-//	j = 0;
-//	in_quotes = 0;
-//	quote_type = 0;
-//	if (!str)
-//		return ;
-//	*was_quoted = 0;
-//	while (str[i] != '\0')
-//	{
-//		if ((str[i] == '"' || str[i] == '\'')
-//			&& (!in_quotes || quote_type == str[i]))
-//		{
-//			*was_quoted = 1;
-//			handle_quote(&in_quotes, &quote_type, str[i]);
-//		}
-//		else
-//			str[j++] = str[i];
-//		i++;
-//	}
-//	str[j] = '\0';
-//}

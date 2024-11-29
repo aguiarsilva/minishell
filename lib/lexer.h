@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/27 15:40:35 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/29 02:03:27 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,23 @@ void	process_double_char(t_parser_context *ctx, char c, size_t *i);
 void	handle_non_quoted_special_cases(t_parser_context *ctx,
 			t_char_context *char_ctx, char c);
 //void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx); // old version
-void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote);
-void	remove_quotes(char *str, int *was_quoted);
+//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote);
+void handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx,
+        int *is_escaped, char *current_quote);
+int is_escape_character(char c);
+void toggle_escape_state(int *is_escaped);
+void handle_quote_state(t_parser_context *ctx, char c, 
+        char *current_quote);
 
 //lexer_utils3.c
 void	handle_quote(int *in_quotes, char *quote_type, char current_char);
 bool	analyze_buffer_for_expansion(t_parser_context *ctx);
+
+//remove_quotes.c
+int		is_quote_character(char c);
+void	update_quote_state(int *in_quotes, char *quote_type,
+		char current_char, int *was_quoted);
+int		should_keep_char(char c, int in_quotes, char quote_type);
+void	remove_quotes(char *str, int *was_quoted);
+
 #endif //LEXER_H
