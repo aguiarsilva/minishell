@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/28 12:27:09 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/29 02:11:14 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ t_token	*create_word_list(char *input, t_env **env_lst)
 	t_token_list		tokens;
 	t_parser_context	ctx;
 	t_char_context		char_ctx;
-	int is_escaped = 0;
-	char current_quote = 0;
+	int					is_escaped;
+	char				current_quote;
 
+	is_escaped = 0;
+	current_quote = 0;
 	init_buffer_state(&state);
 	init_token_list(&tokens);
 	ctx.state = &state;

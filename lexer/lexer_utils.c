@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:12:16 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/28 23:49:26 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:09:49 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	flush_buffer(t_parser_context *ctx)
 		should_expand = analyze_buffer_for_expansion(ctx);
 		remove_quotes(ctx->state->buffer, &ctx->state->was_quoted);
 		if (should_expand == true)
-			new_token = make_word_token(ctx->state->buffer, WORD, *ctx->env_lst);
+			new_token = make_word_token(ctx->state->buffer,
+					WORD, *ctx->env_lst);
 		else
 			new_token = make_token(ctx->state->buffer, WORD);
 		add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, new_token);

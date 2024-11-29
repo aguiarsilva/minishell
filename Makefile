@@ -42,6 +42,7 @@ lexer/lexer_utils.c \
 lexer/lexer_utils2.c \
 lexer/lexer_utils3.c \
 lexer/lexer_init.c \
+lexer/remove_quotes.c \
 env_lst/env_lst.c \
 env_lst/env_lst_free.c \
 env_lst/env_lst_utils.c \
