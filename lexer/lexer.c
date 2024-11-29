@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/29 02:11:14 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:06:42 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,34 +76,58 @@ void	assign_token_type(t_token *token_list)
 	}
 }
 
-// Modify create_word_list to pass and track escape/quote state
 t_token	*create_word_list(char *input, t_env **env_lst)
 {
-	t_buffer_state		state;
-	t_token_list		tokens;
-	t_parser_context	ctx;
-	t_char_context		char_ctx;
-	int					is_escaped;
-	char				current_quote;
+	t_parser_data	pd;
 
-	is_escaped = 0;
-	current_quote = 0;
-	init_buffer_state(&state);
-	init_token_list(&tokens);
-	ctx.state = &state;
-	ctx.tokens = &tokens;
-	ctx.env_lst = env_lst;
-	char_ctx.input = input;
-	char_ctx.input_length = ft_strlen(input);
-	char_ctx.current_index = 0;
-	while (char_ctx.current_index < char_ctx.input_length)
+	init_buffer_state(&pd.state);
+	init_token_list(&pd.tokens);
+	pd.ctx.state = &pd.state;
+	pd.ctx.tokens = &pd.tokens;
+	pd.ctx.env_lst = env_lst;
+	pd.char_ctx.input = input;
+	pd.char_ctx.input_length = ft_strlen(input);
+	pd.char_ctx.current_index = 0;
+	pd.is_escaped = 0;
+	pd.current_quote = 0;
+	while (pd.char_ctx.current_index < pd.char_ctx.input_length)
 	{
-		handle_special_cases(&ctx, &char_ctx, &is_escaped, &current_quote);
-		char_ctx.current_index++;
+		handle_special_cases(&pd.ctx, &pd.char_ctx,
+			&pd.is_escaped, &pd.current_quote);
+		pd.char_ctx.current_index++;
 	}
-	flush_buffer(&ctx);
-	return (tokens.head);
+	flush_buffer(&pd.ctx);
+	return (pd.tokens.head);
 }
+
+// Modify create_word_list to pass and track escape/quote state
+// t_token	*create_word_list(char *input, t_env **env_lst)
+// {
+// 	t_buffer_state		state;
+// 	t_token_list		tokens;
+// 	t_parser_context	ctx;
+// 	t_char_context		char_ctx;
+// 	int					is_escaped;
+// 	char				current_quote;
+
+// 	is_escaped = 0;
+// 	current_quote = 0;
+// 	init_buffer_state(&state);
+// 	init_token_list(&tokens);
+// 	ctx.state = &state;
+// 	ctx.tokens = &tokens;
+// 	ctx.env_lst = env_lst;
+// 	char_ctx.input = input;
+// 	char_ctx.input_length = ft_strlen(input);
+// 	char_ctx.current_index = 0;
+// 	while (char_ctx.current_index < char_ctx.input_length)
+// 	{
+// 		handle_special_cases(&ctx, &char_ctx, &is_escaped, &current_quote);
+// 		char_ctx.current_index++;
+// 	}
+// 	flush_buffer(&ctx);
+// 	return (tokens.head);
+// }
 
 //t_token	*create_word_list(char *input, t_env **env_lst) // old version before big change
 //{

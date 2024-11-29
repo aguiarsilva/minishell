@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:49:22 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/11/29 01:01:46 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:08:53 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,16 @@ typedef struct s_char_context
 	size_t		current_index;
 	size_t		input_length;
 }	t_char_context;
+
+typedef struct s_parser_data
+{
+	t_buffer_state		state;
+	t_token_list		tokens;
+	t_parser_context	ctx;
+	t_char_context		char_ctx;
+	int					is_escaped;
+	char				current_quote;
+}	t_parser_data;
 
 //build_lst.c
 t_token	*build_lst(char *input, t_env **lst);
