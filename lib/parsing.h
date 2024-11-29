@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:49:22 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/11/29 00:13:54 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:01:46 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,9 @@ t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list);
 void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);
 t_cmd	*cleanup_cmd_list(t_cmd *head);
-void	free_tk(t_token *tk_list);
 void	free_all(t_cmd *cmd_head, t_env **env_head);
+//parsing_free2.c
+void	free_tk(t_token *tk_list);
 //parsing_utils.c
 t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list);
 void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
