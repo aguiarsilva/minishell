@@ -66,6 +66,34 @@ void	remove_quotes(char *str, int *was_quoted)
 	str[j] = '\0';
 }
 
+int	check_for_unmatched_quotes(char *input, int input_length)
+{
+	int		i;
+	char	current_quote;
+
+	i = 0;
+	current_quote = 0;
+	while (i < input_length)
+	{
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			// If no quote is open, this is the opening quote
+			if (current_quote == 0)
+				current_quote = input[i];
+			// If the same quote is encountered again, it's a closing quote
+			else if (current_quote == input[i])
+				current_quote = 0;
+			// If a different type of quote is encountered, it's an error
+			else
+				return (-1);  // Unexpected quote, return error
+		}
+		i++;
+	}
+	if (current_quote != 0)
+		return (-1);
+	return (0);
+}
+
 // void	remove_quotes(char *str, int *was_quoted)
 // {
 // 	int		i;

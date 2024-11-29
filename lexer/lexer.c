@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:16:01 by baguiar-          #+#    #+#             */
-/*   Updated: 2024/11/30 00:06:42 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:41:58 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ t_token	*create_word_list(char *input, t_env **env_lst)
 {
 	t_parser_data	pd;
 
+	if (check_for_unmatched_quotes_and_handle_error(input) == NULL)
+		return (NULL);
 	init_buffer_state(&pd.state);
 	init_token_list(&pd.tokens);
 	pd.ctx.state = &pd.state;
