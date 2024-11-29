@@ -120,4 +120,3 @@ int	expand_to_str(char *str_to_expand, int *i, char **exp_word, t_env *env_lst)
 	free(exp_var);
 	return (0);
 }
-
