@@ -32,7 +32,7 @@ char	*ft_get_prompt(t_env **env_lst)
 {
 	char	*result;
 
-	result = readline("\033[1;36mminishell\033[34m$ \033[0m");
+	result = readline("\001\033[0;32m\002minishell\001\033[1;34m\002$ \001\033[0m\002");
 	if (!result)
 		builtin_exit(NULL, env_lst);
 	add_history(result);
@@ -53,9 +53,9 @@ void	run_minishell(t_env **env_lst, char *input)
 		return ;
 	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
-	print_token_lst(token_list);
+	// print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
-	print_cmd(cmd_lst);
+	// print_cmd(cmd_lst);
 	if (cmd_lst == NULL)
 	{
 		free_tk(token_list);
@@ -85,7 +85,7 @@ int	main(int argc, char *argv[], char *env[])
 		run_minishell(&env_lst, input);
 		reset_signals(past_signal);
 		free(input);
-		clear_history();
+		// clear_history();
 	}
 }
 
