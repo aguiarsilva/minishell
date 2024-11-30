@@ -43,6 +43,7 @@ t_token	*make_token(char *wd, t_type type)
 	int		len;
 
 	len = ft_strlen(wd);
+	printf("wd %s\n", wd);
 	new_tk = malloc(sizeof(t_token));
 	if (new_tk == NULL)
 		return (NULL);

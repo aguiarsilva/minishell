@@ -18,7 +18,6 @@ static t_redir	*init_redirection_node(t_token *token_node, int filetype)
 	new_redir->file_name = ft_strdup(filename);
 	if (new_redir->file_name == NULL)
 	{
-		free(new_redir);
 		printf("Memory allocation failed for file_name\n");
 		return (NULL);
 	}

@@ -20,3 +20,7 @@ if cmd fails and then try redirect it prints to stdout example ls non_existent_f
 env | grep USER double free
 unset HOME should really unset then cd should fail
 ./minishell should limit itself to max 1000
+cd should change old PWD all the time
+
+echo hellofgsyjvsedjvfsdejvgsdejvfcjsdvfcjsdev | cat >  pipedreams.txt
+echo hellofgsyjvsedjvfsdejvgsdejvfcjsdvfcjsdev | cat >  pipedreams.txt  
