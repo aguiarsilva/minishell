@@ -66,8 +66,8 @@ void	free_cmd_node(t_cmd *cmd_node)
 		cmd_node->args = NULL;
 	}
 	// echo already freeds the file name !! which causes bug
-	printf("current node %s with redir file name %s\n", cmd_node->cmd, cmd_node->redir->file_name);
-	free_redir_list(cmd_node->redir);
+//	printf("current node %s with redir file name %s\n", cmd_node->cmd, cmd_node->redir->file_name);
+//	free_redir_list(cmd_node->redir);
 	free(cmd_node);
 	cmd_node = NULL;
 }
