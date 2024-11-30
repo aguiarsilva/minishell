@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/30 14:59:03 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/30 16:15:17 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -98,6 +108,7 @@ static int	extract_and_expand_var(char *split, int *i,
 int	expand_to_str(char *str_to_expand, int *i, char **exp_word, t_env *env_lst)
 {
 	char	*exp_var;
+	char	*temp;
 
 	exp_var = NULL;
 	if (str_to_expand[*i] && str_to_expand[*i] == '$')
@@ -113,10 +124,12 @@ int	expand_to_str(char *str_to_expand, int *i, char **exp_word, t_env *env_lst)
 	}
 	if (exp_var)
 	{
-		*exp_word = ft_strjoin(*exp_word, exp_var);
-		if (!(*exp_word))
+		temp = ft_strjoin(*exp_word, exp_var);
+		free(*exp_word);
+		free(exp_var);
+		if (!temp)
 			return (1);
+		*exp_word = temp;
 	}
-	free(exp_var);
 	return (0);
 }

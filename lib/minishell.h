@@ -47,6 +47,7 @@
 # define ERR_FORK "Fork failed."
 # define ERR_PIPE "Pipe Error"
 # define ERR_FILE "Error during opening file"
+# define ERR_UNEVENQUOTES "minishell: syntax error: unmatched quote\n"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_UNKNOWN " Unexpected error "
 # define EXIT_TOO_MANY_ARGS "exit: too many arguments\n"

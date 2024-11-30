@@ -12,11 +12,6 @@
 
 #include "../lib/minishell.h"
 
-void	handle_unmatched_quote_error(void)
-{
-	printf("minishell: syntax error: unmatched quote\n");
-}
-
 t_token	*check_for_unmatched_quotes_and_handle_error(char *input)
 {
 	int quote_check_result;
@@ -24,7 +19,7 @@ t_token	*check_for_unmatched_quotes_and_handle_error(char *input)
 	quote_check_result = check_for_unmatched_quotes(input, ft_strlen(input));
 	if (quote_check_result != 0)
 	{
-		handle_unmatched_quote_error();
+		print_error_msg(ERR_UNEVENQUOTES);
 		return (NULL);
 	}
 	return (t_token *)1;

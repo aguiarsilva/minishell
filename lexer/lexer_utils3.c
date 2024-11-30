@@ -28,7 +28,7 @@ void	handle_quote(int *in_quotes, char *quote_type, char current_char)
 
 bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 {
-	int		i;
+	size_t		i;
 	char	*buf;
 	bool	contains_dollar_sign;
 	int		in_quotes;
