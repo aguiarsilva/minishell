@@ -19,6 +19,8 @@ static void	remove_env_var(t_env **env_lst, char *key)
 
 	prev = NULL;
 	current = *env_lst;
+	if (ft_strcmp(key, "EC") == 0)
+		return ;
 	while (current)
 	{
 		if (current->key && ft_strcmp(current->key, key) == 0)

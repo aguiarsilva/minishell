@@ -15,47 +15,46 @@ void	cleanup_args(char **args, int count)
 	free(args);
 }
 
-void	free_redir_list(t_redir *redir)
+void free_redir_list(t_redir *redir_list)
 {
-	t_redir	*redir_temp;
-	t_redir	*next_redir;
+	t_redir	*temp;
 
-	while (redir != NULL)
+	while (redir_list)
 	{
-		redir_temp = redir;
-		next_redir = redir->next;
-		if (redir_temp->file_name != NULL)
-		{
-//			printf("Freeing file name: %p\n", redir_temp->file_name);
-			free(redir_temp->file_name);
-			redir_temp->file_name = NULL;
-		}
-		free(redir_temp);
-		redir = next_redir;
+		temp = redir_list->next;
+		free(redir_list->file_name);
+		free(redir_list);
+		redir_list = temp;
 	}
 }
 
-void	free_cmd_list(t_cmd *head)
+void free_cmd_node(t_cmd *cmd_node)
 {
-	t_cmd	*temp;
-	int		i;
+	if (!cmd_node)
+		return;
 
-	while (head != NULL)
+	free(cmd_node->cmd);
+	if (cmd_node->args)
 	{
-		temp = head;
-		if (temp->args)
-		{
-			i = 0;
-			while (temp->args[i] != NULL)
-				i++;
-			cleanup_args(temp->args, i);
-		}
-		free(temp->cmd);
-		head = head->next;
-		free(temp);
+		for (int i = 0; cmd_node->args[i]; i++)
+			free(cmd_node->args[i]);
+		free(cmd_node->args);
 	}
-	// After freeing all commands, free the redirections causes segfault
-//	free_redir_list(head->redir);
+	free_redir_list(cmd_node->redir);
+	free(cmd_node);
+}
+
+
+void free_cmd_list(t_cmd *cmd_list)
+{
+	t_cmd *temp;
+
+	while (cmd_list)
+	{
+		temp = cmd_list->next;
+		free_cmd_node(cmd_list);
+		cmd_list = temp;
+	}
 }
 
 void	free_all(t_cmd *cmd_head, t_env **env_head)
@@ -63,27 +62,6 @@ void	free_all(t_cmd *cmd_head, t_env **env_head)
 	free_cmd_list(cmd_head);
 	free_env_lst(env_head);
 }
-
-//void	free_cmd_list(t_cmd *head) old
-//{
-//	t_cmd	*temp;
-//	int		i;
-//
-//	while (head != NULL)
-//	{
-//		temp = head;
-//		if (temp->args)
-//		{
-//			i = 0;
-//			while (temp->args[i] != NULL)
-//				i++;
-//			cleanup_args(temp->args, i);
-//		}
-//		free(temp->cmd);
-//		head = head->next;
-//		free(temp);
-//	}
-//}
 
 t_cmd	*cleanup_cmd_list(t_cmd *head) // should combine them
 {

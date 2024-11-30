@@ -69,7 +69,7 @@ void	process_special_char(char c, t_parser_context *ctx)
 		token_type = get_token_type((char [2]){c, '\0'});
 	special_char[0] = c;
 	special_char[1] = '\0';
-	special_token = make_word_token(special_char, token_type, *ctx->env_lst);
+	special_token = make_token(special_char, token_type);
 	add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, special_token);
 }
 

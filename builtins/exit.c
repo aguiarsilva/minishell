@@ -27,7 +27,14 @@ int	is_valid_number(char *str)
 	return (1);
 }
 
-int	builtin_exit(t_cmd *cmd, t_env **env_lst) // maybe limit exit code between 0 255 use modulo i guess
+static void	cleanup_and_exit(t_cmd *cmd, t_env **env_lst, int exit_code)
+{
+	free_all(cmd, env_lst);
+	fprintf(stderr, "Exiting with code: %d\n", exit_code);
+	exit(exit_code);
+}
+
+int	builtin_exit(t_cmd *cmd, t_env **env_lst)
 {
 	char	*exitcode_str;
 	int		exit_code;
@@ -44,14 +51,13 @@ int	builtin_exit(t_cmd *cmd, t_env **env_lst) // maybe limit exit code between 0
 		exit_code = ft_atoi(exitcode_str);
 		printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
 		free(exitcode_str);
-//		free_all(cmd, env_lst);
-		exit(exit_code);
+		cleanup_and_exit(cmd, env_lst, exit_code);
 	}
 	if (!is_valid_number(cmd->args[0]))
 		print_custom_msg_and_exit(EXIT_NUMERIC_ARG_REQ, 2);
 	if (cmd->args[1])
 		return (print_error_msg(EXIT_TOO_MANY_ARGS));
 	exit_code = (unsigned char)ft_atoll(cmd->args[0]);
-	fprintf(stderr, "exit_code: %d when using builtin exit \n", exit_code);
-	exit(exit_code);
+	cleanup_and_exit(cmd, env_lst, exit_code);
+	return (0);
 }

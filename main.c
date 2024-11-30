@@ -48,7 +48,7 @@ void	run_minishell(t_env **env_lst, char *input)
 	token_list = build_lst(input, env_lst);
 	if (check_if_token_list_right(token_list) == false)
 	{
-		//set maybe exitcode to 2
+		set_value_in_env_lst(*env_lst, "EC", "2");
 		free_tk(token_list);
 		return ;
 	}
