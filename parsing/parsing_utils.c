@@ -16,7 +16,10 @@ t_cmd	*create_new_cmd_node(char *token_val, t_redir *redir_list)
 		return (NULL);
 	}
 	cmd_list_node->exit_code = 0;
-	cmd_list_node->redir = redir_list;
+	if (redir_list == NULL)
+		cmd_list_node->redir = NULL;
+	else
+		cmd_list_node->redir = redir_list;
 	cmd_list_node->next = NULL;
 	cmd_list_node->builtin = check_for_builtin(cmd_list_node->cmd);
 	return (cmd_list_node);

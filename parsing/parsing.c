@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 16:52:14 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/01 14:55:04 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -54,7 +64,7 @@ static t_token	*find_next_pipe_symbol(t_token *token_list)
 }
 
 static t_cmd	*create_cmd_from_tokens(t_token *token_list,
-										t_redir *redir_list,
+										t_redir *cur_redir,
 										t_cmd **head, t_cmd **tail)
 {
 	t_cmd	*cmd_data;
@@ -62,7 +72,7 @@ static t_cmd	*create_cmd_from_tokens(t_token *token_list,
 
 	if (token_list->type != WORD)
 		return (cleanup_cmd_list(*head));
-	cmd_data = create_new_cmd_node(token_list->val, redir_list);
+	cmd_data = create_new_cmd_node(token_list->val, cur_redir);
 	if (!cmd_data)
 		return (cleanup_cmd_list(*head));
 	arg_count = count_arguments(token_list->next);
@@ -76,19 +86,22 @@ t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list)
 {
 	t_cmd	*head;
 	t_cmd	*tail;
-	t_token	*cur;
+	t_token	*cur_token;
+	t_redir	*cur_redir;
 
 	if (token_list && token_list->val && is_special_command(token_list->val))
 		return (NULL);
 	head = NULL;
 	tail = NULL;
+	cur_redir = redir_list;
 	while (token_list != NULL)
 	{
-		if (create_cmd_from_tokens(token_list, redir_list, &head, &tail))
+		if (create_cmd_from_tokens(token_list, cur_redir, &head, &tail))
 			return (NULL);
-		cur = find_next_pipe_symbol(token_list);
-		if (cur != NULL && cur->type == PIPE)
-			token_list = cur->next;
+		cur_token = find_next_pipe_symbol(token_list);
+		if (cur_token != NULL && cur_token->type == PIPE)
+			cur_redir = check_if_token_need_redir(&token_list,
+					cur_token, cur_redir);
 		else
 			break ;
 	}

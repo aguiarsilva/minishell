@@ -17,6 +17,8 @@ int	set_pwd_env(t_env *env_lst, char *target_dir)
 	char	*pwd;
 
 	pwd = get_key_in_env_lst(env_lst, "PWD");
+	if (set_value_in_env_lst(env_lst, "OLDPWD", pwd))
+		return (1);
 	if (set_value_in_env_lst(env_lst, "PWD", target_dir))
 		return (1);
 	if (pwd)

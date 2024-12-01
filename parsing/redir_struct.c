@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_struct.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 16:52:14 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/01 15:02:56 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -76,4 +86,17 @@ void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
 			*last_redir = new_redir;
 		}
 	}
+}
+
+t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir)
+{
+	if (cur_token != NULL)
+	{
+		*token_list = cur_token->next;
+		if (cur_redir)
+			return (cur_redir->next);
+		else
+			return (NULL);
+	}
+	return (cur_redir);
 }

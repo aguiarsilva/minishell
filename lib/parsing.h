@@ -145,6 +145,7 @@ void	add_to_redir_lst(t_token *cur_token, t_redir **redir_lst,
 			int file_type, t_token *prev_token);
 void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
 			t_redir *new_redir);
+t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir);
 //redir_utils.c
 t_redir	*get_last_redirection_node(t_redir *redir_head);
 bool	is_filename(const char *str);
