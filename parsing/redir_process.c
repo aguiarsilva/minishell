@@ -30,10 +30,10 @@ t_redir	*process_redirection_token(t_token *cur_token, t_token **prev_token)
 	return (redir_lst);
 }
 
-static bool	is_valid_starting_token(t_token *token_lst)
-{
-	return (token_lst != NULL && get_token_type(token_lst->val) == WORD);
-}
+//static bool	is_valid_starting_token(t_token *token_lst)
+//{
+//	return (token_lst != NULL && get_token_type(token_lst->val) == WORD);
+//}
 
 t_redir	*create_redir_lst_from_tokens(t_token *token_lst)
 {

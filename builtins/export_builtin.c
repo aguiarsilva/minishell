@@ -103,14 +103,8 @@ static void	process_arguments(char **args, int arg_count, t_env **env_list)
 
 int	export_builtin(char **args, t_env **env_list)
 {
-	int		i;
 	int		arg_count;
-	char	*key;
-	char	*value;
 
-	i = 0;
-	key = NULL;
-	value = NULL;
 	if (args == NULL)
 		return (1);
 	arg_count = count_arg_from_args(args);
