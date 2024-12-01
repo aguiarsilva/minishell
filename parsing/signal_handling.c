@@ -14,31 +14,73 @@
 
 int	g_signal = 0;
 
-void	interrupt_signal(int signal)
+void	sig_int(int signal)
 {
-	signal = 130;
-	g_signal = signal;
+	(void)signal;
+	g_signal = 130;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void	quit_signal(int signal)
+void	sig_int_in_process(int signal)
 {
-	signal = 131;
+	signal = 130;
 	g_signal = signal;
-	printf("Quit (core dumped)\n");
+	printf("\n");
 }
 
-void	signal_setter(void (**past_signal)(int))
+void	sig_quit(int signal)
 {
-	past_signal[0] = signal(SIGINT, interrupt_signal);
-	past_signal[1] = signal(SIGQUIT, quit_signal);
+	(void)signal;
+	if (rl_line_buffer && *rl_line_buffer)
+	{
+		g_signal = 131;
+		printf("Quit\n");
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	return ;
 }
 
-void	signal_restore(void (**past_signal)(int))
+void	set_signals(void (*old_signal[2])(int))
 {
-	signal(SIGINT, past_signal[0]);
-	signal(SIGQUIT, past_signal[1]);
+	old_signal[0] = signal(SIGINT, sig_int);
+	old_signal[1] = signal(SIGQUIT, SIG_IGN);
 }
+
+void	restore_signals(void (*old_signal[2])(int))
+{
+	signal(SIGINT, old_signal[0]);
+	signal(SIGQUIT, old_signal[1]);
+}
+
+// void	interrupt_signal(int signal)
+// {
+// 	signal = 130;
+// 	g_signal = signal;
+// 	printf("\n");
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
+
+// void	quit_signal(int signal)
+// {
+// 	signal = 131;
+// 	g_signal = signal;
+// 	printf("Quit (core dumped)\n");
+// }
+
+// void	signal_setter(void (**past_signal)(int))
+// {
+// 	past_signal[0] = signal(SIGINT, interrupt_signal);
+// 	past_signal[1] = signal(SIGQUIT, quit_signal);
+// }
+
+// void	signal_restore(void (**past_signal)(int))
+// {
+// 	signal(SIGINT, past_signal[0]);
+// 	signal(SIGQUIT, past_signal[1]);
+// }

@@ -30,7 +30,9 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	if (process_id == 0)
 	{
-		setup_child_signals();
+		//setup_child_signals();
+		signal(SIGQUIT, sig_quit);
+		signal(SIGINT, SIG_DFL);
 		handle_child_process(current, env_lst, prev_pipe_fd,
 			pipe_fd, cmd_position);
 		exit(EXIT_FAILURE);

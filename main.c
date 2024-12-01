@@ -33,6 +33,12 @@ char	*ft_get_prompt(t_env **env_lst)
 	char	*result;
 
 	result = readline("\001\033[0;32m\002minishell\001\033[1;34m\002$ \001\033[0m\002");
+	if (g_signal == 130)
+	{
+		update_exit_code(*env_lst, 130);
+		g_signal = 0;
+		return (NULL);
+	}
 	if (!result)
 		builtin_exit(NULL, env_lst);
 	add_history(result);
@@ -79,12 +85,20 @@ int	main(int argc, char *argv[], char *env[])
 		exit (1);
 	while (1)
 	{
-		setup_signals();
+		signal(SIGQUIT, SIG_IGN);
+		set_signals(past_signal);
 		g_signal = 0;
 		input = ft_get_prompt(&env_lst);
+		if (!input)
+		{
+			printf("exit\n");
+			restore_signals(past_signal);
+			break ;
+		}
 		run_minishell(&env_lst, input);
-		reset_signals(past_signal);
+		//reset_signals(past_signal);
 		free(input);
+		restore_signals(past_signal);
 		// clear_history();
 	}
 }

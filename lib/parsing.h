@@ -6,7 +6,7 @@
 /*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:49:22 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/11/30 00:08:53 by baguiar-         ###   ########.fr       */
+/*   Updated: 2024/12/01 09:26:48 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,17 @@ bool	is_file_without_extension(t_token *prev_token, t_token *cur_token);
 int		determine_redirection_type(int filetype);
 int		determine_file_type(t_token *cur_token);
 //signal_handling.c
-void	interrupt_signal(int signal);
-void	quit_signal(int signal);
-void	signal_setter(void (**past_signal)(int));
-void	signal_restore(void (**past_signal)(int));
+void	sig_int(int signal);
+void	sig_int_in_process(int signal);
+void	sig_quit(int signal);
+void	set_signals(void (*old_signal[2])(int));
+void	restore_signals(void (*old_signal[2])(int));
+// void	interrupt_signal(int signal);
+// void	quit_signal(int signal);
+// void	signal_setter(void (**past_signal)(int));
+// void	signal_restore(void (**past_signal)(int));
 //signal_handling_utils.c
-void	setup_signals(void);
-void	reset_signals(void (*past_signal[2])(int));
-void	setup_child_signals(void);
+// void	setup_signals(void);
+// void	reset_signals(void (*past_signal[2])(int));
+// void	setup_child_signals(void);
 #endif

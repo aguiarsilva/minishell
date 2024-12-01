@@ -43,6 +43,8 @@ void	handle_child_process(t_cmd *cmd, t_env **env_lst,
 							int prev_pipe_fd[2], int pipe_fd[2],
 							size_t cmd_position)
 {
+	signal(SIGQUIT, SIG_DFL);
+    signal(SIGINT, SIG_DFL);
 	// fprintf(stderr, "DEBUG: Child process for command: %s\n", cmd->cmd);
 	if (cmd_position == 0)
 		handle_first_command(cmd, pipe_fd);
