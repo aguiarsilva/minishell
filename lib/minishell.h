@@ -52,6 +52,7 @@
 # define ERR_UNKNOWN " Unexpected error "
 # define EXIT_TOO_MANY_ARGS "exit: too many arguments\n"
 # define EXIT_NUMERIC_ARG_REQ "exit: numeric argument required\n"
+# define ERR_SYNTAX "minishell: syntax error near unexpected token\n"
 
 // error.c delete not needed fuction later
 void	print_custom_msg_and_exit(char *error, int exit_code);

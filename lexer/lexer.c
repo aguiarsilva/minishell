@@ -159,7 +159,7 @@ bool	check_if_token_list_right(t_token *token_lst)
 {
 	if (!is_valid_redirection_syntax(token_lst))
 	{
-		printf("minishell: syntax error near unexpected token\n");
+		print_error_msg(ERR_SYNTAX);
 		return (false);
 	}
 	return (true);

@@ -59,9 +59,15 @@ void	run_minishell(t_env **env_lst, char *input)
 		return ;
 	}
 	redir_lst = create_redir_lst_from_tokens(token_list);
-	print_token_lst(token_list);
+	// print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
-	print_cmd(cmd_lst);
+	// print_cmd(cmd_lst);
+	// Free the original redir_lst before using the deep-copied lists in commands
+	if (redir_lst)
+	{
+		free_redir_list(redir_lst);
+		redir_lst = NULL;
+	}
 	if (cmd_lst == NULL)
 	{
 		free_tk(token_list);
@@ -91,7 +97,7 @@ int	main(int argc, char *argv[], char *env[])
 		input = ft_get_prompt(&env_lst);
 		if (!input)
 		{
-			printf("exit\n");
+			// printf("DEBUG exit\n");
 			restore_signals(past_signal);
 			break ;
 		}

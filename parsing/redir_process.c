@@ -48,8 +48,8 @@ t_redir	*create_redir_lst_from_tokens(t_token *token_lst)
 	redir_lst = NULL;
 	last_redir = NULL;
 
-	if (!is_valid_starting_token(token_lst))
-		return (NULL);
+	// if (!is_valid_starting_token(token_lst))
+	// 	return (NULL);
 	while (cur_token != NULL)
 	{
 		new_redir = process_redirection_token(cur_token, &prev_token);

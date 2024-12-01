@@ -93,8 +93,8 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 
 	if (cmd_lst == NULL)
 	{
-		free_cmd_list(cmd_lst);
 		// printf("No commands to execute\n");
+		free_cmd_list(cmd_lst);
 		return ;
 	}
 	if (cmd_lst->cmd && cmd_lst->cmd[0] && is_special_command(&cmd_lst->cmd[0]))

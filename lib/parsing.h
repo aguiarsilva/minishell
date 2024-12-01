@@ -130,6 +130,7 @@ void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);
 t_cmd	*cleanup_cmd_list(t_cmd *head);
 void	free_all(t_cmd *cmd_head, t_env **env_head);
+void	free_redir_list(t_redir *redir_list);
 //parsing_free2.c
 void	free_tk(t_token *tk_list);
 //parsing_utils.c
@@ -145,7 +146,8 @@ void	add_to_redir_lst(t_token *cur_token, t_redir **redir_lst,
 			int file_type, t_token *prev_token);
 void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
 			t_redir *new_redir);
-t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir);
+t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token,
+			t_redir *cur_redir);
 //redir_utils.c
 t_redir	*get_last_redirection_node(t_redir *redir_head);
 bool	is_filename(const char *str);

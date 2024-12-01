@@ -55,11 +55,11 @@ bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 
 // bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 // {
-// 	int		i;
+// 	size_t		i;
 // 	char	*buf;
 // 	bool	contains_dollar_sign;
 // 	bool	contains_quotes;
-
+//
 // 	i = 0;
 // 	contains_dollar_sign = false;
 // 	contains_quotes = false;
