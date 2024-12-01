@@ -105,7 +105,6 @@ int	main(int argc, char *argv[], char *env[])
 		//reset_signals(past_signal);
 		free(input);
 		restore_signals(past_signal);
-		// clear_history();
 	}
 }
 

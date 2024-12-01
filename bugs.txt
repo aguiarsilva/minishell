@@ -1,15 +1,8 @@
 cat<input does not behave like bash not broken
 export my_var="test" broken
 cat = "input.txt" has '=' as argument for cat but proceeds otherwise normaly
-echo '$USER' still expands
 export =       with no input, should give error msg
-if you unset EC and then exit program crashes
-echo << EOF crashes the program
 
-echo hola""""""""""""echo hola""""""""""""
-
-$> causes memory leak
-exit $HOME causes meme leak
 after cat ctrl \ should quit
 cat << EOF ctrl d should do nothing
 cat execute then ctrl \ should exit
@@ -21,12 +14,9 @@ unset HOME should really unset then cd should fail
 ./minishell should limit itself to max 1000
 
 echo hellofgsyjvsedjvfsdejvgsdejvfcjsdvfcjsdev | cat >  pipedreams.txt
-echo hellofgsyjvsedjvfsdejvgsdejvfcjsdvfcjsdev | cat >  pipedreams.txt
+ls -a | wc -c | cat | ls -a > file1 does pipe and stdout at the same time, not gonna fix
 
 ls -la >file1>file2>file3 only works when there a spaces between file
-
-echo "$USER $USER" >> free err
-
 
 with new parsing
 Total tests: 240

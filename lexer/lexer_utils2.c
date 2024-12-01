@@ -136,9 +136,6 @@ void	handle_non_quoted_special_cases(t_parser_context *ctx, // old
  //     }
  // }
 
-
-
-
 void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx,
 		int *is_escaped, char *current_quote)
 {
