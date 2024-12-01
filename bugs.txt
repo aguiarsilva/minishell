@@ -17,6 +17,7 @@ echo hellofgsyjvsedjvfsdejvgsdejvfcjsdvfcjsdev | cat >  pipedreams.txt
 ls -a | wc -c | cat | ls -a > file1 does pipe and stdout at the same time, not gonna fix
 ls -la | grep "test" | sort | uniq | tee file1 | wc -l > file2 | cat > file3 files piping to last file
 ls -la >file1>file2>file3 only works when there a spaces between file
+ls -l | grep utils > output.xt does not pipe filerted output to output.txt
 
 with new parsing
 Total tests: 240

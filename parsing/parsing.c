@@ -53,7 +53,7 @@ static int	fill_arguments(t_cmd *cmd_data, t_token *token_list,
 	return (0);
 }
 
-static t_token	*find_next_pipe_symbol(t_token *token_list)
+t_token	*find_next_pipe_symbol(t_token *token_list)
 {
 	t_token	*cur;
 
@@ -63,7 +63,7 @@ static t_token	*find_next_pipe_symbol(t_token *token_list)
 	return (cur);
 }
 
-static t_cmd	*create_cmd_from_tokens(t_token *token_list,
+t_cmd	*create_cmd_from_tokens(t_token *token_list,
 										t_redir *cur_redir,
 										t_cmd **head, t_cmd **tail)
 {
@@ -111,78 +111,24 @@ static t_cmd	*create_cmd_from_tokens(t_token *token_list,
 // 	return (head);
 // }
 
-// Deep copy function for redirection list
-t_redir *deep_copy_redir_list(t_redir *original)
+t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list)
 {
-	if (original == NULL)
-		return NULL;
-
-	t_redir *new_list = NULL;
-	t_redir *current = original;
-	t_redir *last = NULL;
-
-	while (current)
-	{
-		t_redir *new_node = malloc(sizeof(t_redir));
-		if (new_node == NULL)
-			return NULL;  // Handle memory allocation failure
-
-		new_node->file_name = ft_strdup(current->file_name);
-		new_node->type = current->type;
-		new_node->next = NULL;
-
-		if (new_list == NULL)
-			new_list = new_node;
-		else
-			last->next = new_node;
-
-		last = new_node;
-		current = current->next;
-	}
-
-	return new_list;
-}
-
-t_cmd *fill_cmd_lst(t_token *token_list, t_redir *redir_list)
-{
-	t_cmd  *head;
-	t_cmd  *tail;
-	t_token *cur_token;
-	t_redir *cur_redir;
-	t_redir *next_redir;
+	t_cmd	*head;
+	t_cmd	*tail;
+	t_redir	*cur_redir;
 
 	if (token_list && token_list->val && is_special_command(token_list->val))
-	{
-		print_error_msg("parse error near \n");
-		return (NULL);
-	}
+		return (print_error_msg("parse error near \n"), NULL);
 	head = NULL;
 	tail = NULL;
 	cur_redir = redir_list;
-
 	while (token_list != NULL)
 	{
-		// Find the redirection list for the current command
-		next_redir = NULL;
-		if (cur_redir)
-		{
-			// Create a copy of the current redirection list
-			next_redir = deep_copy_redir_list(cur_redir);
-		}
-
-		if (create_cmd_from_tokens(token_list, next_redir, &head, &tail))
+		if (create_and_link_cmd(token_list, cur_redir, &head, &tail))
 			return (NULL);
-
-		cur_token = find_next_pipe_symbol(token_list);
-		if (cur_token != NULL && cur_token->type == PIPE)
-		{
-			token_list = cur_token->next;
-			// Move to next redir for next command
-			cur_redir = (cur_redir) ? cur_redir->next : NULL;
-		}
-		else
-			break;
+		advance_lists_after_pipe(&token_list, &cur_redir);
+		if (token_list && (token_list->type != PIPE))
+			break ;
 	}
 	return (head);
 }
-

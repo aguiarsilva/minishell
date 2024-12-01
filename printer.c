@@ -1,7 +1,6 @@
 
 #include "lib/minishell.h"
 
-
 void debug_env_list(t_env *env_lst, const char *location)
 {
 	printf("\n=== DEBUG ENV LIST [%s] ===\n", location);

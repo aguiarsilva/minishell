@@ -41,8 +41,9 @@ void	process_double_char(t_parser_context *ctx, char c, size_t *i)
 	add_new_token_to_lst(&ctx->tokens->head, &ctx->tokens->tail, double_token);
 	(*i)++;
 }
+// old
 
-void	handle_non_quoted_special_cases(t_parser_context *ctx, // old
+void	handle_non_quoted_special_cases(t_parser_context *ctx,
 			t_char_context *char_ctx, char c)
 {
 	int	double_char;

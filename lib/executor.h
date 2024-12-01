@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 15:45:26 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/28 15:45:26 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
@@ -16,7 +27,8 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst);
 void	run_cmd(t_cmd *cmd_data, t_env **env_lst);
 
 //child_process_handler.c
-void	handle_child_process(t_cmd *cmd, t_env **env_lst, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
+void	handle_child_process(t_cmd *cmd, t_env **env_lst,
+			int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
 
 //execute_heredoc.c
 void	handle_heredoc(t_token *cur_token, t_token **next_token,
@@ -32,7 +44,8 @@ void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2]);
 
 //redirections.c
 void	handle_file_redirections(t_cmd *cmd);
-void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2], size_t cmd_count);
+void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
+			int pipe_fd[2], size_t cmd_count);
 //redirections_utils.
 void	apply_input_redirection(int input_fd);
 void	apply_output_redirection(int output_fd);
@@ -54,6 +67,7 @@ void	check_child_status(pid_t child_pid, t_cmd *cmd_lst);
 
 //parent_process_handler.c
 void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data);
-void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd, int prev_pipe_fd[2], int pipe_fd[2]);
+void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd,
+			int prev_pipe_fd[2], int pipe_fd[2]);
 void	handle_builtin_command(t_cmd *cmd_lst, t_env **env_lst);
 #endif //EXECUTOR_H

@@ -58,7 +58,6 @@ add_executable(minishell
         parsing/parsing_free.c
         parsing/parsing_free2.c
         parsing/parsing_utils.c
-        parsing/prompt_init.c
         parsing/redir_process.c
         parsing/redir_struct.c
         parsing/redir_utils.c
@@ -66,9 +65,11 @@ add_executable(minishell
         parsing/signal_handling.c
         parsing/signal_handling_utils.c
         printer.c
-        utils.c
+        string_utils.c
         parsing/parsing_free2.c
         lexer/remove_quotes.c
+        parsing/redir_copy_utils.c
+        utils.c
 )
 
 target_link_libraries(minishell PRIVATE libft ft_printf readline)

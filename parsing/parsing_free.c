@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_free.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 23:13:11 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/01 23:13:11 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -23,141 +33,82 @@ void	cleanup_args(char **args, int count)
 
 void	free_redir_list(t_redir *redir_list)
 {
-	t_redir *temp;
-
-	// printf("Freeing redirection list\n");
+	t_redir	*temp;
 
 	if (redir_list == NULL)
-	{
-		// printf("Redir list is NULL, nothing to free\n");
-		return;
-	}
-
+		return ;
 	while (redir_list)
 	{
 		temp = redir_list->next;
-
-		// printf("Freeing redir node with filename: %s\n",
-		// 	   redir_list->file_name ? redir_list->file_name : "NULL");
-
 		if (redir_list->file_name != NULL)
 		{
 			free(redir_list->file_name);
 			redir_list->file_name = NULL;
 		}
-
 		free(redir_list);
 		redir_list = temp;
 	}
 }
 
-// void	free_cmd_node(t_cmd *cmd_node)
-// {
-// 	int	i;
-//
-// 	i = 0;
-// 	if (!cmd_node)
-// 		return;
-// 	if (cmd_node->cmd != NULL)
-// 	{
-// 		free(cmd_node->cmd);
-// 		cmd_node->cmd = NULL;
-// 	}
-// 	if (cmd_node->args != NULL)
-// 	{
-// 		while (cmd_node->args[i] != NULL)
-// 		{
-// 			free(cmd_node->args[i]);
-// 			cmd_node->args[i] = NULL;
-// 			i++;
-// 		}
-// 		free(cmd_node->args);
-// 		cmd_node->args = NULL;
-// 	}
-// 	free_redir_list(cmd_node->redir);
-// 	free(cmd_node);
-// 	cmd_node = NULL;
-// }
-//
-// void	free_cmd_list(t_cmd *cmd_list)
-// {
-// 	t_cmd	*temp;
-//
-// 	while (cmd_list)
-// 	{
-// 		temp = cmd_list->next;
-// 		free_cmd_node(cmd_list);
-// 		cmd_list = temp;
-// 	}
-// }
-
-void free_cmd_list(t_cmd *cmd_list)
+void	free_command_contents(t_cmd *cmd)
 {
-	t_cmd  *temp;
-	t_redir *processed_redir[100] = {NULL}; // Fixed-size array to track processed redir lists
-	int processed_count = 0;
-	int i;
-	// printf("called free_cmd_list\n");
-	while (cmd_list)
+	int	args_count;
+
+	if (cmd->cmd)
 	{
-		temp = cmd_list->next;
-
-		// Check if this redir list has been processed
-		int already_processed = 0;
-		for (i = 0; i < processed_count; i++)
-		{
-			if (processed_redir[i] == cmd_list->redir)
-			{
-				already_processed = 1;
-				break;
-			}
-		}
-
-		// Free redir list if not already processed
-		if (cmd_list->redir && !already_processed)
-		{
-			if (processed_count < 100) // Prevent buffer overflow
-			{
-				processed_redir[processed_count++] = cmd_list->redir;
-			}
-			free_redir_list(cmd_list->redir);
-		}
-
-		// Free command node contents
-		if (cmd_list->cmd != NULL)
-		{
-			free(cmd_list->cmd);
-			cmd_list->cmd = NULL;
-		}
-
-		if (cmd_list->args != NULL)
-		{
-			int arg_idx = 0;
-			while (cmd_list->args[arg_idx] != NULL)
-			{
-				free(cmd_list->args[arg_idx]);
-				cmd_list->args[arg_idx] = NULL;
-				arg_idx++;
-			}
-			free(cmd_list->args);
-			cmd_list->args = NULL;
-		}
-
-		free(cmd_list);
-		cmd_list = temp;
+		free(cmd->cmd);
+		cmd->cmd = NULL;
+	}
+	if (cmd->args)
+	{
+		args_count = count_arg_from_args(cmd->args);
+		cleanup_args(cmd->args, args_count);
+		cmd->args = NULL;
 	}
 }
 
-void	free_all(t_cmd *cmd_head, t_env **env_head)
+void	track_and_free_redir(t_redir *redir, t_redir *processed_redir[],
+			int *processed_count, int max_size)
 {
-	// printf("called free_all\n");
-	free_cmd_list(cmd_head);
-	free_env_lst(env_head);
+	int	i;
+
+	i = 0;
+	while (i < *processed_count)
+	{
+		if (processed_redir[i] == redir)
+			return ;
+		i++;
+	}
+	if (*processed_count < max_size)
+	{
+		processed_redir[*processed_count] = redir;
+		(*processed_count)++;
+	}
+	free_redir_list(redir);
 }
 
-t_cmd	*cleanup_cmd_list(t_cmd *head)
+void	free_cmd_list(t_cmd *cmd_list)
 {
-	// printf("called cleanupcmdlist\n");
-	free_cmd_list(head);
-	return (NULL);
+	int		i;
+	t_redir	*processed_redir[100];
+	int		processed_count;
+	t_cmd	*next_cmd;
+
+	i = 0;
+	processed_count = 0;
+	while (i < 100)
+	{
+		processed_redir[i] = NULL;
+		i++;
+	}
+	while (cmd_list)
+	{
+		next_cmd = cmd_list->next;
+		if (cmd_list->redir)
+			track_and_free_redir(cmd_list->redir, processed_redir,
+				&processed_count, 100);
+		free_command_contents(cmd_list);
+		free(cmd_list);
+		cmd_list = next_cmd;
+	}
 }

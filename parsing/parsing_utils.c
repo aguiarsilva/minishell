@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 19:20:37 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/01 19:20:37 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -43,7 +53,6 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 {
 	if (prev == NULL)
 		return (false);
-
 	if ((prev->type == APPEND || prev->type == HEREDOC) && cur->type == WORD)
 	{
 		// fprintf(stderr, "DEBUGSkipping due to %s; cur val = %s\n",
@@ -88,4 +97,3 @@ size_t	count_arguments(t_token *token_list)
 	}
 	return (arg_count);
 }
-

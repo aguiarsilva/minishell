@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/25 22:39:47 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/25 22:39:47 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -18,7 +28,6 @@ bool	is_filename(const char *str)
 	const char	*file_extension;
 
 	dot_position = ft_strrchr(str, '.');
-
 	if (dot_position && dot_position != str && *(dot_position + 1) != '\0')
 	{
 		file_extension = dot_position + 1;

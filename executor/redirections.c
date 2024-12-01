@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 22:29:36 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/01 22:29:36 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -27,7 +38,6 @@ void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
 {
 //	 fprintf(stderr, "DEBUG: Handling pipe redirections for command %zu\n", cmd_count);
 //	 fprintf(stderr, "DEBUG: Command: %s\n", cmd->cmd);
-
 	if (cmd_count > 0)
 	{
 //		fprintf(stderr, "DEBUG: Setting up input from previous pipe\n");

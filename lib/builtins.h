@@ -19,7 +19,6 @@
 typedef struct s_cmd	t_cmd;
 typedef struct s_env	t_env;
 
-
 //builtins_utils.c
 int		check_for_builtin(char *cmd);
 //cd.c

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 15:15:20 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/28 15:15:20 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -31,4 +42,3 @@ void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2])
 	prev_pipe_fd[0] = pipe_fd[0];
 	prev_pipe_fd[1] = pipe_fd[1];
 }
-

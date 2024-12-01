@@ -16,7 +16,6 @@ void	apply_input_redirection(int input_fd)
 {
 	if (input_fd == -1)
 		return ;
-
 	if (dup2(input_fd, STDIN_FILENO) == -1)
 	{
 		close(input_fd);
@@ -29,7 +28,6 @@ void	apply_output_redirection(int output_fd)
 {
 	if (output_fd == -1)
 		return ;
-
 	if (dup2(output_fd, STDOUT_FILENO) == -1)
 	{
 		close(output_fd);
