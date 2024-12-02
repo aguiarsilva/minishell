@@ -40,7 +40,7 @@ void	free_redir_list(t_redir *redir_list)
 	while (redir_list)
 	{
 		temp = redir_list->next;
-		if (redir_list->file_name != NULL)
+		if (redir_list->file_name != NULL && redir_list->file_name[0] != '\0')
 		{
 			free(redir_list->file_name);
 			redir_list->file_name = NULL;
@@ -67,48 +67,21 @@ void	free_command_contents(t_cmd *cmd)
 	}
 }
 
-void	track_and_free_redir(t_redir *redir, t_redir *processed_redir[],
-			int *processed_count, int max_size)
-{
-	int	i;
-
-	i = 0;
-	while (i < *processed_count)
-	{
-		if (processed_redir[i] == redir)
-			return ;
-		i++;
-	}
-	if (*processed_count < max_size)
-	{
-		processed_redir[*processed_count] = redir;
-		(*processed_count)++;
-	}
-	free_redir_list(redir);
-}
-
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	int		i;
-	t_redir	*processed_redir[100];
-	int		processed_count;
 	t_cmd	*next_cmd;
 
-	i = 0;
-	processed_count = 0;
-	while (i < 100)
-	{
-		processed_redir[i] = NULL;
-		i++;
-	}
+	i = 1;
 	while (cmd_list)
 	{
 		next_cmd = cmd_list->next;
-		if (cmd_list->redir)
-			track_and_free_redir(cmd_list->redir, processed_redir,
-				&processed_count, 100);
+
 		free_command_contents(cmd_list);
+		if (i == 1)
+			free_redir_list(cmd_list->redir);
 		free(cmd_list);
 		cmd_list = next_cmd;
+		i++;
 	}
 }

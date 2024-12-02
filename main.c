@@ -1,32 +1,32 @@
 #include "lib/minishell.h"
 
-// Function to concatenate argv into a single-dimensional char array // only for faster debugging
-char* concat_argv(int argc, char* argv[])
-{
-	// Step 1: Calculate total length needed for concatenated string
-	int total_length = 0;
-	for (int i = 1; i < argc; i++)
-	{
-		total_length += strlen(argv[i]) + 1; // +1 for the space or null terminator
-	}
-
-	// Step 2: Allocate memory for the single-dimensional array
-	char* one_dim_array = malloc(total_length * sizeof(char));
-	if (one_dim_array == NULL)
-	{
-		return NULL; // Return NULL on allocation failure
-	}
-
-	// Step 3: Copy the arguments into the single-dimensional array
-	strcpy(one_dim_array, argv[1]); // Copy the first argument
-	for (int i = 2; i < argc; i++)
-	{
-		strcat(one_dim_array, " "); // Add space between arguments
-		strcat(one_dim_array, argv[i]);
-	}
-
-	return (one_dim_array); // Return the concatenated string
-}
+// // Function to concatenate argv into a single-dimensional char array // only for faster debugging
+// char* concat_argv(int argc, char* argv[])
+// {
+// 	// Step 1: Calculate total length needed for concatenated string
+// 	int total_length = 0;
+// 	for (int i = 1; i < argc; i++)
+// 	{
+// 		total_length += strlen(argv[i]) + 1; // +1 for the space or null terminator
+// 	}
+//
+// 	// Step 2: Allocate memory for the single-dimensional array
+// 	char* one_dim_array = malloc(total_length * sizeof(char));
+// 	if (one_dim_array == NULL)
+// 	{
+// 		return NULL; // Return NULL on allocation failure
+// 	}
+//
+// 	// Step 3: Copy the arguments into the single-dimensional array
+// 	strcpy(one_dim_array, argv[1]); // Copy the first argument
+// 	for (int i = 2; i < argc; i++)
+// 	{
+// 		strcat(one_dim_array, " "); // Add space between arguments
+// 		strcat(one_dim_array, argv[i]);
+// 	}
+//
+// 	return (one_dim_array); // Return the concatenated string
+// }
 
 char	*ft_get_prompt(t_env **env_lst)
 {
@@ -62,12 +62,6 @@ void	run_minishell(t_env **env_lst, char *input)
 	// print_token_lst(token_list);
 	cmd_lst = fill_cmd_lst(token_list, redir_lst);
 	// print_cmd(cmd_lst);
-	// Free the original redir_lst before using the deep-copied lists in commands
-	if (redir_lst)
-	{
-		free_redir_list(redir_lst);
-		redir_lst = NULL;
-	}
 	if (cmd_lst == NULL)
 	{
 		free_tk(token_list);

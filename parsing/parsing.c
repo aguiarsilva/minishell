@@ -82,52 +82,43 @@ t_cmd	*create_cmd_from_tokens(t_token *token_list,
 	return (NULL);
 }
 
-// t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list)
-// {
-// 	t_cmd	*head;
-// 	t_cmd	*tail;
-// 	t_token	*cur_token;
-// 	t_redir	*cur_redir;
-//
-// 	if (token_list && token_list->val && is_special_command(token_list->val))
-// 	{
-// 		print_error_msg("parse error near \n");
-// 		return (NULL);
-// 	}
-// 	head = NULL;
-// 	tail = NULL;
-// 	cur_redir = redir_list;
-// 	while (token_list != NULL)
-// 	{
-// 		if (create_cmd_from_tokens(token_list, cur_redir, &head, &tail))
-// 			return (NULL);
-// 		cur_token = find_next_pipe_symbol(token_list);
-// 		if (cur_token != NULL && cur_token->type == PIPE)
-// 			cur_redir = check_if_token_need_redir(&token_list,
-// 					cur_token, cur_redir);
-// 		else
-// 			break ;
-// 	}
-// 	return (head);
-// }
+t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir)
+{
+	if (cur_token != NULL)
+	{
+		*token_list = cur_token->next;
+		if (cur_redir)
+			return (cur_redir->next);
+		else
+			return (NULL);
+	}
+	return (cur_redir);
+}
 
-t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list)
+t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list) // the one with free bug but otherwise work
 {
 	t_cmd	*head;
 	t_cmd	*tail;
+	t_token	*cur_token;
 	t_redir	*cur_redir;
 
 	if (token_list && token_list->val && is_special_command(token_list->val))
-		return (print_error_msg("parse error near \n"), NULL);
+	{
+		print_error_msg("parse error near \n");
+		return (NULL);
+	}
 	head = NULL;
 	tail = NULL;
 	cur_redir = redir_list;
 	while (token_list != NULL)
 	{
-		if (create_and_link_cmd(token_list, cur_redir, &head, &tail))
+		if (create_cmd_from_tokens(token_list, cur_redir, &head, &tail))
 			return (NULL);
-		advance_lists_after_pipe(&token_list, &cur_redir);
-		if (token_list && (token_list->type != PIPE))
+		cur_token = find_next_pipe_symbol(token_list);
+		if (cur_token != NULL && cur_token->type == PIPE)
+			cur_redir = check_if_token_need_redir(&token_list,
+					cur_token, cur_redir);
+		else
 			break ;
 	}
 	return (head);
