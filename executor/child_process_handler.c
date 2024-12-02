@@ -1,4 +1,15 @@
-// too many args 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   child_process_handler.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 00:13:35 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/02 00:13:35 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../lib/minishell.h"
 
 static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
@@ -6,10 +17,10 @@ static void	handle_first_command(t_cmd *cmd, int pipe_fd[2])
 	//	fprintf(stderr, "DEBUG: First command setup\n");
 	handle_file_redirections(cmd);
 	// Only set up pipe if no output redirection exists
-	if (cmd->next && pipe_fd[1] != -1 &&
-		(!cmd->redir ||
-		(cmd->redir->type != REDIR_OUT &&
-		cmd->redir->type != APPEND)))
+	if (cmd->next && pipe_fd[1] != -1
+		&& (!cmd->redir
+			|| (cmd->redir->type != REDIR_OUT
+				&& cmd->redir->type != APPEND)))
 	{
 //		fprintf(stderr, "DEBUG: Setting up pipe output for first command\n");
 		dup2(pipe_fd[1], STDOUT_FILENO);
@@ -44,7 +55,7 @@ void	handle_child_process(t_cmd *cmd, t_env **env_lst,
 							size_t cmd_position)
 {
 	signal(SIGQUIT, SIG_DFL);
-    signal(SIGINT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	// fprintf(stderr, "DEBUG: Child process for command: %s\n", cmd->cmd);
 	if (cmd_position == 0)
 		handle_first_command(cmd, pipe_fd);
@@ -55,4 +66,3 @@ void	handle_child_process(t_cmd *cmd, t_env **env_lst,
 	// print_fd_debug("DEBUG: Final FDs before exec");
 	run_builtin_or_execute(cmd, env_lst);
 }
-

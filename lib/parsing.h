@@ -22,12 +22,12 @@ extern int		g_signal;
 
 typedef enum s_type
 {
-	REDIR_IN = '<', // 60
-	REDIR_OUT = '>', // 62
-	APPEND = 'A', // 65
-	HEREDOC = 'H', // 72
-	WORD = 'W', // 87
-	PIPE = '|', //124
+	REDIR_IN = '<',
+	REDIR_OUT = '>',
+	APPEND = 'A',
+	HEREDOC = 'H',
+	WORD = 'W',
+	PIPE = '|',
 }	t_type;
 
 typedef struct s_redir
@@ -124,6 +124,10 @@ int		expand_to_str(char *str_to_expand, int *i,
 			char **exp_word, t_env *env_lst);
 //parsing.c
 t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list);
+t_token	*find_next_pipe_symbol(t_token *token_list);
+t_cmd	*create_cmd_from_tokens(t_token *token_list,
+			t_redir *cur_redir,
+			t_cmd **head, t_cmd **tail);
 //parsing_free.c
 void	free_cmd_list(t_cmd *head);
 void	cleanup_args(char **args, int count);
@@ -138,6 +142,11 @@ void	add_new_cmd_to_cmd_lst(t_cmd **head, t_cmd **tail, t_cmd *new_cmd);
 bool	is_skippable_token(t_token *prev, t_token *cur);
 size_t	count_arguments(t_token *token_list);
 bool	is_special_command(char *cmd);
+//redir_copy_utils
+t_redir	*deep_copy_redir_list(t_redir *original);
+int		create_and_link_cmd(t_token *token_list, t_redir *cur_redir,
+			t_cmd **head, t_cmd **tail);
+void	advance_lists_after_pipe(t_token **token_list, t_redir **cur_redir);
 //redir_process.c
 t_redir	*create_redir_lst_from_tokens(t_token *token_lst);
 //redir_struct.c

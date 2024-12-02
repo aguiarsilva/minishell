@@ -64,14 +64,14 @@ void	print_error_open_file_and_exit(char *filename, int err_code);
 void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
 
 // utils.c
-void	*safe_malloc(size_t size);
-char	*ft_strncpy(char *dest, const char *src, int n);
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isspace(int c);
 void	ft_putstr_fd_mod(char *s, int fd);
 char	*ft_charjoin_mod(char *s1, char s2);
 
+// utils2.c
+void	*safe_malloc(size_t size);
 // printer.c
 void	print_env_list_old(t_env *lst);
 void	print_env_node(t_env *node);
@@ -80,5 +80,4 @@ void	print_redir_list(t_redir *redir_head);
 void	print_cmd(t_cmd *command);
 void	debug_env_list(t_env *env_lst, const char *location);
 void	print_fd_debug(const char *message);
-
 #endif //MINISHELL_H

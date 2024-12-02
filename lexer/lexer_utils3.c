@@ -29,10 +29,10 @@ void	handle_quote(int *in_quotes, char *quote_type, char current_char)
 bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 {
 	size_t		i;
-	char	*buf;
-	bool	contains_dollar_sign;
-	int		in_quotes;
-	char	quote_type;
+	char		*buf;
+	bool		contains_dollar_sign;
+	int			in_quotes;
+	char		quote_type;
 
 	i = 0;
 	contains_dollar_sign = false;
@@ -46,7 +46,7 @@ bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 			if (!in_quotes || quote_type == buf[i])
 				handle_quote(&in_quotes, &quote_type, buf[i]);
 		}
-		if (buf[i] == '$' && (!in_quotes || quote_type == '"'))
+		if (i + 1 < ctx->state->buf_index && ft_isalnum(buf[i + 1]))
 			contains_dollar_sign = true;
 		i++;
 	}

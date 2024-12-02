@@ -47,7 +47,6 @@ static char	*handle_regular_character(char *exp_word, char current_char)
 		free(exp_word);
 		return (NULL);
 	}
-	// free(exp_word);
 	return (temp);
 }
 

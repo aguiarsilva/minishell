@@ -27,6 +27,8 @@ t_env	*create_env_lst(char **ori_env, char **argv);
 // env_lst_free.c
 void	free_env_node(t_env *node);
 void	free_env_lst(t_env **head);
+void	free_all(t_cmd *cmd_head, t_env **env_head);
+t_cmd	*cleanup_cmd_list(t_cmd *head);
 // env_lst_utils.c
 char	**env_list_to_array(t_env *env_list);
 char	*get_key_in_env_lst(t_env *env_lst, char *key);

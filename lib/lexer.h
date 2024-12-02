@@ -15,9 +15,11 @@
 
 # include "minishell.h"
 
-typedef struct s_cmd	t_cmd;
-typedef struct s_token	t_token;
-typedef struct s_redir	t_redir;
+typedef struct s_cmd			t_cmd;
+typedef struct s_token			t_token;
+typedef struct s_redir			t_redir;
+typedef struct s_parser_context	t_parser_context;
+
 //typedef struct s_lexer	t_lexer;
 
 //lexer.c
@@ -28,7 +30,7 @@ t_token	*create_word_list(char *input, t_env **env_lst);
 bool	check_if_token_list_right(t_token *token_lst);
 
 //lexer_error.c
-void	handle_unmatched_quote_error();
+void	handle_unmatched_quote_error(void);
 t_token	*check_for_unmatched_quotes_and_handle_error(char *input);
 
 //lexer_init.c
@@ -50,8 +52,6 @@ int		should_process_double_char(t_char_context *char_ctx);
 void	process_double_char(t_parser_context *ctx, char c, size_t *i);
 void	handle_non_quoted_special_cases(t_parser_context *ctx,
 			t_char_context *char_ctx, char c);
-//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx); // old version
-//void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx, int *is_escaped, char *current_quote);
 void	handle_special_cases(t_parser_context *ctx, t_char_context *char_ctx,
 			int *is_escaped, char *current_quote);
 int		is_escape_character(char c);

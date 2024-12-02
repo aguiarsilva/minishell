@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 00:09:32 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/02 00:09:32 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
@@ -108,26 +119,3 @@ size_t	get_cmd_lst_size(t_cmd *cmd_data)
 	}
 	return (lst_size);
 }
-
-// void	free_cmd_data(t_cmd *cmd_lst)
-// {
-// 	int	i;
-//
-// 	i = 0;
-// 	if (cmd_lst)
-// 	{
-// 		free(cmd_lst->cmd);
-// 		if (cmd_lst->args)
-// 		{
-// 			while (cmd_lst->args[i])
-// 			{
-// 				free(cmd_lst->args[i]);
-// 				i++;
-// 			}
-// 			free(cmd_lst->args);
-// 		}
-// 		free(cmd_lst);
-// 	}
-// }
-
-

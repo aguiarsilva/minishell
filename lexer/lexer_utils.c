@@ -50,7 +50,7 @@ void	flush_buffer(t_parser_context *ctx)
 	}
 }
 
-void	treat_quotes(char c, t_buffer_state *state)
+void	treat_quotes(char c, t_buffer_state *state) // never used
 {
 	state->in_quotes = !(state->in_quotes);
 	state->buffer[state->buf_index++] = c;

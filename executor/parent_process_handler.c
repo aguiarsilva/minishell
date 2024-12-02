@@ -1,15 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parent_process_handler.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 00:58:44 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/11/28 00:58:44 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
-// Handle parent process tasks
-//void	handle_parent_exit(pid_t process_id, t_cmd *cmd_data) // not used
-//{
-//	// Free the command data in the parent process
-////	free(cmd_data); // should only free when minishell is exited?
-//
-//	// Wait for the child process and check its status
-//	check_child_status(process_id, cmd_data);
-//}
 
 void	handle_parent_pipes_and_process(pid_t process_id, t_cmd *cmd,
 										int prev_pipe_fd[2], int pipe_fd[2])

@@ -37,7 +37,6 @@ static t_redir	*init_redirection_node(t_token *token_node, int filetype)
 	return (new_redir);
 }
 
-// Main function to create the redirection struct and add it to the list
 static t_redir	*create_redir_struct(t_redir **redir_head,
 								t_token *token_node, int filetype)
 {
@@ -86,17 +85,4 @@ void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
 			*last_redir = new_redir;
 		}
 	}
-}
-
-t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir)
-{
-	if (cur_token != NULL)
-	{
-		*token_list = cur_token->next;
-		if (cur_redir)
-			return (cur_redir->next);
-		else
-			return (NULL);
-	}
-	return (cur_redir);
 }

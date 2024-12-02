@@ -37,3 +37,15 @@ void	free_env_lst(t_env **head)
 	}
 	*head = NULL;
 }
+
+void	free_all(t_cmd *cmd_head, t_env **env_head)
+{
+	free_cmd_list(cmd_head);
+	free_env_lst(env_head);
+}
+
+t_cmd	*cleanup_cmd_list(t_cmd *head)
+{
+	free_cmd_list(head);
+	return (NULL);
+}

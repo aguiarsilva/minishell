@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exebuiltins.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbui-quo <tbui-quo@student.42wolfsburg.d>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 00:08:07 by tbui-quo          #+#    #+#             */
+/*   Updated: 2024/12/02 00:08:07 by tbui-quo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lib/minishell.h"
-// add if for each builtins
 
 int	run_builtin(t_cmd *cmd_data, t_env **env_lst)
 {
@@ -30,4 +40,3 @@ int	run_builtin(t_cmd *cmd_data, t_env **env_lst)
 		exit_code = builtin_exit(cmd_data, env_lst);
 	return (exit_code);
 }
-
