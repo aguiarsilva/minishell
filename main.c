@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbui-quo <tbui-quo@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: baguiar- <baguiar-@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 11:00:19 by tbui-quo          #+#    #+#             */
-/*   Updated: 2024/12/02 13:46:23 by tbui-quo         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:18:03 by baguiar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ char	*ft_get_prompt(t_env **env_lst)
 {
 	char	*result;
 
-	result = readline("\001\033[0;32m\002minishell\001\033[1;34m\002$ \001\033[0m\002");
+	result = readline(
+			"\001\033[0;32m\002minishell\001\033[1;34m\002$ \001\033[0m\002");
 	if (g_signal == 130)
 	{
 		update_exit_code(*env_lst, 130);
@@ -61,10 +62,8 @@ int	main(int argc, char *argv[], char *env[])
 	void	(*past_signal[2])(int);
 
 	env_lst = create_env_lst(env, argv);
-	if (!env_lst)
+	if (argc > 1 || !env_lst)
 		return (1);
-	if (argc > 1)
-		exit (1);
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
