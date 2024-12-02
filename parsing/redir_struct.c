@@ -24,7 +24,6 @@ static t_redir	*init_redirection_node(t_token *token_node, int filetype)
 		return (NULL);
 	}
 	filename = token_node->val;
-//	fprintf(stderr, "token_val: %s and file type: %d\n", filename, filetype); // debug print
 	new_redir->file_name = ft_strdup(filename);
 	if (new_redir->file_name == NULL)
 	{
@@ -32,7 +31,6 @@ static t_redir	*init_redirection_node(t_token *token_node, int filetype)
 		return (NULL);
 	}
 	new_redir->type = determine_redirection_type(filetype);
-	// printf("DEBUG filename: %s and type after initialization: %d\n", new_redir->file_name, new_redir->type); //debug printf
 	new_redir->next = NULL;
 	return (new_redir);
 }
@@ -85,4 +83,18 @@ void	append_redir_node(t_redir **redir_lst, t_redir **last_redir,
 			*last_redir = new_redir;
 		}
 	}
+}
+
+t_redir	*check_if_token_need_redir(t_token **token_list,
+			t_token *cur_token, t_redir *cur_redir)
+{
+	if (cur_token != NULL)
+	{
+		*token_list = cur_token->next;
+		if (cur_redir)
+			return (cur_redir->next);
+		else
+			return (NULL);
+	}
+	return (cur_redir);
 }

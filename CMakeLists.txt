@@ -68,7 +68,6 @@ add_executable(minishell
         string_utils.c
         parsing/parsing_free2.c
         lexer/remove_quotes.c
-        parsing/redir_copy_utils.c
         utils.c
 )
 

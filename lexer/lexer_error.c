@@ -14,7 +14,7 @@
 
 t_token	*check_for_unmatched_quotes_and_handle_error(char *input)
 {
-	int quote_check_result;
+	int	quote_check_result;
 
 	quote_check_result = check_for_unmatched_quotes(input, ft_strlen(input));
 	if (quote_check_result != 0)
@@ -22,5 +22,5 @@ t_token	*check_for_unmatched_quotes_and_handle_error(char *input)
 		print_error_msg(ERR_UNEVENQUOTES);
 		return (NULL);
 	}
-	return (t_token *)1;
+	return ((t_token *)1);
 }

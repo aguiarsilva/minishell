@@ -82,20 +82,8 @@ t_cmd	*create_cmd_from_tokens(t_token *token_list,
 	return (NULL);
 }
 
-t_redir	*check_if_token_need_redir(t_token **token_list, t_token *cur_token, t_redir *cur_redir)
-{
-	if (cur_token != NULL)
-	{
-		*token_list = cur_token->next;
-		if (cur_redir)
-			return (cur_redir->next);
-		else
-			return (NULL);
-	}
-	return (cur_redir);
-}
-
-t_cmd	*fill_cmd_lst(t_token *token_list, t_redir *redir_list) // the one with free bug but otherwise work
+t_cmd	*fill_cmd_lst(t_token *token_list,
+			t_redir *redir_list)
 {
 	t_cmd	*head;
 	t_cmd	*tail;

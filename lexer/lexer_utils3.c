@@ -53,30 +53,6 @@ bool	analyze_buffer_for_expansion(t_parser_context *ctx)
 	return (contains_dollar_sign);
 }
 
-// bool	analyze_buffer_for_expansion(t_parser_context *ctx)
-// {
-// 	size_t		i;
-// 	char	*buf;
-// 	bool	contains_dollar_sign;
-// 	bool	contains_quotes;
-//
-// 	i = 0;
-// 	contains_dollar_sign = false;
-// 	contains_quotes = false;
-// 	buf = ctx->state->buffer;
-// 	while (i < ctx->state->buf_index)
-// 	{
-// 		if (buf[i] == '$')
-// 			contains_dollar_sign = true;
-// 		if (buf[i] == '\'' || buf[i] == '"')
-// 			contains_quotes = true;
-// 		i++;
-// 	}
-// 	if (contains_dollar_sign && contains_quotes)
-// 		return (false);
-// 	return (true);
-// }
-
 int	is_escape_character(char c)
 {
 	return (c == '\\');

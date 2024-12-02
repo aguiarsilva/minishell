@@ -29,8 +29,9 @@ static int	process_dollar_sign(char *str_to_expand, int *i,
 		temp = ft_charjoin_mod(*exp_word, str_to_expand[*i]);
 		if (!temp)
 			return (1);
-		if (!(str_to_expand[*i] == '$' &&
-		(str_to_expand[*i + 1] == '\0' || str_to_expand[*i + 1] == ' ')))
+		if (!(str_to_expand[*i] == '$'
+				&& (str_to_expand[*i + 1] == '\0'
+					||str_to_expand[*i + 1] == ' ')))
 			free(*exp_word);
 		*exp_word = temp;
 	}

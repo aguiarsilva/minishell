@@ -31,7 +31,6 @@ parsing/parsing_free.c \
 parsing/parsing_free2.c \
 parsing/parsing_utils.c \
 parsing/build_lst.c \
-parsing/redir_copy_utils.c \
 parsing/redir_process.c \
 parsing/redir_struct.c \
 parsing/redir_utils.c \

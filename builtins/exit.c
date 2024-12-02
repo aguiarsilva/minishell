@@ -30,7 +30,6 @@ int	is_valid_number(char *str)
 static void	cleanup_and_exit(t_cmd *cmd, t_env **env_lst, int exit_code)
 {
 	free_all(cmd, env_lst);
-	fprintf(stderr, "Exiting with code: %d\n", exit_code);
 	exit(exit_code);
 }
 
@@ -41,7 +40,6 @@ int	builtin_exit(t_cmd *cmd, t_env **env_lst)
 
 	if (cmd == NULL)
 	{
-		// printf("DEBUG: exited because cmd NULL in ft prompt\n");
 		free_env_lst(env_lst);
 		exit(0);
 	}
@@ -49,7 +47,6 @@ int	builtin_exit(t_cmd *cmd, t_env **env_lst)
 	{
 		exitcode_str = get_key_in_env_lst(*env_lst, "EC");
 		exit_code = ft_atoi(exitcode_str);
-		// printf("DEBUG: exitcode with no arguments = %d\n", exit_code);
 		free(exitcode_str);
 		cleanup_and_exit(cmd, env_lst, exit_code);
 	}

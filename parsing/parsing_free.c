@@ -76,7 +76,6 @@ void	free_cmd_list(t_cmd *cmd_list)
 	while (cmd_list)
 	{
 		next_cmd = cmd_list->next;
-
 		free_command_contents(cmd_list);
 		if (i == 1)
 			free_redir_list(cmd_list->redir);

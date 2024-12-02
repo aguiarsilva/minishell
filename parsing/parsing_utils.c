@@ -54,16 +54,9 @@ bool	is_skippable_token(t_token *prev, t_token *cur)
 	if (prev == NULL)
 		return (false);
 	if ((prev->type == APPEND || prev->type == HEREDOC) && cur->type == WORD)
-	{
-		// fprintf(stderr, "DEBUGSkipping due to %s; cur val = %s\n",
-		// 	prev->type == APPEND ? "APPEND" : "HEREDOC", cur->val); // Debug print
 		return (true);
-	}
 	if (cur->eof_flag == true)
-	{
-		// fprintf(stderr, "DEBUG Skipping due to EOF flag; cur val = %s\n", cur->val); // Debug print
 		return (true);
-	}
 	if (prev->type != REDIR_OUT && prev->type != REDIR_IN)
 		return (false);
 	if (get_token_type(cur->val) != WORD)

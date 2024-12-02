@@ -62,5 +62,4 @@ void	run_cmd(t_cmd *cmd_data, t_env **env_lst)
 	}
 	free(exec_path);
 	ft_free_array(split_cmd);
-	// print_error_msg_and_exit(ERR_UNKNOWN);
 }

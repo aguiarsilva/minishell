@@ -168,12 +168,5 @@ void	sig_int_in_process(int signal);
 void	sig_quit(int signal);
 void	set_signals(void (*old_signal[2])(int));
 void	restore_signals(void (*old_signal[2])(int));
-// void	interrupt_signal(int signal);
-// void	quit_signal(int signal);
-// void	signal_setter(void (**past_signal)(int));
-// void	signal_restore(void (**past_signal)(int));
-//signal_handling_utils.c
-// void	setup_signals(void);
-// void	reset_signals(void (*past_signal[2])(int));
-// void	setup_child_signals(void);
+
 #endif

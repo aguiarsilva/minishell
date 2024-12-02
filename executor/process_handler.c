@@ -26,7 +26,6 @@ static void	create_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
-//	 fprintf(stderr, "DEBUG: Created new pipe: [%d, %d]\n", pipe_fd[0], pipe_fd[1]);
 }
 
 static void	execute_command(t_cmd *current, t_env **env_lst,
@@ -41,7 +40,6 @@ static void	execute_command(t_cmd *current, t_env **env_lst,
 
 	if (process_id == 0)
 	{
-		//setup_child_signals();
 		signal(SIGQUIT, sig_quit);
 		signal(SIGINT, SIG_DFL);
 		handle_child_process(current, env_lst, prev_pipe_fd,
@@ -67,8 +65,6 @@ static void	run_pipeline(t_cmd *cmd_list, t_env **env_lst)
 	current = cmd_list;
 	while (current != NULL)
 	{
-//		 fprintf(stderr, "DEBUG: Processing command: %s at position %zu\n",
-//			 current->cmd, cmd_position);
 		execute_command(current, env_lst, prev_pipe_fd, pipe_fd, cmd_position);
 		if (current->next == NULL)
 			last_exit_code = current->exit_code;
@@ -104,7 +100,6 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 
 	if (cmd_lst == NULL)
 	{
-		// printf("No commands to execute\n");
 		free_cmd_list(cmd_lst);
 		return ;
 	}
@@ -112,13 +107,7 @@ void	run_process(t_cmd *cmd_lst, t_env **env_lst)
 		return ;
 	cmd_count = get_cmd_lst_size(cmd_lst);
 	if (cmd_count == 1 && cmd_lst->builtin && cmd_lst->redir == NULL)
-	{
-//		printf("run builtin without pipeline\n");
 		handle_builtin_command(cmd_lst, env_lst);
-	}
 	else
-	{
-		// printf("DEBUG: run %ld cmds\n", cmd_count);
 		run_pipeline(cmd_lst, env_lst);
-	}
 }

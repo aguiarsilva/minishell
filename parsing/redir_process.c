@@ -59,6 +59,5 @@ t_redir	*create_redir_lst_from_tokens(t_token *token_lst)
 		prev_token = cur_token;
 		cur_token = cur_token->next;
 	}
-	// print_redir_list(redir_lst); // DEBUG
 	return (redir_lst);
 }

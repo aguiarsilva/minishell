@@ -36,11 +36,8 @@ void	handle_file_redirections(t_cmd *cmd)
 void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
 								int pipe_fd[2], size_t cmd_count)
 {
-//	 fprintf(stderr, "DEBUG: Handling pipe redirections for command %zu\n", cmd_count);
-//	 fprintf(stderr, "DEBUG: Command: %s\n", cmd->cmd);
 	if (cmd_count > 0)
 	{
-//		fprintf(stderr, "DEBUG: Setting up input from previous pipe\n");
 		dup2(prev_pipe_fd[0], STDIN_FILENO);
 		close(prev_pipe_fd[0]);
 		if (prev_pipe_fd[1] != -1)
@@ -48,7 +45,6 @@ void	handle_pipe_redirections(t_cmd *cmd, int prev_pipe_fd[2],
 	}
 	if (cmd->next != NULL)
 	{
-//		fprintf(stderr, "DEBUG: Setting up output to next pipe\n");
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
