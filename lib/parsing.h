@@ -28,7 +28,6 @@ typedef enum s_type
 	HEREDOC = 'H', // 72
 	WORD = 'W', // 87
 	PIPE = '|', //124
-	EQUAL = '=',
 }	t_type;
 
 typedef struct s_redir
