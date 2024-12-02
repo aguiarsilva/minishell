@@ -41,6 +41,7 @@ add_executable(minishell
         executor/process_handler.c
         executor/redirections.c
         executor/redirections_utils.c
+        executor/process_utils.c
         lexer/lexer.c
         lexer/lexer_error.c
         lexer/lexer_init.c
@@ -64,7 +65,6 @@ add_executable(minishell
         parsing/signal_handling.c
         parsing/signal_handling.c
         parsing/signal_handling_utils.c
-        printer.c
         string_utils.c
         parsing/parsing_free2.c
         lexer/remove_quotes.c

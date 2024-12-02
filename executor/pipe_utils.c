@@ -12,12 +12,12 @@
 
 #include "../lib/minishell.h"
 
-void	init_pipe_fds(int pipe_fd[2], int prev_pipe_fd[2])
+void	init_pipe_fds(t_pipes *pipes)
 {
-	pipe_fd[0] = -1;
-	pipe_fd[1] = -1;
-	prev_pipe_fd[0] = -1;
-	prev_pipe_fd[1] = -1;
+	pipes->pipe_fd[0] = -1;
+	pipes->pipe_fd[1] = -1;
+	pipes->prev_pipe_fd[0] = -1;
+	pipes->prev_pipe_fd[1] = -1;
 }
 
 void	close_pipe_fds(int pipe_fd[2])
@@ -28,8 +28,8 @@ void	close_pipe_fds(int pipe_fd[2])
 		close(pipe_fd[1]);
 }
 
-void	update_prev_pipe_fds(int prev_pipe_fd[2], int pipe_fd[2])
+void	update_prev_pipe_fds(t_pipes *pipes)
 {
-	prev_pipe_fd[0] = pipe_fd[0];
-	prev_pipe_fd[1] = pipe_fd[1];
+	pipes->prev_pipe_fd[0] = pipes->pipe_fd[0];
+	pipes->prev_pipe_fd[1] = pipes->pipe_fd[1];
 }

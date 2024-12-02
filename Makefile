@@ -3,6 +3,7 @@ NAME = minishell
 # Directories and source files
 SRC = main.c \
 executor/process_handler.c \
+executor/process_utils.c \
 executor/child_process_handler.c \
 executor/parent_process_handler.c \
 executor/child_status.c \
@@ -51,7 +52,6 @@ env_lst/env_lst_utils2.c \
 error.c \
 utils.c \
 string_utils.c \
-printer.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -54,30 +54,18 @@
 # define EXIT_NUMERIC_ARG_REQ "exit: numeric argument required\n"
 # define ERR_SYNTAX "minishell: syntax error near unexpected token\n"
 
-// error.c delete not needed fuction later
-void	print_custom_msg_and_exit(char *error, int exit_code);
-void	print_error_msg_and_exit(char *error);
+//error_msg.c
 int		print_error_msg(char *error);
 void	print_cmd_not_found_and_exit(char *cmd, char *exec_path, char **env);
-//void	print_error_cmd_not_found_and_exit(char *split_cmd);
-void	print_error_open_file_and_exit(char *filename, int err_code);
-void	print_error_cmd_arg_not_found_and_exit(char *split_cmd);
-
+void	print_custom_msg_and_exit(char *error, int exit_code);
+void	print_error_msg_and_exit(char *error);
 // utils.c
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isspace(int c);
 void	ft_putstr_fd_mod(char *s, int fd);
 char	*ft_charjoin_mod(char *s1, char s2);
-
 // utils2.c
 void	*safe_malloc(size_t size);
-// printer.c
-void	print_env_list_old(t_env *lst);
-void	print_env_node(t_env *node);
-void	print_token_lst(t_token *token);
-void	print_redir_list(t_redir *redir_head);
-void	print_cmd(t_cmd *command);
-void	debug_env_list(t_env *env_lst, const char *location);
-void	print_fd_debug(const char *message);
+
 #endif //MINISHELL_H
